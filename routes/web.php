@@ -18,6 +18,10 @@ use App\Http\Controllers\Mpdr\MpdrController;
 use App\Http\Controllers\PreMpdr\PreMpdrController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Rs\RequistionSlipController;
+use App\Http\Controllers\ItemmasterController;
+use App\Http\Controllers\ItemdetailController;
+use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\RevisionsController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
@@ -121,10 +125,19 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
         Route::get('/product/{id}', [RequistionSlipController::class, 'getproductdata'])->name('requisition.getproductdata');
         
-        Route::get('/itemmaster', [RequistionSlipController::class, 'itemmaster'])->name('item-master.index');
-        Route::get('/itemdetail', [RequistionSlipController::class, 'itemdetail'])->name('item-detail.index'); 
-        Route::get('/customer', [RequistionSlipController::class, 'customer'])->name('customers.index');
-        Route::get('/revision', [RequistionSlipController::class, 'revision'])->name('revisions.index');
+        Route::get('/itemmaster', [ItemmasterController::class, 'index'])->name('item-master.index');
+        Route::POST('/itemmasterdestroy/{id}', [ItemmasterController::class, 'destroy'])->name('item-master.destroy');
+        Route::get('/itemmastercreate/{id}', [ItemmasterController::class, 'create'])->name('item-master.create');
+        Route::post('/itemmasterstore', [ItemmasterController::class, 'store'])->name('item-master.store');
+        Route::get('/itemmasteredit/update/{id}', [ItemmasterController::class, 'edit'])->name('item-master.edit');
+        Route::patch('/itemmasterupdate/update/{id}', [ItemmasterController::class, 'update'])->name('item-master.update');
+        Route::get('/customer', [CustomersController::class, 'customer'])->name('customers.index');
+        Route::get('/customercreate/{id}', [CustomersController::class, 'create'])->name('customers.create');
+        Route::post('/customerstore', [CustomersController::class, 'store'])->name('customers.store');
+        Route::get('/customeredit/update/{id}', [CustomersController::class, 'edit'])->name('customers.edit');
+        Route::patch('/customerupdate/update/{id}', [CustomersController::class, 'update'])->name('customers.update');
+        Route::POST('/customerdestroy/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
+        Route::get('/revision', [RevisionsController::class, 'revision'])->name('revisions.index');
     });
 
 

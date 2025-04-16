@@ -140,7 +140,7 @@
                     </a>
                 </li>
 
-                <!-- Master Data -->
+                Master Data
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Master Data</span>
@@ -158,15 +158,7 @@
                                 <div class="round-16 d-flex align-items-center justify-content-center">
                                     <i class="ti ti-circle"></i>
                                 </div>
-                                <span class="hide-menu">Item Master</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('item-detail.index') }}" class="sidebar-link">
-                                <div class="round-16 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-circle"></i>
-                                </div>
-                                <span class="hide-menu">Item Detail</span>
+                                <span class="hide-menu">Item</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
@@ -185,6 +177,7 @@
                                 <span class="hide-menu">Revision</span>
                             </a>
                         </li>
+                        
             </ul>
         </nav>
 

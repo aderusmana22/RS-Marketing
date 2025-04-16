@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item\Itemmaster;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ItemmasterController extends Controller
 {
@@ -12,7 +13,9 @@ class ItemmasterController extends Controller
      */
     public function index()
     {
-        //
+        
+        $items = Itemmaster::all();
+        return view('page.masterdata.itemmaster.index', compact('items'));
     }
 
     /**
@@ -20,7 +23,12 @@ class ItemmasterController extends Controller
      */
     public function create()
     {
-        //
+
+        // Dialog Sweet Alert
+        $items = Itemmaster::all();
+        return view('page.masterdata.itemmaster.create', compact('items'));
+        
+      
     }
 
     /**
@@ -28,7 +36,16 @@ class ItemmasterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'parent_item_code' => 'required|string|max:255',
+            'parent_item_name' => 'required|string|max:255',
+        ]);
+
+        // Mulai transaction untuk memastikan integritas data
+        $item = Itemmaster::create($validate);
+        // Dialog Sweet Alert
+        Alert::toast('Successfully added item', 'success');
+        return redirect()->route('itemmaster.index');
     }
 
     /**
@@ -36,7 +53,7 @@ class ItemmasterController extends Controller
      */
     public function show(Itemmaster $itemmaster)
     {
-        //
+        
     }
 
     /**
@@ -60,6 +77,6 @@ class ItemmasterController extends Controller
      */
     public function destroy(Itemmaster $itemmaster)
     {
-        //
+        
     }
 }
