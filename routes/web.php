@@ -138,6 +138,11 @@ Route::middleware('auth')->group(function () {
         Route::patch('/customerupdate/update/{id}', [CustomersController::class, 'update'])->name('customers.update');
         Route::POST('/customerdestroy/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
         Route::get('/revision', [RevisionsController::class, 'revision'])->name('revisions.index');
+        Route::get('/revisioncreate/{id}', [RevisionsController::class, 'create'])->name('revisions.create');
+        Route::post('/revisionstore', [RevisionsController::class, 'store'])->name('revisions.store');
+        Route::get('/revisionedit/update/{id}', [RevisionsController::class, 'edit'])->name('revisions.edit');
+        Route::patch('/revisionupdate/update/{id}', [RevisionsController::class, 'update'])->name('revisions.update');
+        Route::POST('/revisiondestroy/{id}', [RevisionsController::class, 'destroy'])->name('revisions.destroy');
     });
 
 

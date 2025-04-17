@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    {{-- Modal Add --}}
+    <!-- Modal Add customer -->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
@@ -115,7 +115,7 @@
         </div>
     </div>
 
-    {{-- Modal Edit --}}
+    <!-- Modal Add customer -->
     @foreach ($customers as $customer)
         <div class="modal fade" id="editCustomerModal{{ $customer->id }}" tabindex="-1" role="dialog"
             aria-labelledby="editCustomerModalTitle" aria-hidden="true">
