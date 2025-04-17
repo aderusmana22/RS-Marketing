@@ -62,6 +62,10 @@
                 @csrf
                 
                 <div class="mb-3">
+                    <label class="form-label">FORM NO:</label>
+                    <input type="text" class="form-control" name="form_no" value="" required>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Category:</label>
                     <select class="form-select form-select-sm" name="category" id='selectcat'>
                         <option selected disabled>Select</option>
@@ -95,11 +99,6 @@
                         <div class="mb-3">
                             <label class="form-label">Account:</label>
                             <input type="text" class="form-control" name="account" value="" required>
-                        </div>
-  
-                        <div class="mb-3">
-                            <label class="form-label">FORM NO:</label>
-                            <input type="text" class="form-control" name="form_no" value="" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">REVISION:</label>
