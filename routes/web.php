@@ -113,6 +113,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [RequistionSlipController::class, 'index'])->name('rs.index');
         Route::get('/create', [RequistionSlipController::class, 'create'])->name('rs.create');
+        Route::get('getnoReg', [RequistionSlipController::class, 'noReg'])->name('rs.noReg');
         Route::get('/edit/{id}', [RequistionSlipController::class, 'edit'])->name('rs.edit');
         Route::patch('/update/{id}', [RequistionSlipController::class, 'update'])->name('rs.update');
         Route::delete('/destroy/{id}', [RequistionSlipController::class, 'destroy'])->name('rs.destroy');
@@ -133,7 +134,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('/itemmasterupdate/update/{id}', [ItemmasterController::class, 'update'])->name('item-master.update');
         Route::get('/itemdetail', [ItemdetailController::class, 'index'])->name('item-detail.index');
         Route::POST('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
-        Route::get('/itemdetailcreate/{id}', [ItemdetailController::class, 'create'])->name('item-detail.create');
+        Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-details.store');
+        Route::put('/itemmasterupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-details.update');
         Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-detail.store');
         Route::get('/customer', [CustomersController::class, 'index'])->name('customers.index');
         Route::get('/customercreate/{id}', [CustomersController::class, 'create'])->name('customers.create');

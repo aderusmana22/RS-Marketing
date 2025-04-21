@@ -33,6 +33,30 @@ class RequistionSlipController extends Controller
 
     }
 
+    public function noReg()
+    {
+        $year = date('y');
+        $prefix = "{$year}RS";
+        $lastRs = RsMaster::where('rs_no', 'like', "{$prefix}%")->orderBy('rs_no', 'desc')->first();
+
+        if ($lastRs) {
+            $lastNo = (int)substr($lastRs->rs_no, -4);
+            $newNo = $lastNo + 1;
+        } else {
+            $newNo = 1;
+        }
+
+        do {
+            $newNoReg = $prefix . str_pad($newNo, 4, '0', STR_PAD_LEFT);
+            $existingRs = RsMaster::where('rs_no', $newNoReg)->first();
+            if ($existingRs) {
+                $newNo++;
+            }
+        } while ($existingRs);
+
+        return response()->json(['rs_no' => $newNoReg]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -149,7 +173,7 @@ public function getproductdata($id, Request $request)
 
 
     if ($types) {
-        $item->where('types', $types);
+        $item->where('type', $types);
     }
     $item = $item->first();
     if ($item) {

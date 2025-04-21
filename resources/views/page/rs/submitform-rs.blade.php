@@ -63,7 +63,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label">FORM NO:</label>
-                    <input type="text" class="form-control" name="form_no" value="" required>
+                    <input type="text" class="form-control" name="rs_no" id="form_no" value="" required readonly placeholder="Press Enter to generate Form NO.">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Category:</label>
@@ -100,9 +100,9 @@
                             <label class="form-label">Account:</label>
                             <input type="text" class="form-control" name="account" value="" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" style="display: none;">
                             <label class="form-label">REVISION:</label>
-                            <input type="text" class="form-control" name="revision" value="" required>
+                            <input type="text" class="form-control" name="revision" value="1" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">DATE:</label>
@@ -221,6 +221,20 @@
 <script src="{{ asset('assets/libs/quill/dist/quill.min.js') }}"></script>
 
 <script>
+      document.getElementById('form_no').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    fetch('{{ route('rs.noReg') }}')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('form_no').value = data.rs_no;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching form_no:', error);
+                        });
+                }
+            });
+
     document.getElementById('selectcat').addEventListener('change', function() {
                 const category = this.value;
                 const dynamicFields = document.getElementById('dynamicFields');
@@ -235,10 +249,7 @@
                             <label class="form-label">Objectives:</label>
                             <input type="text" class="form-control" name="objectives" value="" required>
                         </div>
-                    <div class="mb-3">
-                            <label class="form-label">RS Number:</label>
-                            <input type="text" class="form-control" name="rs_number" value="" required>
-                        </div>   
+                      
                     <div class="mb-3">
                             <label class="form-label">Cost Center:</label>
                             <input type="text" class="form-control" name="cost_center" value="" required>
@@ -251,10 +262,6 @@
                 } else if (category === 'Packaging') {
                     dynamicFields.innerHTML = `
                         
-                    <div class="mb-3">
-                                <label class="form-label">SRS Number:</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
                     <div class="mb-3">
                                 <label class="form-label">Reason:</label>
                                 <input type="text" class="form-control" value="">

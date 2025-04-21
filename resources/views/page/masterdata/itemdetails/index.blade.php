@@ -30,23 +30,6 @@
     </div>
 </div>
 
-<div class="font-weight-medium shadow-none position-relative overflow-hidden mb-7">
-    <div class="card-body px-0">
-        <div class="d-flex justify-content-between align-items-center">
-                <h1 class="font-weight-medium mb-0 ml-3">Item Detail</h1>
-                <nav aria-label="breadcrumb mr-3">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item text-muted" aria-current="page">Details</li>
-                    </ol>
-                </nav>
-        </div>
-    </div>
-</div>
-
 
 <div class="widget-content searchable-container list">
         <div class="row">
@@ -78,7 +61,7 @@
                         @foreach($itemDetails as $detail)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $detail->itemMaster->parent_item_name ?? '-' }}</td>
+                            <td></td>
                             <td>{{ $detail->item_detail_code }}</td>
                             <td>{{ $detail->item_detail_name }}</td>
                             <td>{{ $detail->unit }}</td>
@@ -96,7 +79,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <a href="javascript:void(0)" class="text-dark delete ms-2"
-                                            data-department-id="{{ $->id }}">
+                                            data-department-id="{{ $detail->id }}">
                                             <i class="ti ti-trash fs-5"></i>
                                         </a>
                                     </form>
@@ -110,10 +93,71 @@
         </div>
     </div>
 
+
+<!-- Modal Add Item Detail -->
+<div class="modal fade" id="addItemDetailModal" tabindex="-1" role="dialog"
+    aria-labelledby="addItemDetailModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header bg-primary text-white">
+                <h5 class="modal-title text-white">Add Item Detail</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form action="/itemdetailstore" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="item_master_id" class="form-label">Parent Item</label>
+                            <select class="form-select" name="item_master_id" required>
+                                <option value="">Select Parent Item</option>
+                                @foreach($itemMasters as $master)
+                                    <option value="{{ $master->id }}">
+                                        {{ $master->parent_item_code }} - {{ $master->parent_item_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="item_detail_code" class="form-label">Item Detail Code</label>
+                            <input type="text" name="item_detail_code" class="form-control"
+                                 required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="item_detail_name" class="form-label">Item Detail Name</label>
+                            <input type="text" name="item_detail_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="unit" class="form-label">Unit</label>
+                            <input type="text" name="unit" class="form-control" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="net_weight" class="form-label">Net Weight</label>
+                            <input type="number" name="net_weight" class="form-control"
+                                step="0.01"  required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <input type="text" name="type" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex gap-6 m-0">
+                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="button" class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     <!-- Modal Edit Item Detail -->
 @foreach ($itemDetails as $detail)
-<div class="modal fade" id="editItemDetailModal{{ $detail->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="editItemDetailModalTitle" aria-hidden="true">
+<div class="modal fade" id="edititemdetailModal{{ $detail->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="edititemdetailModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header modal-colored-header bg-primary text-white">

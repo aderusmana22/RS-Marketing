@@ -15,10 +15,10 @@ class ItemdetailController extends Controller
      */
     public function index()
     {
-        $itemDetails = Itemdetail::with('itemmaster')->get();
         $itemMasters = Itemmaster::all();
+        $itemDetails = Itemdetail::all();
          
-        return view('item-details.index', compact('itemDetails', 'itemMasters'));
+        return view('page.masterdata.itemdetails.index', compact('itemDetails', 'itemMasters'));
     }
 
     /**

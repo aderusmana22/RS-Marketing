@@ -147,7 +147,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <div class="modal-body"
+                    <div class="modal-body">
                     <form action="{{ route('item-master.update', $item->id) }}" method="POST">
                         <div class="add-itemmaster-box">
                             <div class="add-itemmaster-content">

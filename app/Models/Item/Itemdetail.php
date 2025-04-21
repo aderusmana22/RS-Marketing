@@ -11,8 +11,8 @@ class Itemdetail extends Model
     protected $table='item_details';
     protected $guarded=['id'];
 
-    public function item_masters()
+    public function itemmaster()
     {
-        $this->belongsTo(Itemmaster::class);
+        $this->belongsTo(Itemmaster::class,'item_master_id','id');
     }
 }
