@@ -48,13 +48,10 @@
                                 <td>{{ $revision->revision }}</td>
                                 <td>{{ \Carbon\Carbon::parse($revision->date)->format('d M Y') }}</td>
                                 <td>
-                                    <form method="POST" action="{{ route('revisions.destroy', $revision->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="ti ti-trash"></i>
-                                        </button>
-                                    </form>
+                                    <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal"
+                                            data-bs-target="#editRevisionModal{{ $revision->id }}">
+                                            <i class="ti ti-eye fs-5"></i>
+                                        </a>
                                 </td>
                             </tr>
                         @endforeach

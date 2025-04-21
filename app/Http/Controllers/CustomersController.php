@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\customers;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -13,7 +13,11 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        $customers = customers::all();
+        $customers = Customer::all();
+        $tittle = 'Customers';
+        $text = 'List of Customers';
+        \confirmDelete('Are you sure?', 'You won\'t be able to revert this!', 'Yes, delete it!', 'No, cancel!', 'warning', 'success');
+        // Dialog Sweet Alert
         return view('page.masterdata.customers.index', compact('customers'));
     }
 
@@ -30,12 +34,13 @@ class CustomersController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:500',
         ]);
 
-        customers::create($validated);
+        Customer::create($request->all());
+        // Dialog Sweet Alert
         Alert::toast('Successfully added customer', 'success');
         return redirect()->route('customers.index');
     }
@@ -59,14 +64,16 @@ class CustomersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, customers $customers)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
+        $customers = Customer::findOrFail($id);
+
+        $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:500',
         ]);
 
-        $customer->update($validated);
+        $customers->update($request->all());
         Alert::toast('Customer updated successfully', 'success');
         return redirect()->route('customers.index');
     }
@@ -74,13 +81,12 @@ class CustomersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(customers $customers)
+    public function destroy($id)
     {
-        // Hapus customer
+        $customers = Customer::findOrFail($id);
         $customers->delete();
-
-        // Dialog Sweet Alert
-        Alert::toast('Customer deleted successfully!', 'success');
-        return redirect()->route('customers.index');
-    }
+        Alert::toast('Customer deleted successfully', 'success');
+        
+            return redirect()->route('customers.index');
+        }
 }

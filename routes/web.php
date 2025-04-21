@@ -131,18 +131,21 @@ Route::middleware('auth')->group(function () {
         Route::post('/itemmasterstore', [ItemmasterController::class, 'store'])->name('item-master.store');
         Route::get('/itemmasteredit/update/{id}', [ItemmasterController::class, 'edit'])->name('item-master.edit');
         Route::patch('/itemmasterupdate/update/{id}', [ItemmasterController::class, 'update'])->name('item-master.update');
-        Route::get('/customer', [CustomersController::class, 'customer'])->name('customers.index');
+        Route::get('/itemdetail', [ItemdetailController::class, 'index'])->name('item-detail.index');
+        Route::POST('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
+        Route::get('/itemdetailcreate/{id}', [ItemdetailController::class, 'create'])->name('item-detail.create');
+        Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-detail.store');
+        Route::get('/customer', [CustomersController::class, 'index'])->name('customers.index');
         Route::get('/customercreate/{id}', [CustomersController::class, 'create'])->name('customers.create');
         Route::post('/customerstore', [CustomersController::class, 'store'])->name('customers.store');
         Route::get('/customeredit/update/{id}', [CustomersController::class, 'edit'])->name('customers.edit');
-        Route::patch('/customerupdate/update/{id}', [CustomersController::class, 'update'])->name('customers.update');
-        Route::POST('/customerdestroy/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
-        Route::get('/revision', [RevisionsController::class, 'revision'])->name('revisions.index');
+        Route::put('/customerupdate/update/{id}', [CustomersController::class, 'update'])->name('customers.update');
+        Route::delete('/customerdestroy/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
+        Route::get('/revision', [RevisionsController::class, 'index'])->name('revisions.index');
         Route::get('/revisioncreate/{id}', [RevisionsController::class, 'create'])->name('revisions.create');
         Route::post('/revisionstore', [RevisionsController::class, 'store'])->name('revisions.store');
         Route::get('/revisionedit/update/{id}', [RevisionsController::class, 'edit'])->name('revisions.edit');
-        Route::patch('/revisionupdate/update/{id}', [RevisionsController::class, 'update'])->name('revisions.update');
-        Route::POST('/revisiondestroy/{id}', [RevisionsController::class, 'destroy'])->name('revisions.destroy');
+        Route::put('/revisionupdate/update/{id}', [RevisionsController::class, 'update'])->name('revisions.update');
     });
 
 

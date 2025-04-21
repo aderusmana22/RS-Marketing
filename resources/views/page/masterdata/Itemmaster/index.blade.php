@@ -83,7 +83,7 @@
     </div>
 
     <!-- Modal Add Master -->
-    <div class="modal fade" id="additemModal" tabindex="-1" role="dialog" aria-labelledby="additemlModalTitle"
+    <div class="modal fade" id="addItemMasterModal" tabindex="-1" role="dialog" aria-labelledby="additemlModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
@@ -112,7 +112,7 @@
                                                 <select class="form-select" id="item_code" name="itemcode">
                                                     <option value="">Select item code</option>
                                                     @foreach ($items as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        <option value="{{ $item->id }}">{{ $item->parent_item_code }}-{{$item->parent_item_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <label for="item_code">Parent item code</label>
@@ -136,7 +136,63 @@
         </div>
     </div>
 
-    
+    <!-- Modal Edit Master -->
+    @foreach ($items as $item)
+        <div class="modal fade" id="edititemModal{{ $item->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="edititemModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header modal-colored-header bg-primary text-white">
+                        <h5 class="modal-title text-white">Edit Parent Item</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"
+                    <form action="{{ route('item-master.update', $item->id) }}" method="POST">
+                        <div class="add-itemmaster-box">
+                            <div class="add-itemmaster-content">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3 itemmaster-name">
+                                                <input type="text" name="name" class="form-control"
+                                                    placeholder="Name" value="{{ $item->name }}">
+                                                <span class="validation-text text-danger"></span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select" id="item_code" name="parent_item_code">
+                                                        <option value="">Select item code</option>
+                                                        @foreach ($items as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->parent_item_code }}-{{$item->parent_item_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <label for="parent_item_code">Item Code</label>
+                                                </div>
+                                                <span class="validation-text text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-flex gap-6 m-0">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </form>
+                            <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+
+
+
+                        
 
     
 

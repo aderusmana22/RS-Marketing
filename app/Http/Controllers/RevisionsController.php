@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\app\Http\Controllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Revisions;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class revisionsController extends Controller
+class RevisionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class revisionsController extends Controller
     public function index()
     {
         //
-        $revisions = revision::all();
-        return view('page.masterdata.revisions', compact('revisions'));
+        $revisions = Revisions::all();
+        return view('page.masterdata.revisions.index', compact('revisions'));
     }
 
     /**
@@ -38,7 +39,7 @@ class revisionsController extends Controller
             'date' => 'required|date',
         ]);
 
-        Revision::create($request->all());
+        Revisions::create($request->all());
         Alert::success('Success', 'Revision added successfully');
         return redirect()->route('revisions.index');
     }
@@ -54,16 +55,15 @@ class revisionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(customers $customers)
+    public function edit($id)
     {
-        $revision = Revision::findOrFail($id);
-        return view('page.masterdata.revisions.edit', compact('revision'));
+       
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, customers $customers)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'form_no' => 'required|string|max:255',
@@ -71,20 +71,22 @@ class revisionsController extends Controller
             'date' => 'required|date',
         ]);
     
-        $revision = Revision::findOrFail($id);
+        $revision = Revisions::findOrFail($id);
         $revision->update([
             'form_no' => $request->form_no,
             'revision' => $request->revision,
             'date' => $request->date,
         ]);
+        Alert::success('Updated', 'Revision updated successfully');
+        return redirect()->route('revisions.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(customers $customers)
+    public function destroy($id)
     {
-        $revision = Revision::findOrFail($id);
+        $revision = Revisions::findOrFail($id);
         $revision->delete();
         // Dialog Sweet Alert
         Alert::success('Deleted', 'Revision deleted successfully');
