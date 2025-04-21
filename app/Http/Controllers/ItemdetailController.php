@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Item\Itemdetail;
 use Illuminate\Http\Request;
+use App\Models\Item\Itemmaster;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 
 class ItemdetailController extends Controller
 {
@@ -12,7 +15,10 @@ class ItemdetailController extends Controller
      */
     public function index()
     {
-        //
+        $itemDetails = Itemdetail::with('itemmaster')->get();
+        $itemMasters = Itemmaster::all();
+         
+        return view('item-details.index', compact('itemDetails', 'itemMasters'));
     }
 
     /**
@@ -21,6 +27,8 @@ class ItemdetailController extends Controller
     public function create()
     {
         //
+        $itemMasters = Itemmaster::all();
+        return view('item-details.create', compact('itemMasters'));
     }
 
     /**
@@ -28,7 +36,19 @@ class ItemdetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'item_master_id' => 'required|exists:itemmasters,id',
+            'item_detail_code' => 'required|string|max:50',
+            'item_detail_name' => 'required|string|max:100',
+            'unit' => 'required|string|max:10',
+            'net_weight' => 'required|numeric',
+            'type' => 'required|string|max:50',
+        ]);
+
+        Itemdetail::create($request->all());
+
+        Alert::success('Success', 'Item Detail Added Successfully!');
+        return redirect()->route('item-details.index');
     }
 
     /**
@@ -44,7 +64,7 @@ class ItemdetailController extends Controller
      */
     public function edit(Itemdetail $itemdetail)
     {
-        //
+        
     }
 
     /**
@@ -52,7 +72,19 @@ class ItemdetailController extends Controller
      */
     public function update(Request $request, Itemdetail $itemdetail)
     {
-        //
+        $request->validate([
+            'item_master_id' => 'required|exists:itemmasters,id',
+            'item_detail_code' => 'required|string|max:50',
+            'item_detail_name' => 'required|string|max:100',
+            'unit' => 'required|string|max:10',
+            'net_weight' => 'required|numeric',
+            'type' => 'required|string|max:50',
+        ]);
+
+        $itemdetail->update($request->all());
+
+        Alert::success('Success', 'Item Detail Updated Successfully!');
+        return redirect()->route('item-details.index');
     }
 
     /**
@@ -60,6 +92,8 @@ class ItemdetailController extends Controller
      */
     public function destroy(Itemdetail $itemdetail)
     {
-        //
+        $itemdetail->delete();
+        Alert::success('Deleted', 'Item Detail Deleted Successfully!');
+        return redirect()->route('item-details.index');
     }
 }
