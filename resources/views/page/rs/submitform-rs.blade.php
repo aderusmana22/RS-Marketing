@@ -78,18 +78,19 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Customer Name:</label>
-                            <select name="customers_id" id="customers_id" class="form-select">>
-                                    <option value="">Select customer</option>
+                            <select name="customers_id" id="customers_id" class="form-select">
+                                <option value="">Select customer</option>
                                 @foreach($customers as $cust)
-                                    <option value="{{ $cust->id}}">{{ $cust->name}}</option>
+                                    <option value="{{ $cust->id }}" data-address="{{ $cust->address }}">{{ $cust->name }}</option>
                                 @endforeach
                             </select>
+                            
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Address:</label>
-                            <input type="text" class="form-control" name="address" value="" required>
+                            <input type="text" class="form-control" name="address" id="address" value="" required>
                         </div>
-
+                        
                     <div id="dynamicFields">
                                 <!-- Dynamic fields will be inserted here based on category -->
                             </div>
@@ -123,9 +124,7 @@
                     <input type="checkbox" id="toggleDivCheckbox" class="type-checkbox" value="option3">
                     <label for="toggleDivCheckbox">option 3</label>
                 </div>
-
-            
-
+                
                 <div class="mb-3">
                     <label class="form-label">Parent Item:</label>
                     <select class="form-select form-select-sm w-25" id="item_select" name="parent_item">
@@ -155,60 +154,15 @@
                     </table>
                 </div>
 
-                <table class="table">
-                            <thead style="position: relative;">
-                                <tr>
-                                    <th>Approvers</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Initiator</td>
-                                    <td>
-                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                            <option selected disabled>Select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sales & Marketing Dept. Head</td>
-                                    <td>
-                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                            <option selected disabled>Select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Finance & Admin Business Control Manager</td>
-                                    <td>
-                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                            <option selected disabled>Select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Supply Chain Dept. Head</td>
-                                    <td>
-                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                            <option selected disabled>Select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="mb-3">
+                    <label class="form-label
+">Initiators:</label>
+<select class="form-select form-select-sm" name="initiator" id='selectcat'>
+                        <option selected disabled>Select</option>
+                        @foreach ($initiators as $initiator)
+                            <option value="{{ $initiator->nik }}">{{ $initiator->name }}</option>
+                        @endforeach
+                    </select>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -221,6 +175,16 @@
 <script src="{{ asset('assets/libs/quill/dist/quill.min.js') }}"></script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const customerSelect = document.getElementById('customers_id');
+        const addressInput = document.getElementById('address');
+
+        customerSelect.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            const address = selected.getAttribute('data-address') || '';
+            addressInput.value = address;
+        });
+    });
       document.getElementById('form_no').addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
                     event.preventDefault();
@@ -328,6 +292,8 @@
                         console.error('Error fetching product data:', error);
                     }
                 });
+       
+    
         });
 </script>
 @endpush

@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\RS\RSMaster;
 use App\Models\Item\Itemmaster;
 use App\Models\Customer;
+use App\Models\User;
+use App\Models\RsApproval;
 use App\Models\Item\Itemdetail;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class RequistionSlipController extends Controller
@@ -29,7 +31,8 @@ class RequistionSlipController extends Controller
     {
         $items = Itemmaster::all();
         $customers = Customer::all();
-        return \view('page.rs.submitform-rs',compact('items','customers'));
+        $initiators = User::all();
+        return \view('page.rs.submitform-rs',compact('items','customers','initiators'));
 
     }
 
@@ -75,10 +78,34 @@ class RequistionSlipController extends Controller
             'form_no' => 'required|string|max:50',
             'revision' => 'required|string|max:50',
             'date' => 'required|date',
+            'approvers' => 'required|array',
+            'approvers.*.nik' => 'required|string|max:50',
+            'approvers.*.level' => 'required|string|max:50',
+
+
         ]);
+
+        $initiator = $request->input('initiator_nik');
+        $initiator = User::where('nik', $approver)->first();
+        if (!$initiator) {
+            return response()->json(['error' => 'Invalid approver'], 422);
+        }
+
+        $approver = null;
+        $userRole = $approver->getRoleNames();
+        foreach ($userRole as $role) {
+            $approverRole = RsApproval::where('role', $role)->where('level', 1)->first();
+            if ($approverRole) {
+                $approver = User::where('nik', $approverRole->nik)->first();
+                if ($approver) break;
+            }
+        }
+        
+        
 
         // Mulai transaction untuk memastikan integritas data
         $req =RsMaster::create($request->all());
+        
     }
 
     /**
