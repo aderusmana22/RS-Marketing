@@ -10,4 +10,10 @@ class RsApproval extends Model
     use HasFactory;
 
     protected $table = 'rs_approvals';
+
+    protected $fillable = [
+        'nik', 'role', 'level',
+    ];
+
+
 }

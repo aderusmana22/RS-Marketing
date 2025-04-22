@@ -34,30 +34,30 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-           <div class="table-responsive">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="mb-0">Requisition Slip</h5>
+            <a href="{{ route('rs.submit') }}" class="btn btn-success btn-sm">+ Create RS</a>
+        </div>
+        <div class="table-responsive">
             <table class="table table-striped table-bordered" id="rsTable">
                 <thead class="header-item">
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Action</th>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <!-- start row -->
                     <tr>
                         <td>1</td>
+                        <td>RS Name</td>
                         <td>
-                        RS Name
-                        </td>
-                        <td>
-                            <a href="{{route('rs.list')}}" class="btn btn-danger">view</a>
+                            <a href="{{ route('rs.list') }}" class="btn btn-danger">View</a>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
-           </div>
         </div>
     </div>
 </x-app-layout>
