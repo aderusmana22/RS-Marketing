@@ -131,14 +131,7 @@
                         <span class="hide-menu">Log RS</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('rs.submit') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-file"></i>
-                        </span>
-                        <span class="hide-menu">Form</span>
-                    </a>
-                </li>
+                
 
                 
                 <li class="nav-small-cap">

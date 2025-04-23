@@ -65,7 +65,7 @@ class RequistionSlipController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         $request->validate([
             'category' => 'required|string|max:255',
@@ -101,10 +101,13 @@ class RequistionSlipController extends Controller
             }
         }
         
-        
-
         // Mulai transaction untuk memastikan integritas data
         $req =RsMaster::create($request->all());
+
+
+         //sweet alert
+        Alert::success('Success', 'Requisition Slip has been created successfully');
+        return redirect()->route('rs.index')->with('success', 'Requisition Slip has been created successfully');
         
     }
 
@@ -176,8 +179,34 @@ class RequistionSlipController extends Controller
         return view('page.rs.log-rs');
     }
 
-    public function list()
+    public function list($id)
     {
+        $master = RSMaster::with('customer')->findOrFail($id);
+        $items = RSItem::where('rs_id', $id)
+            ->with(['itemDetail', 'itemMaster'])
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'item_code' => $item->itemDetail->item_detail_code,
+                    'item_name' => $item->itemDetail->item_detail_name,
+                    'unit' => $item->itemDetail->unit,
+                    'qty_req' => $item->qty_req,
+                    'qty_issued' => $item->qty_issued,
+                    'batch_code' => $item->batch_code,
+                ];
+            });
+
+        // return response()->json([
+        //     'master' => [
+        //         'customer_name' => $master->customer->name,
+        //         'customer_address' => $master->customer->address,
+        //         'customer_id' => $master->customer_id,
+        //         'rs_no' => $master->rs_no,
+        //         'date' => $master->date,
+        //         'reason' => $master->reason,
+        //     ],
+        //     'items' => $items
+        // ]);
         return view('page.rs.form-list-rs');
     }
 
@@ -215,5 +244,11 @@ public function getproductdata($id, Request $request)
         ]);
     }
 }
+
+    // public function listRs($id)
+    // {
+    
+
+    // }
     
 }

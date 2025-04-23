@@ -155,9 +155,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label
-">Initiators:</label>
-<select class="form-select form-select-sm" name="initiator" id='selectcat'>
+                    <label class="form-label">Initiators:</label>
+                    <select class="form-select form-select-sm" name="initiator" id='selectcat'>
                         <option selected disabled>Select</option>
                         @foreach ($initiators as $initiator)
                             <option value="{{ $initiator->nik }}">{{ $initiator->name }}</option>

@@ -120,10 +120,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
         Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
-        Route::get('/list', [RequistionSlipController::class, 'list'])->name('rs.list');
+        Route::get('/list/{id}', [RequistionSlipController::class, 'list'])->name('rs.list');
+        // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);
         Route::get('/status', [RequistionSlipController::class, 'statusform'])->name('rs.status');
         Route::get('/submit', [RequistionSlipController::class, 'create'])->name('rs.submit');
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
+        
+
         Route::get('/product/{id}', [RequistionSlipController::class, 'getproductdata'])->name('requisition.getproductdata');
         
         Route::get('/itemmaster', [ItemmasterController::class, 'index'])->name('item-master.index');

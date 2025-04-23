@@ -42,9 +42,9 @@
                         <img src="{{ asset('assets/images/logos/logoputih.png') }}"class="logo">
                     </div>
                     <div class="col-6 text-end">
-                        <h6 class="mb-1">FORM NO.: FA-INV-05</h6>
-                        <h6 class="mb-1">REVISION: 3</h6>
-                        <h6>DATE: 19 FEBRUARY 2021</h6>
+                        <h6 class="mb-1">FORM NO.: <span id="form-no" class="blue-text"></span></h6>
+                        <h6 class="mb-1">REVISION: <span id="revision" class="blue-text"></span></h6>
+                        <h6>DATE: <span id="form-date" class="blue-text"></span></h6>
                     </div>
                 </div>
 
@@ -144,6 +144,54 @@
                     </table>
                 </div>
 
+
+                @push('scripts')
+                <script>
+                    $(document).ready(function () {
+                        let rsId = {{ $rs_id ?? 'null' }};
+                        if (rsId) {
+                            $.ajax({
+                                url: `/requisition/${rsId}`,
+                                type: 'GET',
+                                success: function (data) {
+                                    $('#form-date').text("DATE: " + data.master.date);
+                                    $('#customer-name').text(data.master.customer_name);
+                                    $('#customer-address').text(data.master.customer_address);
+                                    $('#account').text(data.master.customer_id);
+                                    $('#tanggal').text(data.master.date);
+                                    $('#rs-no').text(data.master.rs_no);
+                                    $('#form-no').text(response.master.form_no);
+                                    $('#revision').text(response.master.revision);
+                                    $('#form-date').text(response.master.date);
+                                    $('#item-code').text(data.items[0].item_code);
+                                    $('#item-name').text(data.items[0].item_name);
+
+                
+                                    let reason = data.master.reason;
+                
+                                    let rows = '';
+                                    data.items.forEach((item, index) => {
+                                        rows += `<tr>
+                                            <td class="blue-text">${item.item_code}</td>
+                                            <td>${item.item_name}</td>
+                                            <td>${item.unit}</td>
+                                            <td>${item.qty_req}</td>
+                                            <td>${item.qty_issued ?? ''}</td>
+                                            <td class="blue-text">${item.batch_code ?? '-'}</td>
+                                            ${index === 0 ? `<td class="blue-text" rowspan="${data.items.length}">${reason}</td>` : ''}
+                                        </tr>`;
+                                        
+                                    });
+                                    $('#rs-table tbody').html(rows);
+
+        
+                                }
+                            
+                            
+                        }
+                    });
+                </script>
+                @endpush
  
 </x-app-layout>
 
