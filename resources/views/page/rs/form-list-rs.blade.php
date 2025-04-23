@@ -57,13 +57,13 @@
                 <!-- Customer Info Section -->
                 <div class="row mb-3">
                     <div class="col-md-8">
-                        <p class="mb-1"><strong>CUSTOMER NAME:</strong> <span class="blue-text">PT AMA</span></p>
-                        <p class="mb-1"><strong>ADDRESS:</strong> <span class="blue-text">MEDAN</span></p>
+                        <p class="mb-1"><strong>CUSTOMER NAME:<span id="name" class="blue-text"></span></span></p>
+                        <p class="mb-1"><strong>ADDRESS:<span id="address" class="blue-text"></span></p>
                     </div>
                     <div class="col-md-4 text-md-end">
-                        <p class="mb-1"><strong>Account:</strong> <span class="blue-text">4914</span></p>
-                        <p class="mb-1"><strong>Tanggal:</strong> <span class="blue-text">16 Oktober 2024</span></p>
-                        <p><strong>Nomor SRS:</strong> <span class="blue-text">P 24 10 542</span></p>
+                        <p class="mb-1"><strong>Account:<span id="account" class="blue-text"></span></p>
+                        <p class="mb-1"><strong>Tanggal:<span id="date" class="blue-text"></span></p>
+                        <p><strong>Nomor SRS:<span id="rs_no" class="blue-text"></span></p>
                     </div>
                 </div>
 
@@ -83,6 +83,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach
                             <tr>
                                 <td class="blue-text">145-172</td>
                                 <td>CTN MC BM 15kg</td>

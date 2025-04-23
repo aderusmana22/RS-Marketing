@@ -67,32 +67,32 @@ class RequistionSlipController extends Controller
     {
         // dd($request->all());
 
+       try{
         $request->validate([
+            'rs_no' => 'required|string|max:50',
             'category' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
+            'customer_id' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'rs_number' => 'required|string|max:50',
-            'objectives' => 'required|string|max:255',
+            'objectives' => 'nullable|string|max:255',
+            'reason' => 'nullable|string|max:255',
             'account' => 'required|string|max:50',
-            'cost_center' => 'required|string|max:50',
-            'form_no' => 'required|string|max:50',
-            'revision' => 'required|string|max:50',
+            'cost_center' => 'nullable|string|max:50',
+            'batch_code' => 'nullable|string|max:50',
+            'revision_id' => 'required|string|max:50',
             'date' => 'required|date',
-            'approvers' => 'required|array',
-            'approvers.*.nik' => 'required|string|max:50',
-            'approvers.*.level' => 'required|string|max:50',
+            'initiator_nik' => 'required|string|max:50',
 
 
         ]);
 
         $initiator = $request->input('initiator_nik');
-        $initiator = User::where('nik', $approver)->first();
+        $initiator = User::where('nik', $initiator)->first();
         if (!$initiator) {
             return response()->json(['error' => 'Invalid approver'], 422);
         }
 
         $approver = null;
-        $userRole = $approver->getRoleNames();
+        $userRole = $initiator->getRoleNames();
         foreach ($userRole as $role) {
             $approverRole = RsApproval::where('role', $role)->where('level', 1)->first();
             if ($approverRole) {
@@ -102,13 +102,17 @@ class RequistionSlipController extends Controller
         }
         
         // Mulai transaction untuk memastikan integritas data
-        $req =RsMaster::create($request->all());
+        RsMaster::create($request->all());
 
 
          //sweet alert
         Alert::success('Success', 'Requisition Slip has been created successfully');
         return redirect()->route('rs.index')->with('success', 'Requisition Slip has been created successfully');
-        
+         } catch (\Exception $e) {
+            \dd($e->getMessage());
+                // Jika terjadi kesalahan, rollback transaction
+                return response()->json(['error' => 'Failed to create Requisition Slip: ' . $e->getMessage()], 500);
+          }
     }
 
     /**
@@ -195,7 +199,6 @@ class RequistionSlipController extends Controller
                     'batch_code' => $item->batch_code,
                 ];
             });
-
         // return response()->json([
         //     'master' => [
         //         'customer_name' => $master->customer->name,

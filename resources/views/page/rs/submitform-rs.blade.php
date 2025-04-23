@@ -78,7 +78,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Customer Name:</label>
-                            <select name="customers_id" id="customers_id" class="form-select">
+                            <select name="customer_id" id="customers_id" class="form-select">
                                 <option value="">Select customer</option>
                                 @foreach($customers as $cust)
                                     <option value="{{ $cust->id }}" data-address="{{ $cust->address }}">{{ $cust->name }}</option>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="mb-3" style="display: none;">
                             <label class="form-label">REVISION:</label>
-                            <input type="text" class="form-control" name="revision" value="1" required>
+                            <input type="text" class="form-control" name="revision_id" value="1" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">DATE:</label>
@@ -156,7 +156,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Initiators:</label>
-                    <select class="form-select form-select-sm" name="initiator" id='selectcat'>
+                    <select class="form-select form-select-sm" name="initiator_nik" id='selectcat'>
                         <option selected disabled>Select</option>
                         @foreach ($initiators as $initiator)
                             <option value="{{ $initiator->nik }}">{{ $initiator->name }}</option>
@@ -227,11 +227,11 @@
                         
                     <div class="mb-3">
                                 <label class="form-label">Reason:</label>
-                                <input type="text" class="form-control" value="">
+                                <input type="text" class="form-control" value="" name='reason' placeholder='Input Reason' required>
                             </div>
                     <div class="mb-3">
                                 <label class="form-label">Remark (Batch Code):</label>
-                                <input type="text" class="form-control" value="">
+                                <input type="text" class="form-control" value="" name='batch_code' placeholder='Input Batch' required>
                             </div>
                     `;
                     customDiv.forEach(function(div) {
@@ -265,7 +265,6 @@
                     dataType: 'json',
                     success: function (response) {
                             var item = response.data;
-                            console.log(response);
 
                             var tbody = $('#itemTable tbody');
                             tbody.empty();
