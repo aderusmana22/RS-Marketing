@@ -18,7 +18,11 @@ return new class extends Migration
             $table->foreignId('revision_id')->constrained('revisions')->cascadeOnDelete();;
             $table->date('date');
             $table->string('reason', 255);
+            $table->string('objectives', 255);
+            $table->string('cost_center', 255);
+            $table->string('batch_code', 255);
             $table->string('initiator_nik', 255);
+            $table->string('route_to', 255);
             $table->timestamps();
         });
     }

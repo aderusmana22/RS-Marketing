@@ -119,6 +119,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/destroy/{id}', [RequistionSlipController::class, 'destroy'])->name('rs.destroy');
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
         Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
+        Route::get('/approver', [ApproverController::class, 'index'])->name('rs.approver');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
         Route::get('/list', [RequistionSlipController::class, 'list'])->name('rs.list');
         // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);

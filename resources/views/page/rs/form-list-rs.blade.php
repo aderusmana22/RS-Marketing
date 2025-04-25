@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-6 text-end">
                         <h6 class="mb-1">FORM NO.: <span id="form-no" class="blue-text"></span></h6>
-                        <h6 class="mb-1">REVISION: <span id="revision" class="blue-text"></span></h6>
+                        <h6 class="mb-1">REVISION: <span id="revision_id" class="blue-text"></span></h6>
                         <h6>DATE: <span id="form-date" class="blue-text"></span></h6>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                 <!-- Customer Info Section -->
                 <div class="row mb-3">
                     <div class="col-md-8">
-                        <p class="mb-1"><strong>CUSTOMER NAME:<span id="name" class="blue-text"></span></span></p>
+                        <p class="mb-1"><strong>CUSTOMER NAME:<span id="customer_id" class="blue-text"></span></span></p>
                         <p class="mb-1"><strong>ADDRESS:<span id="address" class="blue-text"></span></p>
                     </div>
                     <div class="col-md-4 text-md-end">

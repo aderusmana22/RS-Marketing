@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\RsApproval;
 use App\Models\Item\Itemdetail;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Log;
 
 
 class RequistionSlipController extends Controller
@@ -101,8 +102,27 @@ class RequistionSlipController extends Controller
             }
         }
         
+
+
+        
+
+        
         // Mulai transaction untuk memastikan integritas data
-        RsMaster::create($request->all());
+        RsMaster::create([
+            'rs_no' => $request->input('rs_no'),
+            'category' => $request->input('category'),
+            'customer_id' => $request->input('customer_id'),
+            'address' => $request->input('address'),
+            'objectives' => $request->input('objectives'),
+            'reason' => $request->input('reason'),
+            'account' => $request->input('account'),
+            'cost_center' => $request->input('cost_center'),
+            'batch_code' => $request->input('batch_code'),
+            'revision_id' => $request->input('revision_id'),
+            'date' => $request->input('date'),
+            'initiator_nik' => $initiator,
+            'route_to' => $approver,
+        ]);
 
 
          //sweet alert

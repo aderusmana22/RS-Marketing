@@ -131,6 +131,14 @@
                         <span class="hide-menu">Log RS</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('rs.approver') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-file-text"></i>
+                        </span>
+                        <span class="hide-menu">Approver</span>
+                    </a>
+                </li>
                 
 
                 

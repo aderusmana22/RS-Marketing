@@ -44,7 +44,10 @@
                 <thead class="header-item">
                     <tr>
                         <th>No</th>
-                        <th>Name</th>
+                        <th>RS Number</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Route To</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -52,7 +55,10 @@
                     {{-- @foreach --}}
                     <tr>
                         <td>1</td>
-                        <td>RS Name</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
                         <td>
                             
                             <a href="{{ route('rs.list') }}" class="btn btn-danger">View</a>
