@@ -164,15 +164,16 @@
                             <input type="number" name="level" class="form-control" value="{{ $user->level }}" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
-@endforeach
+                <div class="modal-footer">
+                    <div class="d-flex gap-6 m-0">
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </form>
+                    <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
+                    </button>
+                </div>
+            </div>
+    @endforeach
 
 
         
