@@ -79,8 +79,102 @@
         </div>
 
         <!-- Add approver Modal -->
-        
-        <!-- Editapprover Modal -->
+<div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <form action="{{ route('approvers.store') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addContactModalLabel">Add Approver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-md-12 mb-3">
+                        <label for="nik" class="form-label">NIK</label>
+                        <select name="nik" class="form-control select2" required>
+                            <option value="">Choose NIK</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->nik }}">{{ $user->nik }} - {{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select name="role" class="form-control select2" required>
+                            <option value="">Select Role</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role }}">{{ $role }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="level" class="form-label">Level</label>
+                        <input type="number" name="level" class="form-control" placeholder="Enter level" required>
+                    </div>
+                </div> 
+             </div>
+        </div>
+        <div class="modal-footer">
+            <div class="d-flex gap-6 m-0">
+                <button type="submit" class="btn btn-success">Add</button>
+                </form>
+            <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
+        </button>
+    </div>
+</div>
+
+
+@foreach ($users as $user)
+    <!-- Edit Approver Modal -->
+    <div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <form action="{{ route('approvers.update', $user->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Approver</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row">
+                        <div class="col-md-12 mb-3">
+                            <label for="nik" class="form-label">NIK</label>
+                            <select name="nik" class="form-control select2" required>
+                                <option value="">Choose NIK</option>
+                                @foreach ($users as $username)
+                                    <option value="{{ $username->nik }}" {{ $username->nik === $user->nik ? 'selected' : '' }}>
+                                        {{ $username->nik }} - {{ $username->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select name="role" class="form-control select2" required>
+                                <option value="">Select Role</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role }}" {{ $role == $user->role ? 'selected' : '' }}>
+                                        {{ $role }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <input type="number" name="level" class="form-control" value="{{ $user->level }}" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endforeach
+
+
         
 
         

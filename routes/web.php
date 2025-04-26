@@ -120,6 +120,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
         Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
         Route::get('/approver', [ApproverController::class, 'index'])->name('rs.approver');
+        Route::get('/approvercreate/{id}', [ApproverController::class, 'create'])->name('rs.approver.create');
+        Route::post('/approverstore', [ApproverController::class, 'store'])->name('rs.approver.store');
+        Route::get('/approveredit/update/{id}', [ApproverController::class, 'edit'])->name('rs.approver.edit');
+        Route::put('/approverupdate/update/{id}', [ApproverController::class, 'update'])->name('rs.approver.update');
+        Route::delete('/approverdestroy/{id}', [ApproverController::class, 'destroy'])->name('rs.approver.destroy');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
         Route::get('/list', [RequistionSlipController::class, 'list'])->name('rs.list');
         // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);
