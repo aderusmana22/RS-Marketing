@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\Master\Level;
 use App\Models\Approver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 
@@ -19,10 +20,12 @@ class ApproverController extends Controller
     public function index()
     {
         //
-        $approvers = Approver::with('user')->get();
+        $approvers = Approver::all();
         $users = User::all();
         $roles = Role::pluck('name', 'name')->all(); // ambil semua role
         $levels = Level::pluck('name', 'name')->all(); // ambil semua level
+
+        \confirmDelete();
         return view('page.rs.approver', compact('approvers', 'users', 'roles', 'levels'));
        
     }
@@ -46,11 +49,48 @@ class ApproverController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'approver_nik' => 'required|string|max:6',
-            'section_id' => 'required|integer',
-            'rs_master_id' => 'required|integer'
-        ]);
+
+        DB::beginTransaction();
+        try {
+            $request->validate([
+                'nik' => 'required|string|max:61|unique:rs_approver,nik',
+                'role' => 'required|string|max:50',
+                'level' => 'required|integer|max:50'
+            ]);
+             
+            $approver = Approver::create([
+                'nik' => $request->input('nik'),
+                'role' => $request->input('role'),
+                'level' => $request->input('level')
+            ]);
+
+            DB::commit();
+            Alert::success('Success', 'Approver has been created successfully');
+            return redirect()->route('rs.approver')->with('success', 'Approver has been created successfully');
+
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            \dd($e);
+            Alert::error('Error', 'Failed to create approver');
+            return redirect()->back()->withInput();
+        }
+        // $request->validate([
+        //     'nik' => 'required|string|max:61|unique:rs_approver,nik',
+        //     'role' => 'required|integer|max:50|unique:rs_approver,role',
+        //     'level' => 'required|integer|max:50|unique:rs_approver,level'
+        // ]);
+         
+        // $approver = Approver::create([
+        //     'nik' => $request->input('nik'),
+        //     'role' => $request->input('role'),
+        //     'level' => $request->input('level')
+        // ]);
+
+        // $approver->syncRoles($request->role);
+
+        // Alert::success('Success', 'Approver has been created successfully');
+        // return redirect()->route('rs.approver.index')->with('success', 'Approver has been created successfully');
 
     }
 
@@ -65,7 +105,7 @@ class ApproverController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Approvers $approvers)
+    public function edit(Approver $approvers)
     {
         $roles = Role::pluck('name','name')->all();
         $userRoles = $user->roles->pluck('name','name')->all();
@@ -79,7 +119,7 @@ class ApproverController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Approvers $approvers)
+    public function update(Request $request, Approver $approvers)
     {
         //
         $request->validate([
@@ -92,7 +132,7 @@ class ApproverController extends Controller
         $approvers->level = $request->input('level');
         $approvers->save();
         Alert::success('Success', 'Approver has been updated successfully');
-        return redirect()->route('approvers.index')->with('success', 'Approver has been updated successfully');          
+        return redirect()->route('rs.approver')->with('success', 'Approver has been updated successfully');          
 
 
     }
@@ -102,10 +142,10 @@ class ApproverController extends Controller
      */
     public function destroy($id)
     {
-        $approver = Approvers::findOrFail($id);
+        $approver = Approver::findOrFail($id);
         $approver->delete();
 
         Alert::success('Deleted', 'Approver has been deleted successfully');
-        return redirect()->route('approvers.index');
+        return redirect()->route('rs.approver');
     }
 }

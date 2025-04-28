@@ -55,21 +55,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($approvers as $approver)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->role }}</td>
-                                        <td>{{ $user->level }}</td>
-                                        <td class="text-center">
-                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <button type="button" class="btn btn-sm btn-danger delete" data-user-id="{{ $user->id }}">Delete</button>
-                                            <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
+                                        <td>{{ $approver->nik }}</td>
+                                        <td>{{ $approver->role }}</td>
+                                        <td>{{ $approver->level }}</td>
+                                        <td>
+                                            <div class="action-btn">
+                                                <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal"
+                                                    data-bs-target="#editApproverModal{{ $approver->id }}">
+                                                    <i class="ti ti-eye fs-5"></i>
+                                                </a>
+                                                <form id="delete-form-{{ $approver->id }}"
+                                                    action="{{ route('rs.approver.destroy', $approver->id) }}" method="POST"
+                                                    style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a href="javascript:void(0)" class="text-dark delete ms-2"
+                                                        data-user-id="{{ $approver->id }}">
+                                                        <i class="ti ti-trash fs-5"></i>
+                                                    </a>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
+                                        
                                 @endforeach
                             </tbody>
                         </table>
@@ -79,54 +90,58 @@
         </div>
 
         <!-- Add approver Modal -->
-<div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form action="{{ route('rs.approver.store') }}" method="POST">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addContactModalLabel">Add Approver</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body row">
-                    <div class="col-md-12 mb-3">
-                        <label for="nik" class="form-label">NIK</label>
-                        <select name="nik" class="form-control select2" required>
-                            <option value="">Choose NIK</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->nik }}">{{ $user->nik }} - {{ $user->name }}</option>
-                            @endforeach
-                        </select>
+        <div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <form action="{{ route('rs.approver.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addApproverModalLabel">Add Approver</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <div class="col-md-12 mb-3">
+                                <label for="nik" class="form-label">NIK</label>
+                                <select name="nik" class="form-control select2" required>
+                                    <option value="">Choose NIK</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->nik }}">{{ $user->nik }} - {{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select name="role" class="form-control select2" multiple="multiple" required>
+                                    <option value="">Select Role</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role }}">{{ $role }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="level" class="form-label">Level</label>
+                                <input type="number" name="level" class="form-control" placeholder="Enter level" required>
+                            </div>
+                        </div> 
+                        <div class="modal-footer">
+                            <div class="d-flex gap-6 m-0">
+                                <button type="submit" class="btn btn-success">Add</button>
+                                
+                            <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close</button> 
+                            </div>  
+                        </div>
+
                     </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select name="role" class="form-control select2" required>
-                            <option value="">Select Role</option>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role }}">{{ $role }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="level" class="form-label">Level</label>
-                        <input type="number" name="level" class="form-control" placeholder="Enter level" required>
-                    </div>
-                </div> 
-             </div>
-        </div>
-        <div class="modal-footer">
-            <div class="d-flex gap-6 m-0">
-                <button type="submit" class="btn btn-success">Add</button>
                 </form>
-            <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
-        </button>
-    </div>
-</div>
+                
+            </div>
+        </div>
 
 
-@foreach ($users as $user)
     <!-- Edit Approver Modal -->
-    <div class="modal fade" id="editApproverModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    @foreach ($approvers as $approver)
+    <div class="{{$approver}}"></div>
+    <div class="modal fade" id="editApproverModal{{ $approver->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <form action="{{ route('rs.approver.update', $user->id) }}" method="POST">
                 @csrf
@@ -142,7 +157,7 @@
                             <select name="nik" class="form-control select2" required>
                                 <option value="">Choose NIK</option>
                                 @foreach ($users as $username)
-                                    <option value="{{ $username->nik }}" {{ $username->nik === $user->nik ? 'selected' : '' }}>
+                                    <option value="{{ $username->nik }}" {{ $username->nik === $approver->nik ? 'selected' : '' }}>
                                         {{ $username->nik }} - {{ $username->name }}
                                     </option>
                                 @endforeach
@@ -164,15 +179,18 @@
                             <input type="number" name="level" class="form-control" value="{{ $user->level }}" required>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <div class="d-flex gap-6 m-0">
+                            <button type="submit" class="btn btn-success">Update</button>
+                        
+                            <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <div class="d-flex gap-6 m-0">
-                        <button type="submit" class="btn btn-success">Update</button>
-                    </form>
-                    <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
-                    </button>
-                </div>
-            </div>
+            </form>
+        </div>
+    </div>
     @endforeach
 
 
@@ -186,6 +204,8 @@
             <script src="{{ asset('assets') }}/js/datatable/datatable-basic.init.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    var approver = @json($approvers);
+                    console.log(approver);
                     $('.select2').select2();
         
                     // Initialize DataTable

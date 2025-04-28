@@ -57,7 +57,7 @@
                 <!-- Customer Info Section -->
                 <div class="row mb-3">
                     <div class="col-md-8">
-                        <p class="mb-1"><strong>CUSTOMER NAME:<span id="customer_id" class="blue-text"></span></span></p>
+                        <p class="mb-1"><strong>CUSTOMER NAME:<span id="customer_id"0. class="blue-text"></span></span></p>
                         <p class="mb-1"><strong>ADDRESS:<span id="address" class="blue-text"></span></p>
                     </div>
                     <div class="col-md-4 text-md-end">
@@ -83,7 +83,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach
                             <tr>
                                 <td class="blue-text">145-172</td>
                                 <td>CTN MC BM 15kg</td>
