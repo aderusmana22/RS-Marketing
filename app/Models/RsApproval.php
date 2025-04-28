@@ -12,7 +12,7 @@ class RsApproval extends Model
     protected $table = 'rs_approvals';
 
     protected $fillable = [
-        'nik', 'role', 'level',
+        'nik', 'role', 'level','status','token',
     ];
 
 

@@ -54,7 +54,7 @@ class ApproverController extends Controller
         try {
             $request->validate([
                 'nik' => 'required|string|max:61|unique:rs_approver,nik',
-                'role' => 'required|string|max:50',
+                'role' => 'nullable|string|max:50',
                 'level' => 'required|integer|max:50'
             ]);
              

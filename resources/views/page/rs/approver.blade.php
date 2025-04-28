@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="role" class="form-label">Role</label>
-                                <select name="role" class="form-control select2" multiple="multiple" required>
+                                <select name="role" class="form-control select2">
                                     <option value="">Select Role</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role }}">{{ $role }}</option>
