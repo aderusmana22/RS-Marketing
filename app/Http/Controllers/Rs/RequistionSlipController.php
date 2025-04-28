@@ -125,6 +125,9 @@ class RequistionSlipController extends Controller
         ]);
 
 
+
+
+
          //sweet alert
         Alert::success('Success', 'Requisition Slip has been created successfully');
         return redirect()->route('rs.index')->with('success', 'Requisition Slip has been created successfully');
