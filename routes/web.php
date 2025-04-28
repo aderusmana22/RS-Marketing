@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\IdeaApprovalController;
 use App\Http\Controllers\IdeaController;
-use App\Http\Controllers\Master\ApproverController;
+use App\Http\Controllers\ApproverController;
 use App\Http\Controllers\Master\CategoryController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\LevelController;

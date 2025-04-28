@@ -81,7 +81,7 @@
         <!-- Add approver Modal -->
 <div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form action="{{ route('approvers.store') }}" method="POST">
+        <form action="{{ route('rs.approver.store') }}" method="POST">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -126,9 +126,9 @@
 
 @foreach ($users as $user)
     <!-- Edit Approver Modal -->
-    <div class="modal fade" id="editModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editApproverModal-{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <form action="{{ route('approvers.update', $user->id) }}" method="POST">
+            <form action="{{ route('rs.approver.update', $user->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="modal-content">

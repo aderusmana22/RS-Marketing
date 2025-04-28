@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Rs;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\user\User;;
-use App\Models\user\Role;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use App\Models\Master\Level;
-use App\Models\Rs\Approvers;
+use App\Models\Approver;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
@@ -19,8 +19,11 @@ class ApproverController extends Controller
     public function index()
     {
         //
-        $approvers = Approvers::with('user')->get();
-        return view('page.rs.approvers.index', compact('approvers'));
+        $approvers = Approver::with('user')->get();
+        $users = User::all();
+        $roles = Role::pluck('name', 'name')->all(); // ambil semua role
+        $levels = Level::pluck('name', 'name')->all(); // ambil semua level
+        return view('page.rs.approver', compact('approvers', 'users', 'roles', 'levels'));
        
     }
 
