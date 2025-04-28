@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nik');
             $table->string('role')->nullable();
             $table->integer('level');
+            $table->string('status')->default('pending');
+            $table->text('level')->nullable();
             $table->timestamps();
         });
     }
