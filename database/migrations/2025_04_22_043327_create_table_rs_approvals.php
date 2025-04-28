@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('table_rs_approvals', function (Blueprint $table) {
             $table->id();
             $table->string('nik');
-            $table->string('role')->nullable();
             $table->integer('level');
             $table->string('status')->default('pending');
             $table->text('level')->nullable();
