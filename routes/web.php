@@ -132,6 +132,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/submit', [RequistionSlipController::class, 'create'])->name('rs.submit');
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
         
+        Route::get('/rs/approve/{token}', [RsApprovalController::class, 'approve'])->name('rs.approve');
+        Route::get('/rs/reject/{token}', [RsApprovalController::class, 'reject'])->name('rs.reject');
 
         Route::get('/product/{id}', [RequistionSlipController::class, 'getproductdata'])->name('requisition.getproductdata');
         
