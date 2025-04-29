@@ -108,7 +108,7 @@ class RequistionSlipController extends Controller
 
         
         // Mulai transaction untuk memastikan integritas data
-        RsMaster::create([
+        $rsMaster = RsMaster::create([
             'rs_no' => $request->input('rs_no'),
             'category' => $request->input('category'),
             'customer_id' => $request->input('customer_id'),
@@ -120,9 +120,19 @@ class RequistionSlipController extends Controller
             'batch_code' => $request->input('batch_code'),
             'revision_id' => $request->input('revision_id'),
             'date' => $request->input('date'),
-            'initiator_nik' => $initiator,
-            'route_to' => $approver,
+            'initiator_nik' => $initiator->nik,
+            'route_to' => $approver ? $approver->nik : null,
         ]);
+        
+        // Generate token
+        $uniqueToken = (string) Str::uuid();
+        $approvalToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|approve');
+        $rejectToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|reject');
+        
+        // Dispatch Job
+        if ($approver) {
+            dispatch(new SendRsApprovalEmail($approver, $rsMaster, $approvalToken, $rejectToken));
+        }
 
 
 
@@ -222,17 +232,7 @@ class RequistionSlipController extends Controller
                     'batch_code' => $item->batch_code,
                 ];
             });
-        // return response()->json([
-        //     'master' => [
-        //         'customer_name' => $master->customer->name,
-        //         'customer_address' => $master->customer->address,
-        //         'customer_id' => $master->customer_id,
-        //         'rs_no' => $master->rs_no,
-        //         'date' => $master->date,
-        //         'reason' => $master->reason,
-        //     ],
-        //     'items' => $items
-        // ]);
+    
         return view('page.rs.form-list-rs');
     }
 

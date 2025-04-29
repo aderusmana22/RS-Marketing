@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('batch_code', 255);
             $table->string('initiator_nik', 255);
             $table->string('route_to', 255);
+            $table->string('status', 255)->default('pending');
             $table->timestamps();
         });
     }
