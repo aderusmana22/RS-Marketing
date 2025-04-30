@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rs;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\RS\RSMaster;
 use App\Models\RS\RSItem;
@@ -249,6 +250,23 @@ class RequistionSlipController extends Controller
     
         return view('page.rs.form-list-rs');
     }
+
+    public function getFormList()
+    {
+        $user = Auth::user();
+        $formList = null;
+        if ($user->hasRole('super-admin')) {
+            $formList = RSMaster::all();
+        } else{
+            $formList = RSMaster::where('customer_id', $user->id)->get();
+        }
+        Log::info('Form List:', ['user' => $user->id, 'formList' => $formList]);
+        if($formList){
+            return response()->json($formList);
+        }
+        return response()->json("No data found");
+    }
+
 
     public function statusform()
     {

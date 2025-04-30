@@ -172,6 +172,8 @@
 @push('scripts')
 <script src="{{ asset('assets/libs/select2/dist/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/libs/quill/dist/quill.min.js') }}"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.0/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.0/js/responsive.bootstrap5.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
