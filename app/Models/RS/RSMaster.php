@@ -14,7 +14,7 @@ class RSMaster extends Model
 
     public function rs_items()
     {
-        $this->hasMany(RSItem::class);
+        $this->hasMany(RSItem::class, 'rs_id');
     }
 
     public function revisions()

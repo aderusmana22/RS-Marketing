@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Rs;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\RS\RSMaster;
+use App\Models\RS\RSItem;
 use App\Models\Item\Itemmaster;
 use App\Models\Customer;
 use App\Models\User;
@@ -21,7 +24,7 @@ class RequistionSlipController extends Controller
      */
     public function index()
     {
-        $req = RSMaster::with('rs_items')->get();
+        $req = RSMaster::get();
         return \view('page.rs.list-rs',compact('req'));
     }
 
@@ -82,6 +85,7 @@ class RequistionSlipController extends Controller
             'revision_id' => 'required|string|max:50',
             'date' => 'required|date',
             'initiator_nik' => 'required|string|max:50',
+            'route_to' => 'nullable|string|max:50',
 
 
         ]);
@@ -108,7 +112,7 @@ class RequistionSlipController extends Controller
 
         
         // Mulai transaction untuk memastikan integritas data
-        $rsMaster = RsMaster::create([
+        $rsMaster = RSMaster::create([
             'rs_no' => $request->input('rs_no'),
             'category' => $request->input('category'),
             'customer_id' => $request->input('customer_id'),
@@ -122,6 +126,16 @@ class RequistionSlipController extends Controller
             'date' => $request->input('date'),
             'initiator_nik' => $initiator->nik,
             'route_to' => $approver ? $approver->nik : null,
+            'status' => 'pending'
+        ]);
+
+        $rsItems = RSItem::create([
+            'rs_id' => $rsMaster->id,
+            'item_master_id' => $request->input('item_master_id'),
+            'item_detail_id' => $request->input('item_detail_id'),
+            'qty_req' => $request->input('qty_req'),
+            'qty_issued' => $request->input('qty_issued'),
+            'batch_code' => $request->input('batch_code'),
         ]);
         
         // Generate token
@@ -131,7 +145,7 @@ class RequistionSlipController extends Controller
         
         // Dispatch Job
         if ($approver) {
-            dispatch(new SendRsApprovalEmail($approver, $rsMaster, $approvalToken, $rejectToken));
+            // dispatch(new SendRsApprovalEmail($approver, $rsMaster, $rsItems, $approvalToken, $rejectToken));
         }
 
 

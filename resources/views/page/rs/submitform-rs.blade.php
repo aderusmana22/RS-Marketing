@@ -244,6 +244,8 @@
 
         $('#item_select').on('change', function(){
             var selectedItem = $(this).val();
+           
+
             if (selectedItem) {
                 var selectedtypes = [];
                 $('.type-checkbox:checked').each(function() {
@@ -284,6 +286,21 @@
                                     <td class="custom-hide"><input type="text" class="form-control" name="estimasi_potensi[]" value=""></td>
                                 </tr>`;
                             tbody.append(row);
+
+                    var category = document.getElementById('selectcat').value;
+                    var customDiv = document.querySelectorAll('.custom-hide');
+                    if (category === 'Sample Product') {
+                        customDiv.forEach(function(div) {
+                            div.style.display = ''; // Hide the element
+                        });
+                    } else if (category === 'Packaging') {
+                        customDiv.forEach(function(div) {
+                            div.style.display = 'none'; // Hide the element
+                    });
+                    
+
+                    }
+
                         },
 
                     error: function (xhr, status, error) {
@@ -291,7 +308,7 @@
                     }
                 });
        
-    
+                
         });
 </script>
 @endpush
