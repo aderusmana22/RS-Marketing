@@ -248,6 +248,7 @@ class RequistionSlipController extends Controller
                     'cost_center' => $master->cost_center,
                     'batch_code' => $master->batch_code,
                     'revision_id' => $master->revision_id,
+                    'rs_number' => $master->rs_number,
                     'date' => $master->date,
                     'initiator_nik' => $master->initiator_nik,
                     'route_to' => $master->route_to,
