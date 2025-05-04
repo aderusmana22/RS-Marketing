@@ -233,22 +233,44 @@ class RequistionSlipController extends Controller
 
     public function list($id)
     {
-        $master = RSMaster::with('customer')->findOrFail($id);
-        $items = RSItem::where('rs_id', $id)
-            ->with(['itemDetail', 'itemMaster'])
+        $master = RSMaster::with('rs_items')->findOrFail($id)
+            ->with(['rs_items.itemDetail'])
             ->get()
-            ->map(function ($item) {
+            ->map(function ($master) {
                 return [
-                    'item_code' => $item->itemDetail->item_detail_code,
-                    'item_name' => $item->itemDetail->item_detail_name,
-                    'unit' => $item->itemDetail->unit,
+                    'rs_no' => $master->rs_no,
+                    'category' => $master->category,
+                    'customer_name' => $master->customer->customer_name,
+                    'address' => $master->address,
+                    'objectives' => $master->objectives,
+                    'reason' => $master->reason,
+                    'account' => $master->account,
+                    'cost_center' => $master->cost_center,
+                    'batch_code' => $master->batch_code,
+                    'revision_id' => $master->revision_id,
+                    'date' => $master->date,
+                    'initiator_nik' => $master->initiator_nik,
+                    'route_to' => $master->route_to,
+                    'status' => $master->status,
+                ];
+            });
+
+
+            $items = $master->rs_items->map(function ($item) {
+                return [
+                    'item_master_id' => $item->itemMaster->item_master_code ?? '',
+                    'item_code' => $item->itemDetail->item_detail_code ?? '',
+                    'item_name' => $item->itemDetail->item_detail_name ?? '',
+                    'unit' => $item->itemDetail->unit ?? '',
                     'qty_req' => $item->qty_req,
                     'qty_issued' => $item->qty_issued,
                     'batch_code' => $item->batch_code,
                 ];
             });
+        
+            
     
-        return view('page.rs.form-list-rs');
+        return view('page.rs.form-list-rs', compact('master', 'items'));
     }
 
     public function getFormList()
