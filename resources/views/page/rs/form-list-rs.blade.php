@@ -63,7 +63,8 @@
                     <div class="col-md-4 text-md-end">
                         <p class="mb-1"><strong>Account:</strong> <span class="blue-text">{{ $master['account'] }}</span></p>
                         <p class="mb-1"><strong>Tanggal:</strong> <span class="blue-text">{{ $master['date'] }}</span></p>
-                        <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master[''] }}</span></p>
+                        <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
+                        
                     </div>
                 </div>
 
@@ -142,7 +143,8 @@
 
         
                                 }
-                            
+                            }
+                        )
                             
                         }
                     });
