@@ -94,10 +94,10 @@
                     { data: 'route_to', name: 'route_to' },
                     { data: null, name: 'action', orderable: false, searchable: false,
                         render: function(data, type, row) {
-                            const viewRoute = "{{ route('rs.edit','rs.form-list-rs', ':id') }}".replace(':id', row.no);
+                            const viewRoute = "{{ route('rs.list', ':id') }}".replace(':id', row.id);
                             if (data.status === 'Draft') {
-                                const editRoute = "{{ route('rs.edit', ':id') }}".replace(':id', row.no);
-                                const deleteRoute = "{{ route('rs.destroy', ':id') }}".replace(':id', row.no);
+                                const editRoute = "{{ route('rs.edit', ':id') }}".replace(':id', row.id);
+                                const deleteRoute = "{{ route('rs.destroy', ':id') }}".replace(':id', row.id);
                             
                                 return `
                                 <div class="d-flex gap-6">

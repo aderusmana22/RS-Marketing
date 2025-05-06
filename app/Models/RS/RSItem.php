@@ -4,6 +4,9 @@ namespace App\Models\RS;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Item\Itemdetail;
+use App\Models\Item\Itemmaster;
+use App\Models\RS\RSMaster;
 
 class RSItem extends Model
 {

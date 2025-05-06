@@ -129,8 +129,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/approverupdate/update/{id}', [ApproverController::class, 'update'])->name('rs.approver.update');
         Route::delete('/approverdestroy/{id}', [ApproverController::class, 'destroy'])->name('rs.approver.destroy');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
-        Route::get('/list', [RequistionSlipController::class, 'list'])->name('rs.list');
-        Route::get('/list/{id}', [RequistionSlipController::class, 'editlist'])->name('rs.list.edit');
+        Route::get('/list/{id}', [RequistionSlipController::class, 'list'])->name('rs.list');
+        Route::get('/editlist/{id}', [RequistionSlipController::class, 'editlist'])->name('rs.list.edit');
         Route::get('/list/{id}/show', [RequistionSlipController::class, 'showlist'])->name('rs.list.show');
         Route::get('/getFormList', [RequistionSlipController::class, 'getFormList'])->name('rs.getFormList');
         // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);

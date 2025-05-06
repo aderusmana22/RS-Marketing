@@ -4,6 +4,8 @@ namespace App\Models\RS;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\RS\RSItem;
+use App\Models\Revisions;
 
 class RSMaster extends Model
 {
@@ -14,11 +16,11 @@ class RSMaster extends Model
 
     public function rs_items()
     {
-        $this->hasMany(RSItem::class, 'rs_id');
+        return $this->hasMany(RSItem::class, 'rs_id');
     }
 
     public function revisions()
     {
-        $this->hasMany(Revisions::class);
+        return $this->belongsTo(Revisions::class);
     }
 }
