@@ -5,6 +5,8 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\IdeaApprovalController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\ApproverController;
+use App\Http\Controllers\ApproversController;
+use App\Http\Controllers\RsApprovalController;
 use App\Http\Controllers\Master\CategoryController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\LevelController;
@@ -118,6 +120,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/update/{id}', [RequistionSlipController::class, 'update'])->name('rs.update');
         Route::delete('/destroy/{id}', [RequistionSlipController::class, 'destroy'])->name('rs.destroy');
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
+        
         Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
         Route::get('/approver', [ApproverController::class, 'index'])->name('rs.approver');
         Route::get('/approvercreate/{id}', [ApproverController::class, 'create'])->name('rs.approver.create');
@@ -127,12 +130,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/approverdestroy/{id}', [ApproverController::class, 'destroy'])->name('rs.approver.destroy');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
         Route::get('/list', [RequistionSlipController::class, 'list'])->name('rs.list');
+        Route::get('/list/{id}', [RequistionSlipController::class, 'editlist'])->name('rs.list.edit');
+        Route::get('/list/{id}/show', [RequistionSlipController::class, 'showlist'])->name('rs.list.show');
         Route::get('/getFormList', [RequistionSlipController::class, 'getFormList'])->name('rs.getFormList');
         // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);
         Route::get('/status', [RequistionSlipController::class, 'statusform'])->name('rs.status');
         Route::get('/submit', [RequistionSlipController::class, 'create'])->name('rs.submit');
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
         
+        //Approval Admin
+        Route::get('/rs/approval-list', [ApproversController::class, 'approvalList'])->name('rs.approval-list');
+        Route::get('/rs/get-approval-list', [ApproversController::class, 'getApprovalList'])->name('rs.get-approval-list');
+
         Route::get('/rs/approve/{token}', [RsApprovalController::class, 'approve'])->name('rs.approve');
         Route::get('/rs/reject/{token}', [RsApprovalController::class, 'reject'])->name('rs.reject');
 

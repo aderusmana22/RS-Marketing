@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('rs_id')->constrained('rs_masters')->cascadeOnDelete();;
             $table->string('approver_nik');
             $table->integer('level');
+            $table->string('status')->default('pending');
             $table->string('unique_token');
             $table->string('notes');
             $table->timestamps();

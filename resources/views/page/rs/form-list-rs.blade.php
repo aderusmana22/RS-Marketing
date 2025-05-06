@@ -63,8 +63,15 @@
                     <div class="col-md-4 text-md-end">
                         <p class="mb-1"><strong>Account:</strong> <span class="blue-text">{{ $master['account'] }}</span></p>
                         <p class="mb-1"><strong>Tanggal:</strong> <span class="blue-text">{{ $master['date'] }}</span></p>
-                        <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
-                        
+                            
+                            @if($master['category'] === 'Sales')
+                                    <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_no'] }}</span></p>
+                                @else
+                                    <p><strong>Nomor RS:</strong> <span class="blue-text">{{ $master['rs_no'] }}</span></p>
+                                @endif
+
+                        {{-- <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
+                        <p><strong>Nomor Rs:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p> --}}
                     </div>
                 </div>
 

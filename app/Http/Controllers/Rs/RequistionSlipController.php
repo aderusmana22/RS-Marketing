@@ -257,7 +257,7 @@ class RequistionSlipController extends Controller
             });
 
 
-            $items = $master->rs_items->map(function ($item) {
+            $items = $master->rs_items->map(function ($item) {             
                 return [
                     'item_master_id' => $item->itemMaster->item_master_code ?? '',
                     'item_code' => $item->itemDetail->item_detail_code ?? '',
@@ -273,6 +273,8 @@ class RequistionSlipController extends Controller
     
         return view('page.rs.form-list-rs', compact('master', 'items'));
     }
+
+    
 
     public function getFormList()
     {

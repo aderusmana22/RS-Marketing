@@ -17,18 +17,12 @@
                             <li class="breadcrumb-item">
                                 <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item" aria-current="page">List Approval Requisition Slip</li>
+                            <li class="breadcrumb-item" aria-current="page">Approval RS</li>
                         </ol>
                     </nav>
                 </div>
-                <div class="col-3">
-                    <div class="text-center mb-n5">
-                        <img src="{{ asset('assets') }}/images/breadcrumb/ChatBc.png" alt="modernize-img"
-                            class="img-fluid mb-n4">
-                    </div>
-                </div>
-                <div class="col-3">
-                    <button onclick="history.back()" class="btn btn-sm btn-primary flex-end">Back</button>
+                <div class="col-3 text-end">
+                    <button onclick="history.back()" class="btn btn-sm btn-primary">Back</button>
                 </div>
             </div>
         </div>
@@ -37,27 +31,59 @@
     <div class="card">
         <div class="card-body">
            <div class="table-responsive">
-            <table class="table table-striped table-bordered" id="rsTable">
-                <thead class="header-item">
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                    <!-- start row -->
+            <table class="table table-bordered" id="approvalTable">
+                <thead>
                     <tr>
-                        <td>1</td>
-                        <td>
-                        RS Name
-                        </td>
-                        <td>
-                            <a href="{{route('rs.status')}}" class="btn btn-danger">view</a>
-                        </td>
+                        <th>No</th>
+                        <th>RS Number</th>
+                        <th>Category</th>
+                        <th>Action</th>
                     </tr>
-
-                </tbody>
+                </thead>
+                <tbody></tbody>
             </table>
            </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#approvalTable').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    ajax: {
+                        url: "{{ route('rs.get-approval-list') }}",
+                        type: "GET",
+                        dataSrc: function(json) {
+                            console.log(json);
+                            return json;
+                        }
+                    },
+                    columns: [
+                        { data: null, render: (data, type, row, meta) => meta.row + 1 },
+                        { data: 'rs_no' },
+                        { data: 'category' },
+                        { data: null,
+                            render: function(data, type, row) {
+                                const viewUrl = "{{ route('rs.status', ':id') }}".replace(':id', row.no);
+                                const approveUrl = "{{ route('rs.approve', ':id') }}".replace(':id', row.no);
+                                const rejectUrl = "{{ route('rs.reject', ':id') }}".replace(':id', row.no);
+                                
+                                return `
+                                    <a href="${viewUrl}" class="btn btn-sm btn-info">View</a>
+                                    <a href="${approveUrl}" class="btn btn-sm btn-success mx-1">Approve</a>
+                                    <a href="${rejectUrl}" class="btn btn-sm btn-danger">Reject</a>
+                                `;
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>
+

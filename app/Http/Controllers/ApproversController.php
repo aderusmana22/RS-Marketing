@@ -7,6 +7,18 @@ use Illuminate\Http\Request;
 
 class ApproversController extends Controller
 {
+
+    public function approvalList()
+    {
+        return view('page.rs.approval-rs');
+    }
+
+    public function getApprovalList()
+    {
+        $rsList = Approvers::where('status', 'pending')->get();
+        return response()->json($rsList);
+    }
+
     /**
      * Display a listing of the resource.
      */
