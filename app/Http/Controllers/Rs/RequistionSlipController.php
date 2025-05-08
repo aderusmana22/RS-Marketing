@@ -84,6 +84,7 @@ class RequistionSlipController extends Controller
             'cost_center' => 'nullable|string|max:50',
             'batch_code' => 'nullable|string|max:50',
             'revision_id' => 'required|string|max:50',
+            'rs_number' => 'nullable|string|max:50|',
             'date' => 'required|date',
             'initiator_nik' => 'required|string|max:50',
             'route_to' => 'nullable|string|max:50',
@@ -124,20 +125,28 @@ class RequistionSlipController extends Controller
             'cost_center' => $request->input('cost_center'),
             'batch_code' => $request->input('batch_code'),
             'revision_id' => $request->input('revision_id'),
+            'rs_number' => $request->input('rs_number'),
             'date' => $request->input('date'),
             'initiator_nik' => $initiator->nik,
             'route_to' => $approver ? $approver->nik : null,
             'status' => 'pending'
         ]);
 
-        $rsItems = RSItem::create([
-            'rs_id' => $rsMaster->id,
-            'item_master_id' => $request->input('item_master_id'),
-            'item_detail_id' => $request->input('item_detail_id'),
-            'qty_req' => $request->input('qty_req'),
-            'qty_issued' => $request->input('qty_issued'),
-            'batch_code' => $request->input('batch_code'),
-        ]);
+        foreach ($request->input('item_master_id') as $key => $itemMasterId) {
+            $itemDetailId = $request->input('item_detail_id')[$key];
+            $qtyReq = $request->input('qty_req')[$key];
+            $qtyIssued = $request->input('qty_issued')[$key];
+
+            // Create RSItem for each item
+            RSItem::create([
+                'rs_id' => $rsMaster->id,
+                'item_master_id' => $itemMasterId,
+                'item_detail_id' => $itemDetailId,
+                'qty_req' => $qtyReq,
+                'qty_issued' => $qtyIssued,
+                
+            ]);
+        }
         
         // Generate token
         $uniqueToken = (string) Str::uuid();

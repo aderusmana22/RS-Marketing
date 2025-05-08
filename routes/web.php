@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
         
         //Approval Admin
+        Route::get('/approval/form/{rs_id}', [ApproversController::class, 'showApprovalForm'])->name('approval.form');
         Route::get('/rs/approval-list', [ApproversController::class, 'approvalList'])->name('rs.approval-list');
         Route::get('/rs/get-approval-list', [ApproversController::class, 'getApprovalList'])->name('rs.get-approval-list');
 

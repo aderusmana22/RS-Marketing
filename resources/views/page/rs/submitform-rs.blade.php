@@ -283,7 +283,7 @@
                                     <td>${item.item_detail_code}</td>
                                     <td>${item.item_detail_name}</td>
                                     <td>${item.unit}</td>
-                                    <td><input type="number" class="form-control" name="qty_required[]" value="" required></td>
+                                    <td><input type="number" class="form-control" name="qty_req[]" value="" required></td>
                                     <td><input type="number" class="form-control" name="qty_issued[]" value="" required></td>
                                     <td class="custom-hide"><input type="text" class="form-control" name="estimasi_potensi[]" value=""></td>
                                 </tr>`;

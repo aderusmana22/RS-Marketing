@@ -19,6 +19,16 @@ class ApproversController extends Controller
         return response()->json($rsList);
     }
 
+    public function rsMaster()
+    {
+        return $this->belongsTo(\App\Models\RSMaster::class, 'rs_id');
+    }
+
+    public function showApprovalList($rs_id)
+    {
+        $rsList = Approvers::where('rs_id', $rs_id)->get();
+        return response()->json($rsList);
+    }
     
 
     /**
