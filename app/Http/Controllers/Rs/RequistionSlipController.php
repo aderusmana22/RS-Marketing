@@ -136,6 +136,7 @@ class RequistionSlipController extends Controller
             $itemDetailId = $request->input('item_detail_id')[$key];
             $qtyReq = $request->input('qty_req')[$key];
             $qtyIssued = $request->input('qty_issued')[$key];
+            
 
             // Create RSItem for each item
             RSItem::create([

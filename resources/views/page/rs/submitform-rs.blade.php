@@ -86,17 +86,18 @@
                             </select>
                             
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Address:</label>
-                            <input type="text" class="form-control" name="address" id="address" value="" required>
-                        </div>
                         
                     <div id="dynamicFields">
                                 <!-- Dynamic fields will be inserted here based on category -->
                             </div>
                         
                     </div>
+                    
                     <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Address:</label>
+                            <input type="text" class="form-control" name="address" id="address" value="" required>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Account:</label>
                             <input type="text" class="form-control" name="account" value="" required>
@@ -218,7 +219,12 @@
                     <div class="mb-3">
                             <label class="form-label">Cost Center:</label>
                             <input type="text" class="form-control" name="cost_center" value="" required>
-                        </div>  
+                        </div> 
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Rs Number:</label>
+                            <input type="text" class="form-control" name="rs_number" value="" required>
+                        </div>
                     `;
                     
                     customDiv.forEach(function(div) {
@@ -235,6 +241,11 @@
                                 <label class="form-label">Remark (Batch Code):</label>
                                 <input type="text" class="form-control" value="" name='batch_code' placeholder='Input Batch' required>
                             </div>
+
+                    <div class="mb-3">
+                            <label class="form-label">Srs Number:</label>
+                            <input type="text" class="form-control" name="rs_number" value="" required>
+                        </div>
                     `;
                     customDiv.forEach(function(div) {
                         div.style.display = 'none'; // Hide the element
