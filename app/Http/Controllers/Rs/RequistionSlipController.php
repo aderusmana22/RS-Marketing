@@ -85,6 +85,7 @@ class RequistionSlipController extends Controller
             'batch_code' => 'nullable|string|max:50',
             'revision_id' => 'required|string|max:50',
             'rs_number' => 'nullable|string|max:50|',
+            'est_potential' => 'nullable|string|max:50',
             'date' => 'required|date',
             'initiator_nik' => 'required|string|max:50',
             'route_to' => 'nullable|string|max:50',
@@ -99,7 +100,8 @@ class RequistionSlipController extends Controller
         }
 
         $approver = null;
-        $userRole = $initiator->getRoleNames();
+        $userRole = $initiator->getRoleNames(); // ini kosong
+        // dd($initiator, $userRole);
         foreach ($userRole as $role) {
             $approverRole = RsApproval::where('role', $role)->where('level', 1)->first();
             if ($approverRole) {
@@ -126,6 +128,7 @@ class RequistionSlipController extends Controller
             'batch_code' => $request->input('batch_code'),
             'revision_id' => $request->input('revision_id'),
             'rs_number' => $request->input('rs_number'),
+            'est_potential' => $request->input('est_potential'),
             'date' => $request->input('date'),
             'initiator_nik' => $initiator->nik,
             'route_to' => $approver ? $approver->nik : null,
@@ -136,7 +139,7 @@ class RequistionSlipController extends Controller
             $itemDetailId = $request->input('item_detail_id')[$key];
             $qtyReq = $request->input('qty_req')[$key];
             $qtyIssued = $request->input('qty_issued')[$key];
-            
+
 
             // Create RSItem for each item
             RSItem::create([
@@ -201,7 +204,7 @@ class RequistionSlipController extends Controller
             
             'customer_name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'rs_number' => 'required|string|max:50|unique:rs_masters,rs_number,' . $id,
+            'rs_number' => 'nullable|string|max:50|unique:rs_masters,rs_number,' . $id,
             'objectives' => 'required|string|max:255',
             'account' => 'required|string|max:50',
             'cost_center' => 'required|string|max:50',

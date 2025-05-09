@@ -64,6 +64,7 @@
                     <div class="col-md-4 text-md-end">
                         <p class="mb-1"><strong>Account:</strong> <span class="blue-text">{{ $master['account'] }}</span></p>
                         <p class="mb-1"><strong>Tanggal:</strong> <span class="blue-text">{{ $master['date'] }}</span></p>
+
                             
                             @if($master['category'] === 'SRS')
                                     <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
@@ -88,23 +89,30 @@
                                 <th>QTY ISSUED</th>
                                 <th>Remarks<br>(Batch Code)</th>
                                 <th>ALASAN PENGGANTIAN</th>
-                                
+                                <th>ESTIMASI POTENSI</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($master->rs_items as $index => $item)
-                            <tr>
-                                <td class="blue-text">{{ $item['item_code'] }}</td>
-                                <td>{{ $item['item_name'] }}</td>
-                                <td>{{ $item['unit'] }}</td>
-                                <td>{{ $item['qty_req'] }}</td>
-                                <td>{{ $item['qty_issued'] ?? '' }}</td>
-                                <td class="blue-text">{{ $item['batch_code'] ?? '-' }}</td>
-                                @if($index === 0)
-                                    <td class="blue-text" rowspan="{{ count($items) }}">{{ $master['reason'] }}</td>
-                                @endif
-                            </tr>
-                        @endforeach
+                            @foreach($master->rs_items as $item)
+                                <tr>
+                                    <td class="blue-text">{{ $item['item_code'] }}</td>
+                                    <td>{{ $item['item_name'] }}</td>
+                                    <td>{{ $item['unit'] }}</td>
+                                    <td>{{ $item['qty_req'] }}</td>
+                                    <td>{{ $item['qty_issued'] ?? '' }}</td>
+                                    <td class="blue-text">{{ $item['batch_code'] ?? '-' }}</td>
+                                    
+                                    {{-- Alasan Penggantian hanya jika kategori "packaging" --}}
+                                    <td class="blue-text">
+                                        {{ $item['category'] === 'packaging' ? $item['reason'] : '-' }}
+                                    </td>
+
+                                    {{-- Estimasi Potensi hanya jika kategori "sample product" --}}
+                                    <td class="blue-text">
+                                        {{ $item['category'] === 'sample product' ? $item['est_potential'] : '-' }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

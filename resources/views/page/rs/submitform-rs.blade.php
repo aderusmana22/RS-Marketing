@@ -110,6 +110,7 @@
                             <label class="form-label">DATE:</label>
                             <input type="date" class="form-control" name="date" value="" required>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -146,7 +147,6 @@
                                 <th>UNIT</th>
                                 <th>QTY REQUIRED</th>
                                 <th>QTY ISSUED</th>
-                                <th class="custom-hide">ESTIMASI POTENSI</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -204,8 +204,7 @@
     document.getElementById('selectcat').addEventListener('change', function() {
                 const category = this.value;
                 const dynamicFields = document.getElementById('dynamicFields');
-                
-                var customDiv = document.querySelectorAll('.custom-hide');
+            
                 console.log(category);
                 dynamicFields.innerHTML = ''; // Clear previous fields
 
@@ -225,11 +224,11 @@
                             <label class="form-label">Rs Number:</label>
                             <input type="text" class="form-control" name="rs_number" value="" required>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estimasi Potensi:</label>
+                            <input type="text" class="form-control" name="est_potential" value="" required>
+                        </div>
                     `;
-                    
-                    customDiv.forEach(function(div) {
-                        div.style.display = ''; // Hide the element
-                    });
                 } else if (category === 'Packaging') {
                     dynamicFields.innerHTML = `
                         
@@ -247,9 +246,6 @@
                             <input type="text" class="form-control" name="rs_number" value="" required>
                         </div>
                     `;
-                    customDiv.forEach(function(div) {
-                        div.style.display = 'none'; // Hide the element
-                    });
                     
 
                 }
@@ -296,23 +292,8 @@
                                     <td>${item.unit}</td>
                                     <td><input type="number" class="form-control" name="qty_req[]" value="" required></td>
                                     <td><input type="number" class="form-control" name="qty_issued[]" value="" required></td>
-                                    <td class="custom-hide"><input type="text" class="form-control" name="estimasi_potensi[]" value=""></td>
                                 </tr>`;
                             tbody.append(row);
-
-                    var category = document.getElementById('selectcat').value;
-                    var customDiv = document.querySelectorAll('.custom-hide');
-                    if (category === 'Sample Product') {
-                        customDiv.forEach(function(div) {
-                            div.style.display = ''; // Hide the element
-                        });
-                    } else if (category === 'Packaging') {
-                        customDiv.forEach(function(div) {
-                            div.style.display = 'none'; // Hide the element
-                    });
-                    
-
-                    }
 
                         },
 
