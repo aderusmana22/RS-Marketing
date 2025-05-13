@@ -149,13 +149,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/product/{id}', [RequistionSlipController::class, 'getproductdata'])->name('requisition.getproductdata');
         
         Route::get('/itemmaster', [ItemmasterController::class, 'index'])->name('item-master.index');
-        Route::POST('/itemmasterdestroy/{id}', [ItemmasterController::class, 'destroy'])->name('item-master.destroy');
+        Route::delete('/itemmasterdestroy/{id}', [ItemmasterController::class, 'destroy'])->name('item-master.destroy');
         Route::get('/itemmastercreate/{id}', [ItemmasterController::class, 'create'])->name('item-master.create');
         Route::post('/itemmasterstore', [ItemmasterController::class, 'store'])->name('item-master.store');
         Route::get('/itemmasteredit/update/{id}', [ItemmasterController::class, 'edit'])->name('item-master.edit');
         Route::patch('/itemmasterupdate/update/{id}', [ItemmasterController::class, 'update'])->name('item-master.update');
         Route::get('/itemdetail', [ItemdetailController::class, 'index'])->name('item-detail.index');
-        Route::POST('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
+        Route::delete('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
         Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-details.store');
         Route::put('/itemmasterupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-details.update');
         Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-detail.store');

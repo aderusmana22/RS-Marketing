@@ -308,10 +308,6 @@ public function getproductdata($id, Request $request)
     }
 }
 
-    // public function listRs($id)
-    // {
-    
-
-    // }
+   
     
 }

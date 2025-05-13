@@ -15,6 +15,7 @@ class ItemmasterController extends Controller
     {
         
         $items = Itemmaster::all();
+        \confirmDelete();
         return view('page.masterdata.itemmaster.index', compact('items'));
     }
 
@@ -36,8 +37,9 @@ class ItemmasterController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $validate = $request->validate([
-            'parent_item_code' => 'required|string|max:255',
+            'parent_item_code' => 'required|string|max:255|unique:item_masters,parent_item_code',
             'parent_item_name' => 'required|string|max:255',
         ]);
 
@@ -45,7 +47,7 @@ class ItemmasterController extends Controller
         $item = Itemmaster::create($validate);
         // Dialog Sweet Alert
         Alert::toast('Successfully added item', 'success');
-        return redirect()->route('itemmaster.index');
+        return redirect()->route('item-master.index');
     }
 
     /**
@@ -75,8 +77,11 @@ class ItemmasterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Itemmaster $itemmaster)
+    public function destroy($id)
     {
-        
+        $itemmaster = Itemmaster::find($id);
+        $itemmaster->delete();
+        Alert::toast('Successfully deleted item', 'success');
+        return redirect()->route('item-master.index');
     }
 }

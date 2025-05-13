@@ -114,18 +114,21 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <input type="checkbox" id="toggleDivCheckbox" class="type-checkbox" value="option1">
-                    <label for="toggleDivCheckbox">option 1</label>
+                <!-- Checkbox hanya untuk Packaging -->
+            <div class="mb-3" id="packagingOptions" style="display: none;">
+                <div class="form-check">
+                    <input type="checkbox" id="option1" class="form-check-input type-checkbox" value="packaging">
+                    <label for="packaging" class="form-check-label">Packaging</label>
                 </div>
-                <div class="mb-3">
-                    <input type="checkbox" id="toggleDivCheckbox" class="type-checkbox" value="option2">
-                    <label for="toggleDivCheckbox">option 2</label>
+                <div class="form-check">
+                    <input type="checkbox" id="option2" class="form-check-input type-checkbox" value="Plasticbag">
+                    <label for="plasticbag" class="form-check-label">Plastig Bag</label>
                 </div>
-                <div class="mb-3">
-                    <input type="checkbox" id="toggleDivCheckbox" class="type-checkbox" value="option3">
-                    <label for="toggleDivCheckbox">option 3</label>
+                <div class="form-check">
+                    <input type="checkbox" id="option3" class="form-check-input type-checkbox" value="Label">
+                    <label for="Label" class="form-check-label">Label</label>
                 </div>
+            </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Parent Item:</label>
@@ -204,6 +207,7 @@
     document.getElementById('selectcat').addEventListener('change', function() {
                 const category = this.value;
                 const dynamicFields = document.getElementById('dynamicFields');
+                const packagingOptions = document.getElementById('packagingOptions');
             
                 console.log(category);
                 dynamicFields.innerHTML = ''; // Clear previous fields
@@ -246,7 +250,7 @@
                             <input type="text" class="form-control" name="rs_number" value="" required>
                         </div>
                     `;
-                    
+                    packagingOptions.style.display = 'block'; // Tampilkan checkbox
 
                 }
             });

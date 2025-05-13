@@ -54,8 +54,8 @@
                         @foreach ($items as $item)
                             <tr>
                                 <td><h6>{{ $loop->iteration }}</h6></td>
-                                <td><h6>{{ $item->parent_item }}</h6></td>
-                                <td><h6>{{ $item->item_code }}</h6></td>
+                                <td><h6>{{ $item->parent_item_name }}</h6></td>
+                                <td><h6>{{ $item->parent_item_code }}</h6></td>
                                 <td>
                                     <div class="action-btn">
                                         <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal"
@@ -68,7 +68,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <a href="javascript:void(0)" class="text-dark delete ms-2"
-                                                data-department-id="{{ $item->id }}">
+                                            data-itemmaster-id="{{ $item->id }}">
                                                 <i class="ti ti-trash fs-5"></i>
                                             </a>
                                         </form>
@@ -99,23 +99,19 @@
                             <div class="content">
                                 <div class="row">
                                     <div class="col-md-12">
+                            
                                         <div class="mb-3">
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" id="tb-name"
-                                                    placeholder="Enter parent item here" name="name">
-                                                <label for="tb-name">Parent item</label>
+                                                <input type="text" class="form-control" id="item_code" name="parent_item_code" placeholder="Enter parent item code">
+                                                <label for="item_code">Parent item code</label>
                                             </div>
                                             <span class="validation-text text-danger"></span>
                                         </div>
                                         <div class="mb-3">
                                             <div class="form-floating mb-3">
-                                                <select class="form-select" id="item_code" name="itemcode">
-                                                    <option value="">Select item code</option>
-                                                    @foreach ($items as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->parent_item_code }}-{{$item->parent_item_name}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="item_code">Parent item code</label>
+                                                <input type="text" class="form-control" id="tb-name"
+                                                    placeholder="Enter parent item here" name="parent_item_name">
+                                                <label for="tb-name">Parent item</label>
                                             </div>
                                             <span class="validation-text text-danger"></span>
                                         </div>
@@ -199,7 +195,7 @@
             $('.select2').select2();
 
             // Initialize DataTable
-            var table = $('#userTable').DataTable({
+            var table = $('#itemmasterTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'

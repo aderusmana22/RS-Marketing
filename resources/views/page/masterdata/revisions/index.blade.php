@@ -132,7 +132,7 @@
 <script src="{{ asset('assets/js/datatable/datatable-basic.init.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                var table = $('#revisionTable').DataTable();
+                var table = $('#revisionsTable').DataTable();
 
                 function initializeDeleteListeners() {
                     document.querySelectorAll('.delete').forEach(function(el) {

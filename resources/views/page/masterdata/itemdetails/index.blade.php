@@ -231,7 +231,7 @@
             $('.select2').select2();
 
             // Initialize DataTable
-            var table = $('#userTable').DataTable({
+            var table = $('#itemDetailsTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
