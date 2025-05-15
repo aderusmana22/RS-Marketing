@@ -99,14 +99,6 @@
                             <div class="content">
                                 <div class="row">
                                     <div class="col-md-12">
-                            
-                                        <div class="mb-3">
-                                            <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" id="item_code" name="parent_item_code" placeholder="Enter parent item code">
-                                                <label for="item_code">Parent item code</label>
-                                            </div>
-                                            <span class="validation-text text-danger"></span>
-                                        </div>
                                         <div class="mb-3">
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" id="tb-name"
@@ -115,6 +107,14 @@
                                             </div>
                                             <span class="validation-text text-danger"></span>
                                         </div>
+                                        <div class="mb-3">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="item_code" name="parent_item_code" placeholder="Enter parent item code">
+                                                <label for="item_code">Parent item code</label>
+                                            </div>
+                                            <span class="validation-text text-danger"></span>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>

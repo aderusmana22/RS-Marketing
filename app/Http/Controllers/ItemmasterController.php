@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Item\Itemmaster;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ItemmasterController extends Controller
@@ -13,7 +16,16 @@ class ItemmasterController extends Controller
      */
     public function index()
     {
+        // $items = [
         
+        // foreach ($items as $item) {
+        //     DB::table('item_masters')->insert([
+        //         'parent_item_name' => $item['parent_item_name'],
+        //         'parent_item_code' => $item['parent_item_code'],
+        //         'created_at' => Carbon::now(),
+        //         'updated_at' => Carbon::now(),
+        //     ]);
+        // }
         $items = Itemmaster::all();
         \confirmDelete();
         return view('page.masterdata.itemmaster.index', compact('items'));

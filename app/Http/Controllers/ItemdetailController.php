@@ -17,7 +17,7 @@ class ItemdetailController extends Controller
     {
         $itemMasters = Itemmaster::all();
         $itemDetails = Itemdetail::all();
-         
+         \confirmDelete();
         return view('page.masterdata.itemdetails.index', compact('itemDetails', 'itemMasters'));
     }
 
@@ -36,8 +36,9 @@ class ItemdetailController extends Controller
      */
     public function store(Request $request)
     {
+        // \dd($request->all());
         $request->validate([
-            'item_master_id' => 'required|exists:itemmasters,id',
+            'item_master_id' => 'required|exists:item_masters,id',
             'item_detail_code' => 'required|string|max:50',
             'item_detail_name' => 'required|string|max:100',
             'unit' => 'required|string|max:10',
@@ -48,7 +49,7 @@ class ItemdetailController extends Controller
         Itemdetail::create($request->all());
 
         Alert::success('Success', 'Item Detail Added Successfully!');
-        return redirect()->route('item-details.index');
+        return redirect()->route('item-detail.index');
     }
 
     /**
@@ -90,10 +91,20 @@ class ItemdetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Itemdetail $itemdetail)
+    public function destroy($id)
     {
+        $itemdetail = Itemdetail::findOrFail($id);
         $itemdetail->delete();
+
+        $item = Itemdetail::where('id', $id)->first();
+
+        if ($item) {
+            Alert::error('Error', 'Item Detail Deleted Failed!');
+            return redirect()->route('item-detail.index');
+        }
+
+        
         Alert::success('Deleted', 'Item Detail Deleted Successfully!');
-        return redirect()->route('item-details.index');
+        return redirect()->route('item-detail.index');
     }
 }

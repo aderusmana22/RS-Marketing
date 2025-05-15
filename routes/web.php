@@ -158,7 +158,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
         Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-details.store');
         Route::put('/itemmasterupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-details.update');
-        Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-detail.store');
         Route::get('/customer', [CustomersController::class, 'index'])->name('customers.index');
         Route::get('/customercreate/{id}', [CustomersController::class, 'create'])->name('customers.create');
         Route::post('/customerstore', [CustomersController::class, 'store'])->name('customers.store');

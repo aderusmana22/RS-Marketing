@@ -224,10 +224,7 @@
                             <input type="text" class="form-control" name="cost_center" value="" required>
                         </div> 
                         
-                        <div class="mb-3">
-                            <label class="form-label">Rs Number:</label>
-                            <input type="text" class="form-control" name="rs_number" value="" required>
-                        </div>
+                        
                         <div class="mb-3">
                             <label class="form-label">Estimasi Potensi:</label>
                             <input type="text" class="form-control" name="est_potential" value="" required>

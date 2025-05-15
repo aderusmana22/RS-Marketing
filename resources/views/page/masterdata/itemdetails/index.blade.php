@@ -79,7 +79,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <a href="javascript:void(0)" class="text-dark delete ms-2"
-                                            data-department-id="{{ $detail->id }}">
+                                            data-itemdetail-id="{{ $detail->id }}">
                                             <i class="ti ti-trash fs-5"></i>
                                         </a>
                                     </form>
@@ -104,24 +104,24 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
-            <form action="/itemdetailstore" method="POST">
+            <form action="{{ route('item-details.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="item_master_id" class="form-label">Parent Item</label>
-                            <select class="form-select" name="item_master_id" required>
+                            <select class="form-select" name="item_master_id" required onChange="changeItemDetailCode(this)">
                                 <option value="">Select Parent Item</option>
                                 @foreach($itemMasters as $master)
-                                    <option value="{{ $master->id }}">
-                                        {{ $master->parent_item_code }} - {{ $master->parent_item_name }}
+                                    <option value="{{ $master->id }}" data-item-detail-code="{{ $master->parent_item_code }}">
+                                       {{ $master->parent_item_name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="item_detail_code" class="form-label">Item Detail Code</label>
-                            <input type="text" name="item_detail_code" class="form-control"
+                            <input type="text" name="item_detail_code" id="item_detail_code" class="form-control"
                                  required>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -145,7 +145,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex gap-6 m-0">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn btn-success">add</button>
                         <button type="button" class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -268,6 +268,12 @@
                 initializeModalListeners();
             });
         });
+
+        function changeItemDetailCode(select) {
+            var selectedOption = select.options[select.selectedIndex];
+            var itemDetailCode = selectedOption.getAttribute('data-item-detail-code');
+            document.getElementById('item_detail_code').value = itemDetailCode;
+        }
     </script>
 @endpush
 
