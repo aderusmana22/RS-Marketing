@@ -153,11 +153,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/itemmastercreate/{id}', [ItemmasterController::class, 'create'])->name('item-master.create');
         Route::post('/itemmasterstore', [ItemmasterController::class, 'store'])->name('item-master.store');
         Route::get('/itemmasteredit/update/{id}', [ItemmasterController::class, 'edit'])->name('item-master.edit');
-        Route::patch('/itemmasterupdate/update/{id}', [ItemmasterController::class, 'update'])->name('item-master.update');
+        Route::put('/itemmasterupdate/update/{id}', [ItemmasterController::class, 'update'])->name('item-master.update');
+        Route::get('/itemmasterdata', [ItemmasterController::class, 'getItemMasterData'])->name('item-master.data');
+
+
         Route::get('/itemdetail', [ItemdetailController::class, 'index'])->name('item-detail.index');
         Route::delete('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
         Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-details.store');
-        Route::put('/itemmasterupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-details.update');
+        Route::get('/itemdetailupdate/{id}', [ItemdetailController::class, 'edit'])->name('item-detail.edit');
+        Route::patch('/itemdetailupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-detail.update');
         Route::get('/customer', [CustomersController::class, 'index'])->name('customers.index');
         Route::get('/customercreate/{id}', [CustomersController::class, 'create'])->name('customers.create');
         Route::post('/customerstore', [CustomersController::class, 'store'])->name('customers.store');

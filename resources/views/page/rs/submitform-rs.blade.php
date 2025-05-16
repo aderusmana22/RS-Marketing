@@ -135,7 +135,7 @@
                     <select class="form-select form-select-sm w-25" id="item_select" name="parent_item">
                         <option selected disabled>....</option>
                         @foreach($items as $item)
-                            <option value="{{ $item->id }}">{{ $item->parent_item_name }}</option>  
+                            <option value="{{ $item->id }}">{{ $item->parent_item_code }}</option>  
                         @endforeach
                       
                     </select>

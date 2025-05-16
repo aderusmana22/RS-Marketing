@@ -17,6 +17,7 @@ class ItemmasterController extends Controller
     public function index()
     {
         // $items = [
+           
         
         // foreach ($items as $item) {
         //     DB::table('item_masters')->insert([
@@ -25,7 +26,9 @@ class ItemmasterController extends Controller
         //         'created_at' => Carbon::now(),
         //         'updated_at' => Carbon::now(),
         //     ]);
+
         // }
+        
         $items = Itemmaster::all();
         \confirmDelete();
         return view('page.masterdata.itemmaster.index', compact('items'));
@@ -75,15 +78,34 @@ class ItemmasterController extends Controller
      */
     public function edit(Itemmaster $itemmaster)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Itemmaster $itemmaster)
+    public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+        try {
+            $validate = $request->validate([
+                'parent_item_code' => 'required|string|max:255',
+                'parent_item_name' => 'required|string|max:255',
+            ]);
+        
+
+            $itemmaster = Itemmaster::findOrFail($id);
+            $itemmaster->update($request->all());
+
+            // Dialog Sweet Alert
+            Alert::toast('Successfully updated item', 'success');
+            return redirect()->route('item-master.index');
+
+        } catch (\Exception $e) {
+            Alert::error('Error! '. $e , 'Item not found');
+            return redirect()->route('item-master.index');
+        }
+        
     }
 
     /**
@@ -95,5 +117,11 @@ class ItemmasterController extends Controller
         $itemmaster->delete();
         Alert::toast('Successfully deleted item', 'success');
         return redirect()->route('item-master.index');
+    }
+
+    public function getItemMasterData()
+    {
+        $itemmasters = Itemmaster::all();
+        return response()->json($itemmasters);
     }
 }

@@ -393,6 +393,8 @@
                 });
             }
 
+            
+
             // Initialize modal listeners on page load
             initializeModalListeners();
 

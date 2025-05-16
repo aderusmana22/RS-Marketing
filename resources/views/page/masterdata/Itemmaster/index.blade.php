@@ -51,31 +51,7 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($items as $item)
-                            <tr>
-                                <td><h6>{{ $loop->iteration }}</h6></td>
-                                <td><h6>{{ $item->parent_item_name }}</h6></td>
-                                <td><h6>{{ $item->parent_item_code }}</h6></td>
-                                <td>
-                                    <div class="action-btn">
-                                        <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal"
-                                            data-bs-target="#edititemModal{{ $item->id }}">
-                                            <i class="ti ti-eye fs-5"></i>
-                                        </a>
-                                        <form id="delete-form-{{ $item->id }}"
-                                            action="{{ route('item-master.destroy', $item->id) }}" method="POST"
-                                            style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="javascript:void(0)" class="text-dark delete ms-2"
-                                            data-itemmaster-id="{{ $item->id }}">
-                                                <i class="ti ti-trash fs-5"></i>
-                                            </a>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                        
                     </tbody>
                 </table>
             </div>
@@ -133,73 +109,140 @@
     </div>
 
     <!-- Modal Edit Master -->
-    @foreach ($items as $item)
-        <div class="modal fade" id="edititemModal{{ $item->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="edititemModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header modal-colored-header bg-primary text-white">
-                        <h5 class="modal-title text-white">Edit Parent Item</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    <form action="{{ route('item-master.update', $item->id) }}" method="POST">
-                        <div class="add-itemmaster-box">
-                            <div class="add-itemmaster-content">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="mb-3 itemmaster-name">
-                                                <input type="text" name="name" class="form-control"
-                                                    placeholder="Name" value="{{ $item->name }}">
-                                                <span class="validation-text text-danger"></span>
-                                            </div>
-                                            <div class="mb-3">
-                                                <div class="form-floating mb-3">
-                                                    <select class="form-select" id="item_code" name="parent_item_code">
-                                                        <option value="">Select item code</option>
-                                                        @foreach ($items as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->parent_item_code }}-{{$item->parent_item_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <label for="parent_item_code">Item Code</label>
-                                                </div>
-                                                <span class="validation-text text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="d-flex gap-6 m-0">
-                                <button type="submit" class="btn btn-success">Update</button>
-                            </form>
-                            <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-    
+    <div id="editModalDiv"></div>
+
     @push('scripts')
     <script src="{{ asset('assets/libs/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/libs/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets') }}/libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('assets') }}/js/datatable/datatable-basic.init.js"></script>
     <script>
+        
+        var items = @json($items);
+
+function openEditModal(id){
+                var modal = document.getElementById(`edititemModal${id}`);
+                if (modal){
+                    modalBootstrap = new bootstrap.Modal(modal);
+                    modalBootstrap.show();
+                    return;
+                }
+                var modalDiv = document.getElementById('editModalDiv');
+                var newEditModal = '';
+                var item = items[id];
+                    var updateUrl = "{{ route('item-master.update', ':id') }}".replace(':id', item.id); 
+                    newEditModal += `
+                        <div class="modal fade" id="edititemModal${id}" tabindex="-1" role="dialog"
+                            aria-labelledby="edititemModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header modal-colored-header bg-primary text-white">
+                                        <h5 class="modal-title text-white">Edit Parent Item</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form action="${updateUrl}" method="POST">
+                                        <div class="add-itemmaster-box">
+                                            <div class="add-itemmaster-content">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-3 itemmaster-name">
+                                                            <input type="text" name="parent_item_name" class="form-control"
+                                                                placeholder="Name" value="${item.parent_item_name}">
+                                                            <span class="validation-text text-danger"></span>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="form-floating mb-3">
+                                                                <select class="form-select" name="parent_item_code">
+                                                                    <option value="">Select item code</option>
+                                                                    `;
+                                                                    items.forEach(function(itemmaster){
+                                                                        const isSelected = itemmaster.parent_item_code === item.parent_item_code;
+                                                                        newEditModal += `
+                                                                            <option value="${itemmaster.parent_item_code}" ${isSelected ? 'selected' : ''}>${itemmaster.parent_item_code}</option>
+                                                                        `;
+                                                                    });
+                                                                    newEditModal += `
+                                                                </select>
+                                                                <label for="parent_item_code">Item Code</label>
+                                                            </div>
+                                                            <span class="validation-text text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="d-flex gap-6 m-0">
+                                                <button type="submit" class="btn btn-success">Update</button>
+                                                    <button class="btn bg-danger-subtle text-danger" data-bs-dismiss="modal"> Close </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    modalDiv.innerHTML += newEditModal;
+                    // $('.select2').select2();
+                    modal = document.getElementById(`edititemModal${id}`);
+                    modalBootstrap = new bootstrap.Modal(modal);
+                    modalBootstrap.show();
+            }
         document.addEventListener('DOMContentLoaded', function() {
             $('.select2').select2();
+
+            
 
             // Initialize DataTable
             var table = $('#itemmasterTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
+                ],
+                ajax: {
+                        url: "{{ route('item-master.data') }}",
+                        type: "GET",
+                        dataSrc: function(json) {
+                            return json;
+                        }
+                    },
+                    columns: [
+                        { data: null, render: (data, type, row, meta) => meta.row + 1 },
+                        { data: 'parent_item_name' },
+                        { data: 'parent_item_code' },
+                        { data: null,
+                            render: function(data, type, row, meta) {
+                                
+                                
+                                const deleteUrl = "{{ route('item-master.destroy', ':id') }}".replace(':id', row.no);
+                                
+                                
+                                return `
+                                   <div class="action-btn">
+                                        <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal" onclick="openEditModal(${meta.row})"
+                                            data-bs-target="#edititemModal${row.no}">
+                                            <i class="ti ti-eye fs-5"></i>
+                                        </a>
+                                        <form id="delete-form-${row.no}"
+                                            action=" ${deleteUrl} " method="POST"
+                                            style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="javascript:void(0)" class="text-dark delete ms-2"
+                                            data-itemmaster-id="${row.no}">
+                                                <i class="ti ti-trash fs-5"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                `;
+                            }
+                        }
+                    ]
             });
 
             // Function to initialize modal event listeners
@@ -223,6 +266,8 @@
                     });
                 });
             }
+
+            
 
             // Initialize modal listeners on page load
             initializeModalListeners();
