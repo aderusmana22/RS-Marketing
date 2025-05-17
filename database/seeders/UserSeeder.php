@@ -742,6 +742,8 @@ class UserSeeder extends Seeder
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
+            }
+
 
         $details = [
             
@@ -1118,13 +1120,19 @@ class UserSeeder extends Seeder
             ['item_detail_code' => 'XJK751', 'item_detail_name' => "RBD PALM OLEIN 180KG", 'unit' => 'DR', 'net_weight' => '180,00', 'type' => '146-005'],
             ['item_detail_code' => 'XJK770', 'item_detail_name' => "RHCNO 180KG", 'unit' => 'DR', 'net_weight' => '180,00', 'type' => '146-005'],
             ['item_detail_code' => 'IGB227', 'item_detail_name' => "GB MERRYWHIP CF 900KG", 'unit' => 'PC', 'net_weight' => '900,00', 'type' => '147-012'],
- ];
-
-            
+        ];
+        foreach ($details as $detail) {
+            DB::table('item_details')->insert([
+                'item_detail_code' => $detail['item_detail_code'],
+                'item_detail_name' => $detail['item_detail_name'],
+                'unit' => $detail['unit'],
+                'net_weight' => $detail['net_weight'],
+                'type' => $detail['type'],
+                'created_at' => carbon::now(),
+                'updated_at' => carbon::now(),
+            ]);
         }
-
-
-
-
+        // end foreach $details
     }
+    // end run()
 }
