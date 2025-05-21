@@ -16,9 +16,10 @@ class ItemdetailController extends Controller
     public function index()
     {
         $itemMasters = Itemmaster::all();
-        $itemDetails = Itemdetail::all();
+        $details = Itemdetail::all();
+        
          \confirmDelete();
-        return view('page.masterdata.itemdetails.index', compact('itemDetails', 'itemMasters'));
+        return view('page.masterdata.itemdetails.index', compact('details', 'itemMasters'));
     }
 
     /**
@@ -65,7 +66,9 @@ class ItemdetailController extends Controller
      */
     public function edit(Itemdetail $itemdetail)
     {
-        
+        $details = Itemdetail::findOrFail($itemdetail->id);
+
+        return view('page.masterdata.itemdetails.');
     }
 
     /**

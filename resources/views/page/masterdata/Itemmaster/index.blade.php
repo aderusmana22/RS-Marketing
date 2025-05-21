@@ -120,7 +120,7 @@
         
         var items = @json($items);
 
-function openEditModal(id){
+        function openEditModal(id){
                 var modal = document.getElementById(`edititemModal${id}`);
                 if (modal){
                     modalBootstrap = new bootstrap.Modal(modal);
