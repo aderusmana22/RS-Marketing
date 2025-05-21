@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Carbon;
 use App\Models\Item\Itemdetail;
 use Illuminate\Http\Request;
 use App\Models\Item\Itemmaster;
@@ -15,6 +15,23 @@ class ItemdetailController extends Controller
      */
     public function index()
     {
+        // $itemdetails = [
+       
+        // ];
+         
+        // foreach ($itemdetails as $detail) {
+        //     DB::table('item_details')->insert([
+        //         'item_master_id' => 1,
+        //         'item_detail_code' => $detail['item_detail_code'],
+        //         'item_detail_name' => $detail['item_detail_name'],
+        //         'unit' => $detail['unit'],
+        //         'net_weight' => $detail['net_weight'],
+        //         'type' => $detail['type'],
+        //         'created_at' => carbon::now(),
+        //         'updated_at' => carbon::now(),
+        //     ]);
+        // }
+
         $itemMasters = Itemmaster::all();
         $details = Itemdetail::all();
         

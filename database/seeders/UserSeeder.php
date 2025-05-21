@@ -385,6 +385,7 @@ class UserSeeder extends Seeder
             ['parent_item_name' => '24C520', 'parent_item_code' => `GB GRAND BTR & MGR 12KG`],
             ['parent_item_name' => 'RSF406', 'parent_item_code' => `MC MM 6X2 KG /MB`],
             ['parent_item_name' => 'RSF406-C1', 'parent_item_code' => `MC MULTIPUR M 6x2/MB`],
+            
             ['parent_item_name' => 'RSF406-C2', 'parent_item_code' => `MC MULTIPUR M 6x2/MB`],
             ['parent_item_name' => 'RSF406-C3', 'parent_item_code' => `MC MM 6X2 KG /MB`],
             ['parent_item_name' => 'RSF406-C4', 'parent_item_code' => `MC MM 6X2 KG /MB`],
@@ -482,6 +483,7 @@ class UserSeeder extends Seeder
             ['parent_item_name' => 'ICC411-C3', 'parent_item_code' => `CITA PREMIA MGR 15KG`],
             ['parent_item_name' => 'ICC509', 'parent_item_code' => `CITA BAKERY COMP -15KG`],
             ['parent_item_name' => 'IGB119', 'parent_item_code' => `GB BREAD-O BREAD F 15KG`],
+            
             ['parent_item_name' => 'IGB215', 'parent_item_code' => `GB MEDAL  MGR 15 KG`],
             ['parent_item_name' => 'IGB312', 'parent_item_code' => `GB TREAT CONFEC F 15KG`],
             ['parent_item_name' => 'IGB312', 'parent_item_code' => `GB TREAT CONFEC F 15KG`],
@@ -621,6 +623,8 @@ class UserSeeder extends Seeder
             ['parent_item_name' => 'XIC114', 'parent_item_code' => `MOREMADE SHOR S 15KG`],
             ['parent_item_name' => 'XIC114-C1', 'parent_item_code' => `MOREMADE SHOR S 15KG TW`],
             ['parent_item_name' => 'XIC114-C2', 'parent_item_code' => `MOREMADE SHOR S 15KG TW`],
+            
+            
             ['parent_item_name' => 'XIC116', 'parent_item_code' => `BAKERY FAT  15KG HK`],
             ['parent_item_name' => 'XIC118', 'parent_item_code' => `MOREMADE VEG SR 15KG`],
             ['parent_item_name' => 'XIC121', 'parent_item_code' => `MRMD VEG SH RSPO /MB 15K`],
@@ -745,7 +749,7 @@ class UserSeeder extends Seeder
             }
 
 
-        $details = [
+        $itemdetails = [
             
             ['item_detail_code' => 'ISC403', 'item_detail_name' => "MC MULTI PUR MGR 4.5 Kg", 'unit' => 'CT', 'net_weight' => '4,50', 'type' => '145-271'],
             ['item_detail_code' => 'ISC403-C1', 'item_detail_name' => "MC MULTIPUR MGR 4.5 KG", 'unit' => 'CT', 'net_weight' => '4,50', 'type' => '145-271'],
@@ -834,6 +838,7 @@ class UserSeeder extends Seeder
             ['item_detail_code' => '23C508', 'item_detail_name' => "INZAGHI BT & MG /SG 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
             ['item_detail_code' => '23C520', 'item_detail_name' => "TRADEWINDS COCO MGR 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-082'],
             ['item_detail_code' => '24C511', 'item_detail_name' => "WINGSAN BL BTR&MG 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
+            
             ['item_detail_code' => '24C513', 'item_detail_name' => "WINGSAN BL BTR&MG 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
             ['item_detail_code' => '24C514', 'item_detail_name' => "WINGSAN BL BTR&MG 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
             ['item_detail_code' => '24C515', 'item_detail_name' => "INZAGHI FONT FOR/MB 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
@@ -889,6 +894,7 @@ class UserSeeder extends Seeder
             ['item_detail_code' => 'IGC117', 'item_detail_name' => "GB S'PERIOR W F 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-052'],
             ['item_detail_code' => 'IGC211', 'item_detail_name' => "GB BOS 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-167'],
             ['item_detail_code' => 'IGC223', 'item_detail_name' => "GB BOS STAR 15 KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-229'],
+            
             ['item_detail_code' => 'IGC408', 'item_detail_name' => "GB AWARD MGR 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-050'],
             ['item_detail_code' => 'IGC418', 'item_detail_name' => "GB PRIME CAKE MGR 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-044'],
             ['item_detail_code' => 'IGC418-C1', 'item_detail_name' => "GB PRIME CAKE MGR 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-044'],
@@ -943,6 +949,7 @@ class UserSeeder extends Seeder
             ['item_detail_code' => 'IOB207', 'item_detail_name' => "SB HVO 34 /SG 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-314'],
             ['item_detail_code' => 'IOB301', 'item_detail_name' => "SB COFAT42 -15 KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-082'],
             ['item_detail_code' => 'IOB301-C1', 'item_detail_name' => "SB COFAT 42 G 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
+           
             ['item_detail_code' => 'IOB302', 'item_detail_name' => "SB COFAT 36-15 KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-082'],
             ['item_detail_code' => 'IOB303', 'item_detail_name' => "SB COFAT 32 15 KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
             ['item_detail_code' => 'IOB305', 'item_detail_name' => "SB COFAT 43 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-235'],
@@ -1040,6 +1047,7 @@ class UserSeeder extends Seeder
             ['item_detail_code' => 'XIC497', 'item_detail_name' => "VEG CAKE MGR 15KG  /MB", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-206'],
             ['item_detail_code' => 'XIC497-C1', 'item_detail_name' => "VEG CAKE MGR 15KG /MB", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-206'],
             ['item_detail_code' => 'XIC499', 'item_detail_name' => "DARLEY  MGR 15 KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-256'],
+            
             ['item_detail_code' => 'XIC502', 'item_detail_name' => "GB MARVILLE MGR 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-316'],
             ['item_detail_code' => 'XIC502', 'item_detail_name' => "GB MARVILLE MGR 15KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-326'],
             ['item_detail_code' => 'XIC511', 'item_detail_name' => "GB GRAND BTR & MGR 15 KG", 'unit' => 'CT', 'net_weight' => '15,00', 'type' => '145-069'],
@@ -1121,8 +1129,9 @@ class UserSeeder extends Seeder
             ['item_detail_code' => 'XJK770', 'item_detail_name' => "RHCNO 180KG", 'unit' => 'DR', 'net_weight' => '180,00', 'type' => '146-005'],
             ['item_detail_code' => 'IGB227', 'item_detail_name' => "GB MERRYWHIP CF 900KG", 'unit' => 'PC', 'net_weight' => '900,00', 'type' => '147-012'],
         ];
-        foreach ($details as $detail) {
+        foreach ($itemdetails as $detail) {
             DB::table('item_details')->insert([
+                'item_master_id' => 1,
                 'item_detail_code' => $detail['item_detail_code'],
                 'item_detail_name' => $detail['item_detail_name'],
                 'unit' => $detail['unit'],
