@@ -55,7 +55,7 @@ class ItemdetailController extends Controller
     public function store(Request $request)
     {
         // \dd($request->all());
-        $request->validate([
+        $validate = $request->validate([
             'item_master_id' => 'required|exists:item_masters,id',
             'item_detail_code' => 'required|string|max:50',
             'item_detail_name' => 'required|string|max:100',
@@ -64,7 +64,8 @@ class ItemdetailController extends Controller
             'type' => 'required|string|max:50',
         ]);
 
-        Itemdetail::create($request->all());
+        $details = itemdetail::create($validate);
+
 
         Alert::success('Success', 'Item Detail Added Successfully!');
         return redirect()->route('item-detail.index');
@@ -81,9 +82,9 @@ class ItemdetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Itemdetail $itemdetail)
+    public function edit(Itemdetail $id)
     {
-        $details = Itemdetail::findOrFail($itemdetail->id);
+        $details = Itemdetail::findOrFail($id->id);
 
         return view('page.masterdata.itemdetails.');
     }
@@ -91,9 +92,11 @@ class ItemdetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Itemdetail $itemdetail)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
+        // \dd($request->all());
+        try{
+          $validate = $request->validate([
             'item_master_id' => 'required|exists:itemmasters,id',
             'item_detail_code' => 'required|string|max:50',
             'item_detail_name' => 'required|string|max:100',
@@ -103,9 +106,17 @@ class ItemdetailController extends Controller
         ]);
 
         $itemdetail->update($request->all());
+        $itemdetail = Itemdetail::findOrFail($id);
+
 
         Alert::success('Success', 'Item Detail Updated Successfully!');
-        return redirect()->route('item-details.index');
+        return redirect()->route('item-detail.index'); 
+
+        }catch(\Exception $e){
+            Alert::error('Error', 'Item Detail Updated Failed!');
+            return redirect()->route('item-detail.index');
+        }
+       
     }
 
     /**
