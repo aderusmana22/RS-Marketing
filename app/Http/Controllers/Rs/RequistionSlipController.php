@@ -135,22 +135,22 @@ class RequistionSlipController extends Controller
             'status' => 'pending'
         ]);
 
-        foreach ($request->input('item_master_id') as $key => $itemMasterId) {
-            $itemDetailId = $request->input('item_detail_id')[$key];
-            $qtyReq = $request->input('qty_req')[$key];
-            $qtyIssued = $request->input('qty_issued')[$key];
+        // foreach ($request->input('item_master_id') as $key => $itemMasterId) {
+        //     $itemDetailId = $request->input('item_detail_id')[$key];
+        //     $qtyReq = $request->input('qty_req')[$key];
+        //     $qtyIssued = $request->input('qty_issued')[$key];
 
 
-            // Create RSItem for each item
-            RSItem::create([
-                'rs_id' => $rsMaster->id,
-                'item_master_id' => $itemMasterId,
-                'item_detail_id' => $itemDetailId,
-                'qty_req' => $qtyReq,
-                'qty_issued' => $qtyIssued,
+        //     // Create RSItem for each item
+        //     RSItem::create([
+        //         'rs_id' => $rsMaster->id,
+        //         'item_master_id' => $itemMasterId,
+        //         'item_detail_id' => $itemDetailId,
+        //         'qty_req' => $qtyReq,
+        //         'qty_issued' => $qtyIssued,
                 
-            ]);
-        }
+        //     ]);
+        // }
         
         // Generate token
         $uniqueToken = (string) Str::uuid();
@@ -170,7 +170,7 @@ class RequistionSlipController extends Controller
         Alert::success('Success', 'Requisition Slip has been created successfully');
         return redirect()->route('rs.index')->with('success', 'Requisition Slip has been created successfully');
          } catch (\Exception $e) {
-            \dd($e->getMessage());
+            \dd($e);
                 // Jika terjadi kesalahan, rollback transaction
                 return response()->json(['error' => 'Failed to create Requisition Slip: ' . $e->getMessage()], 500);
           }

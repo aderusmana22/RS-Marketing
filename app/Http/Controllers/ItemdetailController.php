@@ -16,12 +16,15 @@ class ItemdetailController extends Controller
     public function index()
     {
         // $itemdetails = [
-       
+        
+            
+            
+            
         // ];
          
         // foreach ($itemdetails as $detail) {
         //     DB::table('item_details')->insert([
-        //         'item_master_id' => 1,
+        //         'item_master_id' => Itemmaster::where('parent_item_code', $detail['item_detail_code'])->first()->id,
         //         'item_detail_code' => $detail['item_detail_code'],
         //         'item_detail_name' => $detail['item_detail_name'],
         //         'unit' => $detail['unit'],
@@ -94,10 +97,10 @@ class ItemdetailController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // \dd($request->all());
+        // \dd($request->all(), $id);
         try{
           $validate = $request->validate([
-            'item_master_id' => 'required|exists:itemmasters,id',
+            'item_master_id' => 'required|exists:item_masters,id',
             'item_detail_code' => 'required|string|max:50',
             'item_detail_name' => 'required|string|max:100',
             'unit' => 'required|string|max:10',
@@ -105,15 +108,18 @@ class ItemdetailController extends Controller
             'type' => 'required|string|max:50',
         ]);
 
-        $itemdetail->update($request->all());
+        // \dd($validate);
         $itemdetail = Itemdetail::findOrFail($id);
+        $itemdetail->update($validate);
+
 
 
         Alert::success('Success', 'Item Detail Updated Successfully!');
         return redirect()->route('item-detail.index'); 
 
         }catch(\Exception $e){
-            Alert::error('Error', 'Item Detail Updated Failed!');
+            \dd($e);
+            Alert::error('Error', 'Item Detail Updated Failed! ' .$e);
             return redirect()->route('item-detail.index');
         }
        

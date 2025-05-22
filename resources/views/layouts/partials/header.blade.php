@@ -923,7 +923,7 @@
             // Function to set dark mode
             const setDarkMode = (darkModeOn) => {
                 htmlElement.setAttribute('data-bs-theme', darkModeOn ? 'light' : 'dark');
-                console.log(htmlElement);
+                
                 localStorage.setItem('darkModes', darkModeOn ? 'disabled' : 'enabled');
             };
 
@@ -1013,7 +1013,7 @@
                 button.addEventListener('click', function(event) {
                     // Mencegah event bubbling yang mungkin menutup dropdown
                     event.stopPropagation();
-                    console.log('Mark all as read button clicked.');
+                    // console.log('Mark all as read button clicked.');
 
                     // Logika untuk menandai semua notifikasi sebagai dibaca
                     fetch('{{ route('notifications.markAllAsRead') }}', {
@@ -1025,7 +1025,7 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log('Response data:', data);
+                            // console.log('Response data:', data);
                             if (data.success) {
                                 // Hapus semua elemen notifikasi dari DOM
                                 document.querySelectorAll(

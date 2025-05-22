@@ -58,7 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($details as $detail)
+                        @foreach($details as $index => $detail)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td></td>
@@ -69,7 +69,7 @@
                             <td>{{ $detail->type }}</td>
                             <td>
                                 <div class="action-btn">
-                                    <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal"
+                                    <a href="javascript:void(0)" class="text-primary edit" data-bs-toggle="modal" onclick="openEditModal({{$index}})"
                                         data-bs-target="#edititemdetailModal{{ $detail->id }}">
                                         <i class="ti ti-eye fs-5"></i>
                                     </a>
@@ -165,11 +165,12 @@
     <script src="{{ asset('assets') }}/js/datatable/datatable-basic.init.js"></script>
     <script>
         
+        var masters = @json($itemMasters);
         var details = @json($details);
-
         function openEditModal(id) {
-            var detail = documents.getElementById(`edititemdetailModal ${id}`);
+            var modal = document.getElementById(`edititemdetailModal${id}`);
             if (modal){
+                modalBootstrap = new bootstrap.Modal(modal);
                 modalBootstrap.show();
                 return;
             }
@@ -194,14 +195,14 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="item_master_id" class="form-label">Parent Item</label>
-                                            <select class="form-select" name="item_master_id" required>
+                                            <select class="form-select" name="item_master_id" onChange="changeItemDetailCode(this)" required>
                                                 <option value="">Select Parent Item</option>
                                                 `;
-                                                    items.forEach(function(itemdetail) {
-                                                        const isSelected = itemdetail.id === detail.item_master_id;
+                                                    masters.forEach(function(itemmaster) {
+                                                        const isSelected = itemmaster.id === detail.item_master_id;
                                                         newEditModal += `
-                                                            <option value="${itemdetail.id}" ${isSelected ? 'selected' : ''}>
-                                                                ${itemdetail.parent_item_code} - ${itemdetail.parent_item_name}
+                                                            <option value="${itemmaster.id}" ${isSelected ? 'selected' : ''} data-item-detail-code="${itemmaster.parent_item_name}">
+                                                                ${itemmaster.parent_item_code}
                                                             </option>
                                                         `;
                                                     });
@@ -247,8 +248,8 @@
                 </div>
                                     
                 `;
-            modalDiv.innerHTML = newEditModal;
-            modal = document.getElementById('edititemdetailModal'${id});
+            modalDiv.innerHTML += newEditModal;
+            modal = document.getElementById(`edititemdetailModal${id}`);
             modalBootstrap = new bootstrap.Modal(modal);
             modalBootstrap.show();
         }
@@ -294,11 +295,20 @@
                 initializeModalListeners();
             });
         });
-
+        
         function changeItemDetailCode(select) {
-            var selectedOption = select.options[select.selectedIndex];
-            var itemDetailCode = selectedOption.getAttribute('data-item-detail-code');
-            document.getElementById('item_detail_code').value = itemDetailCode;
+            const selectedOption = select.options[select.selectedIndex];
+            const itemDetailCode = selectedOption.getAttribute('data-item-detail-code');
+
+            // Temukan elemen .row terdekat (atau bisa juga .modal-body, form, dsb tergantung struktur)
+            const row = select.closest('.row');
+
+            // Temukan input dengan name="item_detail_code" di dalam row tersebut
+            const inputField = row.querySelector('input[name="item_detail_code"]');
+
+            if (inputField && itemDetailCode !== null) {
+                inputField.value = itemDetailCode;
+            }
         }
     </script>
 @endpush

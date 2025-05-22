@@ -161,7 +161,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/itemdetaildestroy/{id}', [ItemdetailController::class, 'destroy'])->name('item-detail.destroy');
         Route::post('/itemdetailstore', [ItemdetailController::class, 'store'])->name('item-details.store');
         Route::get('/itemdetailedit/{id}', [ItemdetailController::class, 'edit'])->name('item-detail.edit');
-        Route::patch('/itemdetailupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-detail.update');
+        Route::put('/itemdetailupdate/update/{id}', [ItemdetailController::class, 'update'])->name('item-detail.update');
         Route::get('/customer', [CustomersController::class, 'index'])->name('customers.index');
         Route::get('/customercreate/{id}', [CustomersController::class, 'create'])->name('customers.create');
         Route::post('/customerstore', [CustomersController::class, 'store'])->name('customers.store');
