@@ -91,7 +91,7 @@
                             return data;
                         }
                     },
-                    { data: 'route_to', name: 'route_to' },
+                    { data: 'initiator.name', name: 'route_to' },
                     { data: null, name: 'action', orderable: false, searchable: false,
                         render: function(data, type, row) {
                             const viewRoute = "{{ route('rs.list', ':id') }}".replace(':id', row.id);

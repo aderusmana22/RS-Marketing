@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\RS\RSItem;
 use App\Models\Revisions;
+use App\Models\User;
 
 class RSMaster extends Model
 {
@@ -22,5 +23,10 @@ class RSMaster extends Model
     public function revisions()
     {
         return $this->belongsTo(Revisions::class);
+    }
+
+    public function initiator()
+    {
+        return $this->belongsTo(User::class, 'initiator_nik', 'nik');
     }
 }

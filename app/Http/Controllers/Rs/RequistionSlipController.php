@@ -260,10 +260,11 @@ class RequistionSlipController extends Controller
     {
         $user = Auth::user();
         $formList = null;
+        $query = RSMaster::with('initiator');
         if ($user->hasRole('super-admin')) {
-            $formList = RSMaster::all();
+            $formList = $query->get();
         } else{
-            $formList = RSMaster::where('customer_id', $user->id)->get();
+            $formList = $query->where('customer_id', $user->id)->get();
         }
         Log::info('Form List:', ['user' => $user->id, 'formList' => $formList]);
         if($formList){
