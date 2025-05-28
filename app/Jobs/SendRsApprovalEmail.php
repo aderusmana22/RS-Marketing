@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Mail\RsApprovalMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

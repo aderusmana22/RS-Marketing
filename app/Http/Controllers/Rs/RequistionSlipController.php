@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\Approver;
 use App\Models\RS\RSMaster;
 use App\Models\RS\RSItem;
 use App\Models\Item\Itemmaster;
@@ -14,8 +15,10 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Models\RsApproval;
 use App\Models\Item\Itemdetail;
+
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendRsApprovalEmail;
 
 
 class RequistionSlipController extends Controller
@@ -100,20 +103,19 @@ class RequistionSlipController extends Controller
         }
 
         $approver = null;
-        $userRole = $initiator->getRoleNames(); // ini kosong
-        // dd($initiator, $userRole);
+        $userRole = $initiator->getRoleNames(); 
         foreach ($userRole as $role) {
-            $approverRole = RsApproval::where('role', $role)->where('level', 1)->first();
+            $approverRole = Approver::where('role', $role)->where('level', 1)->first();
             if ($approverRole) {
                 $approver = User::where('nik', $approverRole->nik)->first();
                 if ($approver) break;
             }
         }
+        Log::info('Approver found', [
+            'approver' => $approver ? $approver->name : 'none',
+            'initiator' => $initiator->nik
+        ]);
         
-
-
-        
-
         
         // Mulai transaction untuk memastikan integritas data
         $rsMaster = RSMaster::create([
@@ -135,22 +137,21 @@ class RequistionSlipController extends Controller
             'status' => 'pending'
         ]);
 
-        // foreach ($request->input('item_master_id') as $key => $itemMasterId) {
-        //     $itemDetailId = $request->input('item_detail_id')[$key];
-        //     $qtyReq = $request->input('qty_req')[$key];
-        //     $qtyIssued = $request->input('qty_issued')[$key];
+        foreach ($request->input('item_detail_code') as $key => $itemDetailCode) {
+            $itemDetailId = $request->input('item_detail_id')[$key];
+            $qtyReq = $request->input('qty_req')[$key];
+            $qtyIssued = $request->input('qty_issued')[$key];
 
 
-        //     // Create RSItem for each item
-        //     RSItem::create([
-        //         'rs_id' => $rsMaster->id,
-        //         'item_master_id' => $itemMasterId,
-        //         'item_detail_id' => $itemDetailId,
-        //         'qty_req' => $qtyReq,
-        //         'qty_issued' => $qtyIssued,
+            // Create RSItem for each item
+            $rsItems = RSItem::create([
+                'rs_id' => $rsMaster->id,
+                'item_id' => $itemDetailId,
+                'qty_req' => $qtyReq,
+                'qty_issued' => $qtyIssued,
                 
-        //     ]);
-        // }
+            ]);
+        }
         
         // Generate token
         $uniqueToken = (string) Str::uuid();
@@ -159,7 +160,14 @@ class RequistionSlipController extends Controller
         
         // Dispatch Job
         if ($approver) {
-            // dispatch(new SendRsApprovalEmail($approver, $rsMaster, $rsItems, $approvalToken, $rejectToken));
+            Log::info('Dispatching SendRsApprovalEmail job', [
+                'approver' => $approver->id,
+                'rsMaster' => $rsMaster->id,
+                
+                'approvalToken' => $approvalToken,
+                'rejectToken' => $rejectToken
+            ]);
+            dispatch(new SendRsApprovalEmail($approver, $rsMaster, $rsItems, $approvalToken, $rejectToken));
         }
 
 
@@ -266,7 +274,6 @@ class RequistionSlipController extends Controller
         } else{
             $formList = $query->where('customer_id', $user->id)->get();
         }
-        Log::info('Form List:', ['user' => $user->id, 'formList' => $formList]);
         if($formList){
             return response()->json($formList);
         }

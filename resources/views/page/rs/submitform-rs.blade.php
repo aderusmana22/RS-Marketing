@@ -277,6 +277,7 @@
                     dataType: 'json',
                     success: function (response) {
                             var item = response.data;
+                            console.log(item);
 
                             var tbody = $('#itemTable tbody');
                             tbody.empty();
@@ -288,7 +289,8 @@
 
                             var row = `
                                 <tr>
-                                    <td>${item.item_detail_code}</td>
+                                    <td><input type="text" class="form-control" name="item_detail_code[]" value="${item.item_detail_code}" required readonly></td>
+                                    <input type="hidden" class="form-control" name="item_detail_id[]" value="${item.id}">
                                     <td>${item.item_detail_name}</td>
                                     <td>${item.unit}</td>
                                     <td><input type="number" class="form-control" name="qty_req[]" value="" required></td>
