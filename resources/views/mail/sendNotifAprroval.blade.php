@@ -194,6 +194,97 @@
             font-size: 11px;
             color: #000000;
         }
+
+         .approval-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .approval-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .approval-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        
+        .approval-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            outline: none;
+            white-space: nowrap;
+        }
+        
+        .approval-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .approval-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .approve-no-review {
+            border-color: #28a745;
+        }
+        
+        .approve-no-review:hover,
+        .approve-no-review.selected {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .approve-with-review {
+            border-color: #ffc107;
+        }
+        
+        .approve-with-review:hover,
+        .approve-with-review.selected {
+            background-color: #ffc107;
+            color: white;
+            border-color: #ffc107;
+        }
+        
+        .not-approve {
+            border-color: #dc3545;
+        }
+        
+        .not-approve:hover,
+        .not-approve.selected {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
         
         .email-footer {
             background-color: #f8f9fa;
@@ -365,53 +456,25 @@
                 </tbody>
             </table>
             
-            <table class="signature-table">
-                <thead>
-                    <tr>
-                        
-                        <th>NAME/SIGNATURE</th>
-                        <th>APPROVE NOT REVIEW</th>
-                        <th>APPROVE WITH REVIEW</th>
-                        <th>NOT APPROVED</th>
-                        <th>NOTES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        
-                        <td style="font-weight: 600;">Sales</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(4, 129, 25);">Approved not Review</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(226, 210, 30);"></td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(244, 50, 33);"></td>
-                        <td style="font-weight: 600;"></td>
-                    </tr>
-                    <tr>
-                        
-                        <td style="font-weight: 600;">Sales Manager</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(4, 129, 25);">Approved not Review</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(226, 210, 30);"></td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(244, 50, 33);"></td>
-                        <td style="font-weight: 600;"></td>
-                    </tr>
-                    <tr>
-                        
-                        <td style="font-weight: 600;">Warehouse Supervisor</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(4, 129, 25);"></td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(226, 210, 30);">Approved not Review</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(244, 50, 33);"></td>
-                        <td style="font-weight: 600;">lorem ipsum</td>
-                    </tr>
-                    <tr>
-                        
-                        <td style="font-weight: 600;">Dept. Head</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(4, 129, 25);"></td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(226, 210, 30);">Approved not Review</td>
-                        <td style="font-weight: 600; text-align: center;color:  rgb(244, 50, 33);"></td>
-                        <td style="font-weight: 600;">BABABABANAAAANA</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <!-- approval section -->
+            <div class="approval-section">
+                <div class="approval-title">Approval </div>
+                <div class="approval-options">
+                    <button class="approval-btn approve-no-review" onclick="selectApproval(this, 'approved-no-review')">
+                        <span class="btn-icon">✓</span>
+                        Approved (No Review)
+                    </button>
+                    <button class="approval-btn approve-with-review" onclick="selectApproval(this, 'approved-with-review')">
+                        <span class="btn-icon">⚠</span>
+                        Approve with Review
+                    </button>
+                    <button class="approval-btn not-approve" onclick="selectApproval(this, 'not-approved')">
+                        <span class="btn-icon">X</span>
+                        Not Approve
+                    </button>
+                </div>
+            </div>
+        
         
         <div class="email-footer">
             <p><strong>Email ini dikirim secara otomatis dari sistem Requisition Management.</strong></p>
