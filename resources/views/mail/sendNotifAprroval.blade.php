@@ -356,7 +356,7 @@
         <div class="email-body">
             <div class="form-header">
                 <div class="company-logo">
-                    <img src="logo.png" alt="Company Logo" style="width: 25%; height: 100px; padding: 10px; ">
+                    <img src="{{ asset('assets\images\logos\logo.png')}}" alt="Company Logo" style="width: 25%; height: 100px; padding: 10px; ">
                     
                 </div>
                 <div class="form-title">REQUISITION SLIP</div>

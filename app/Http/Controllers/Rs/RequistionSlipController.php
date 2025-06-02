@@ -302,7 +302,7 @@ public function getproductdata($id, Request $request)
     if ($types) {
         $item->where('type', $types);
     }
-    $item = $item->first();
+    $item = $item->get();
     if ($item) {
         return response()->json([
             'status' => 'success',
