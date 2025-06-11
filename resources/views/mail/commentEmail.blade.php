@@ -201,7 +201,7 @@
             <form id="requisitionForm">
                 <div class="form-group">
                     <label class="form-label" for="itemDescription">Comment</label>
-                    <textarea id="itemDescription" class="form-input form-textarea" placeholder="Describe the items or services requested..." required></textarea>
+                    <textarea id="itemDescription" class="form-input form-textarea" name="comment" placeholder="Describe the items or services requested..." required></textarea>
                 </div>
 
                 <div class="action-section">

@@ -434,16 +434,19 @@
             <div class="approval-section">
                 <div class="approval-title">Approval </div>
                 <div class="approval-options">
-                    <button class="approval-btn approve-no-review" onclick="selectApproval(this, 'approved-no-review')">
+                    <a class="approval-btn approve-no-review">
                         <span class="btn-icon">✓</span>
+                        <a href="{{ route('approval.approve', ['id' => $rsMaster->id, 'status' => 'approved']) }}">
                         Approved (No Review)
-                    </button>
-                    <button class="approval-btn approve-with-review" onclick="selectApproval(this, 'approved-with-review')">
+                    </a>
+                    <a class="approval-btn approve-with-review">
                         <span class="btn-icon">⚠</span>
+                        <a href="{{ route('approval.approve', ['id' => $rsMaster->id, 'status' => 'approved_with_review']) }}">
                         Approve with Review
                     </button>
-                    <button class="approval-btn not-approve" onclick="selectApproval(this, 'not-approved')">
+                    <button class="approval-btn not-approve">
                         <span class="btn-icon">X</span>
+                        <a href="{{ route('approval.approve', ['id' => $rsMaster->id, 'status' => 'not_approved']) }}">
                         Not Approve
                     </button>
                 </div>

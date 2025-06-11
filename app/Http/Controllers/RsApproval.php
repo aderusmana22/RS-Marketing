@@ -23,7 +23,7 @@ class RsApproval extends Controller
         }
 
         $rsMaster = RsMaster::where('rs_no', $rsNo)->firstOrFail();
-
+        
         // Cari approver saat ini berdasarkan route_to
         $approver = User::where('nik', $rsMaster->route_to)->first();
         if (!$approver) {
@@ -96,6 +96,7 @@ public function reject($token)
         return response()->view('approval.error', ['message' => $e->getMessage()], 500);
     }
 }
+
 
 
      /**
