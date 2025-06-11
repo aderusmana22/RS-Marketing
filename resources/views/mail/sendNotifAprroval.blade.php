@@ -371,7 +371,7 @@
                             <!-- <strong>Subject:</strong> Requisition Slip - Permintaan Barang Sales & Marketing<br>
                             <strong>From:</strong> system@sinarmeadow.com<br>
                             <strong>To:</strong> warehouse@sinarmeadow.com<br> -->
-                            <strong>Dear All:</strong> Form Requesition has been<br>
+                            <strong>Dear All:</strong>Form Requesition has been<br>
 
                         </p>
                     </div>
