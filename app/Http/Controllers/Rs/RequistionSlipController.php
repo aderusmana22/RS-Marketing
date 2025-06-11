@@ -144,15 +144,17 @@ class RequistionSlipController extends Controller
 
 
             // Create RSItem for each item
-            $rsItems = RSItem::create([
+            RSItem::create([
                 'rs_id' => $rsMaster->id,
                 'item_id' => $itemDetailId,
                 'qty_req' => $qtyReq,
-                'qty_issued' => $qtyIssued,
+                'qty_issued' => $qtyIssued,   
                 
             ]);
         }
-        
+        $rsItems = RSItem::with('item_detail')
+            ->where('rs_id', $rsMaster->id)
+            ->get();
         // Generate token
         $uniqueToken = (string) Str::uuid();
         $approvalToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|approve');

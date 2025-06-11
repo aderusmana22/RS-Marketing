@@ -360,7 +360,7 @@
                     
                 </div>
                 <div class="form-title">REQUISITION SLIP</div>
-                <div class="form-subtitle">SALES & MARKETING<br>SAMPLE PRODUCT</div>
+                <div class="form-subtitle">SALES & MARKETING<br>{{ $rsMaster->category ?? 'Category Not Set'}}</div>
             </div>
             
             
@@ -376,7 +376,7 @@
                         </p>
                     </div>
                     <div class="form-number">
-                        <strong>FORM NO:</strong> RS200112012<br>
+                        <strong>FORM NO:</strong>{{ $rsMaster->rs_no }}<br>
                     </div>
                 </div>
                 
@@ -384,25 +384,24 @@
                 <div class="info-grid">                     
                     <div class="info-item">
                         <div class="info-label">Customer Name</div>
-                        <div class="info-value">Ny Liem/PT Citra Bhoga Jaya</div>
+                        <div class="info-value">{{ $rsMaster->customer_id }}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Address</div>
-                        <div class="info-value">Bandung</div>
+                        <div class="info-value">{{ $rsMaster->address }}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Tanggal</div>
-                        <div class="info-value">9 Januari 2025</div>
+                        <div class="info-value">{{ $rsMaster->date->format('d F Y') }}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Cost Center</div>
-                        <div class="info-value">225</div>
+                        <div class="info-value">{{ $rsMaster->cost_center }}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Account</div>
-                        <div class="info-value">5300</div>
+                        <div class="info-value">{{ $rsMaster->account }}</div>
                     </div>
-                </div>
             </div>
             
             <table class="product-table">
@@ -419,40 +418,15 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 600; color: #000000;">IGC531</td>
-                        <td style="font-weight: 600; color: #000000;">GB Grand 15kg</td>
-                        <td style="font-weight: 600; color: #000000;">15 kg</td>
-                        <td style="font-weight: 600; color: #000000;">14</td>
-                        <td style="font-weight: 600; color: #000000;">-</td>
-                        <td style="font-weight: 600; color: #000000;">Sponsorship</td>
-                        <td style="font-weight: 600; color: #000000;">-</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsItem->item_details->item_detail_code}}</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsItem->item_details->item_detail_name}}</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsItem->item_details->unit}}</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsItem->qtd_issued}}</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsItem->qtd_req}}</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsMaster->objectives}}</td>
+                        <td style="font-weight: 600; color: #000000;">{{$rsMaster->est_potential}}</td>
                     </tr>
-                    <tr>
-                        <td style="font-weight: 600; color: #000000;">IUC205</td>
-                        <td style="font-weight: 600; color: #000000;">Moremade Saffire</td>
-                        <td style="font-weight: 600; color: #000000;">17 kg</td>
-                        <td style="font-weight: 600; color: #000000;">5</td>
-                        <td style="font-weight: 600; color: #000000;">-</td>
-                        <td style="font-weight: 600; color: #000000;">Product Testing</td>
-                        <td style="font-weight: 600; color: #000000;">High Potential</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; color: #000000;">IGC532</td>
-                        <td style="font-weight: 600; color: #000000;">GB Grand 25kg</td>
-                        <td style="font-weight: 600; color: #000000;">25 kg</td>
-                        <td style="font-weight: 600; color: #000000;">3</td>
-                        <td style="font-weight: 600; color: #000000;">-</td>
-                        <td style="font-weight: 600; color: #000000;">Product Testing</td>
-                        <td style="font-weight: 600; color: #000000;">Medium Potential</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; color: #000000;">IGC533</td>
-                        <td style="font-weight: 600; color: #000000;">GB Grand 50kg</td>
-                        <td style="font-weight: 600; color: #000000;">50 kg</td>
-                        <td style="font-weight: 600; color: #000000;">2</td>
-                        <td style="font-weight: 600; color: #000000;">-</td>
-                        <td style="font-weight: 600; color: #000000;">Product Testing</td>
-                        <td style="font-weight: 600; color: #000000;">Low Potential</td>
+                    
                 </tbody>
             </table>
             
@@ -478,7 +452,7 @@
         
         <div class="email-footer">
             <p><strong>Email ini dikirim secara otomatis dari sistem Requisition Management.</strong></p>
-            <p>Jika ada pertanyaan, silakan hubungi tim Sales & Marketing di ext. 225</p>
+            <p>Jika ada pertanyaan, silakan hubungi tim Sales & Marketing</p>
             <p>© 2025 Sinar Meadow. All rights reserved.</p>
         </div>
     </div>
