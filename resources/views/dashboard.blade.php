@@ -27,11 +27,11 @@
                             </div>
                             <div class="d-flex align-items-center">
                                 <div class="border-end pe-4 border-muted border-opacity-10">
-                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">0<i class="ti ti-arrow-up-right fs-5 lh-base text-success"></i></h3>
+                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">5<i class="ti ti-arrow-up-right fs-5 lh-base text-success"></i></h3>
                                     <p class="mb-0 text-dark">Today's Requisition Slip</p>
                                 </div>
                                 <div class="ps-4">
-                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">0<i class="ti ti-arrow-up-right fs-5 lh-base text-success"></i></h3>
+                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">40<i class="ti ti-arrow-up-right fs-5 lh-base text-success"></i></h3>
                                     <p class="mb-0 text-dark">Overall Requisition Slip</p>
                                 </div>
                             </div>
@@ -169,8 +169,8 @@
                                     <i class="ti ti-grid-dots fs-6"></i>
                                 </div>
                                 <div>
-                                    <h6 class="mb-1 fs-4 fw-semibold">Most Commented</h6>
-                                    <p class="fs-3 mb-0">Fashionware</p>
+                                    <h6 class="mb-1 fs-4 fw-semibold">......</h6>
+                                    <p class="fs-3 mb-0">..........</p>
                                 </div>
                             </div>
                             <div class="bg-danger-subtle text-danger badge">
@@ -196,7 +196,7 @@
                                 </div>
                                 <div>
                                     <p class="fs-3 mb-0 fw-normal">Total Requests</p>
-                                    <h6 class="fw-semibold text-dark fs-4 mb-0">$36,358</h6>
+                                    <h6 class="fw-semibold text-dark fs-4 mb-0">36,358</h6>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center">
@@ -205,7 +205,7 @@
                                 </div>
                                 <div>
                                     <p class="fs-3 mb-0 fw-normal">Expenses</p>
-                                    <h6 class="fw-semibold text-dark fs-4 mb-0">$5,296</h6>
+                                    <h6 class="fw-semibold text-dark fs-4 mb-0">5,296</h6>
                                 </div>
                             </div>
                         </div>

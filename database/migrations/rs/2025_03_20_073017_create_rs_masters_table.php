@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('reason', 255);
             $table->string('objectives', 255);
+            $table->string('account', 255);
             $table->string('cost_center', 255);
             $table->string('batch_code', 255);
             $table->string('est_potential', 255);

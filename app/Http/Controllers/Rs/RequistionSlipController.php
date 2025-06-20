@@ -260,8 +260,7 @@ class RequistionSlipController extends Controller
     public function list($id)
     {
         $master = RSMaster::with('rs_items')->findOrFail($id);
-        
-            
+    
     
         return view('page.rs.form-list-rs', compact('master'));
     }
