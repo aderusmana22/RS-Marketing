@@ -21,7 +21,7 @@ class RSItem extends Model
 
     public function item_detail()
     {
-        $this->hasMany(Itemdetail::class);
+        $this->hasMany(Itemdetail::class , 'id', 'item_id');
     }
 
     public function item_master()

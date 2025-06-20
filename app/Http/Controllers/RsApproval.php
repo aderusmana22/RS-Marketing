@@ -95,6 +95,8 @@ public function reject($token)
     } catch (\Exception $e) {
         return response()->view('approval.error', ['message' => $e->getMessage()], 500);
     }
+
+    
 }
 
 

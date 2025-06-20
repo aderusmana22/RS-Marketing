@@ -73,7 +73,9 @@ class RequistionSlipController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        $rsItems = RSItem::with('item_detail')
+            ->get();
+        dd($request->all(), $rsItems);
 
        try{
         $request->validate([

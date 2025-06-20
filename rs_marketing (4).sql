@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2025 at 03:47 AM
+-- Generation Time: Jun 20, 2025 at 05:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.3.11
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `rs_marketing`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activity_log`
+--
+
+CREATE TABLE `activity_log` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `log_name` varchar(255) DEFAULT NULL,
+  `description` text NOT NULL,
+  `subject_type` varchar(255) DEFAULT NULL,
+  `event` varchar(255) DEFAULT NULL,
+  `subject_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `causer_type` varchar(255) DEFAULT NULL,
+  `causer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `properties` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`properties`)),
+  `batch_uuid` char(36) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -977,7 +998,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (28, '2024_11_05_095747_create_notifications_table', 16),
 (29, '2025_03_20_061512_create_revisions_table', 17),
 (30, '2025_04_22_043327_create_table_rs_approvals', 18),
-(31, '2025_04_23_093736_create_table_rs_approver', 19);
+(31, '2025_04_23_093736_create_table_rs_approver', 19),
+(32, '2025_06_20_030234_create_activity_log_table', 20),
+(33, '2025_06_20_030235_add_event_column_to_activity_log_table', 21),
+(34, '2025_06_20_030236_add_batch_uuid_column_to_activity_log_table', 22);
 
 -- --------------------------------------------------------
 
@@ -1357,7 +1381,10 @@ INSERT INTO `rs_items` (`id`, `rs_id`, `item_id`, `qty_issued`, `qty_req`, `batc
 (15, 51, '14', '2', '2', NULL, '2025-06-03 03:01:08', '2025-06-03 03:01:08'),
 (16, 52, '14', '2', '2', NULL, '2025-06-03 03:02:28', '2025-06-03 03:02:28'),
 (17, 53, '14', '2', '2', NULL, '2025-06-03 03:03:46', '2025-06-03 03:03:46'),
-(18, 54, '17', '1', '2', NULL, '2025-06-03 03:04:32', '2025-06-03 03:04:32');
+(18, 54, '17', '1', '2', NULL, '2025-06-03 03:04:32', '2025-06-03 03:04:32'),
+(19, 55, '22', '2', '2', NULL, '2025-06-19 19:09:59', '2025-06-19 19:09:59'),
+(20, 56, '22', '2', '2', NULL, '2025-06-19 19:20:04', '2025-06-19 19:20:04'),
+(21, 57, '22', '2', '2', NULL, '2025-06-19 19:20:21', '2025-06-19 19:20:21');
 
 -- --------------------------------------------------------
 
@@ -1442,7 +1469,10 @@ INSERT INTO `rs_masters` (`id`, `category`, `customer_id`, `rs_no`, `revision_id
 (51, 'Sample Product', 1, '25RS0021', 1, NULL, '2025-06-03', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-03 03:01:08', '2025-06-03 03:01:08'),
 (52, 'Sample Product', 1, '25RS0021', 1, NULL, '2025-06-03', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-03 03:02:28', '2025-06-03 03:02:28'),
 (53, 'Sample Product', 1, '25RS0021', 1, NULL, '2025-06-03', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-03 03:03:46', '2025-06-03 03:03:46'),
-(54, 'Sample Product', 1, '25RS0022', 1, NULL, '2025-06-03', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-03 03:04:32', '2025-06-03 03:04:32');
+(54, 'Sample Product', 1, '25RS0022', 1, NULL, '2025-06-03', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-03 03:04:32', '2025-06-03 03:04:32'),
+(55, 'Sample Product', 2, '25RS0023', 1, NULL, '2025-06-20', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-19 19:09:59', '2025-06-19 19:09:59'),
+(56, 'Sample Product', 2, '25RS0023', 1, NULL, '2025-06-20', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-19 19:20:04', '2025-06-19 19:20:04'),
+(57, 'Sample Product', 2, '25RS0023', 1, NULL, '2025-06-20', NULL, 'mengirimkan lorem ipsum', 'p227', NULL, '22', 'AG1315', 'A0121', 'pending', '2025-06-19 19:20:21', '2025-06-19 19:20:21');
 
 -- --------------------------------------------------------
 
@@ -1838,6 +1868,15 @@ INSERT INTO `users` (`id`, `nik`, `name`, `email`, `password`, `avatar`, `rememb
 --
 
 --
+-- Indexes for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subject` (`subject_type`,`subject_id`),
+  ADD KEY `causer` (`causer_type`,`causer_id`),
+  ADD KEY `activity_log_log_name_index` (`log_name`);
+
+--
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
@@ -1981,6 +2020,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
@@ -2026,7 +2071,7 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `model_has_permissions`
@@ -2080,13 +2125,13 @@ ALTER TABLE `rs_approver`
 -- AUTO_INCREMENT for table `rs_items`
 --
 ALTER TABLE `rs_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `rs_masters`
 --
 ALTER TABLE `rs_masters`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `sections`
