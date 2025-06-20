@@ -13,6 +13,6 @@ class RSInitiator extends Model
 
     public function rs_master()
     {
-        $this->hasMany(RSMaster::class);
+        return $this->hasMany(RSMaster::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\RS\RSMaster;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,6 @@ class Customer extends Model
 
     public function rs_master()
     {
-        $this->belongsTo(RSMaster::class);
+        return $this->hasMany(RSMaster::class);
     }
 }

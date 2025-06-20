@@ -6,7 +6,7 @@ use App\Http\Controllers\IdeaApprovalController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\ApproverController;
 use App\Http\Controllers\ApproversController;
-use App\Http\Controllers\RsApprovalController;
+use App\Http\Controllers\Rs\RsApprovalController;
 use App\Http\Controllers\Master\CategoryController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\LevelController;
@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/update/{id}', [RequistionSlipController::class, 'update'])->name('rs.update');
         Route::delete('/destroy/{id}', [RequistionSlipController::class, 'destroy'])->name('rs.destroy');
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
-        
+
         Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
         Route::get('/approver', [ApproverController::class, 'index'])->name('rs.approver');
         Route::get('/approvercreate/{id}', [ApproverController::class, 'create'])->name('rs.approver.create');
@@ -129,15 +129,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/approverupdate/update/{id}', [ApproverController::class, 'update'])->name('rs.approver.update');
         Route::delete('/approverdestroy/{id}', [ApproverController::class, 'destroy'])->name('rs.approver.destroy');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
-        Route::get('/list/{id}', [RequistionSlipController::class, 'list'])->name('rs.list');
+        Route::get('/detail/{id}', [RequistionSlipController::class, 'detail'])->name('rs.detail');
         Route::get('/editlist/{id}', [RequistionSlipController::class, 'editlist'])->name('rs.list.edit');
         Route::get('/list/{id}/show', [RequistionSlipController::class, 'showlist'])->name('rs.list.show');
-        Route::get('/getFormList', [RequistionSlipController::class, 'getFormList'])->name('rs.getFormList');
+        Route::get('/getFormList/{nik?}', [RequistionSlipController::class, 'getFormList'])->name('rs.getFormList');
         // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);
         Route::get('/status', [RequistionSlipController::class, 'statusform'])->name('rs.status');
         Route::get('/submit', [RequistionSlipController::class, 'create'])->name('rs.submit');
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
-        
+
         //Approval Admin
         Route::get('/approval/form/{rs_id}', [ApproversController::class, 'showApprovalForm'])->name('approval.form');
         Route::get('/rs/approval-list', [ApproversController::class, 'approvalList'])->name('rs.approval-list');
@@ -147,7 +147,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/rs/reject/{token}', [RsApprovalController::class, 'reject'])->name('rs.reject');
 
         Route::get('/product/{id}', [RequistionSlipController::class, 'getproductdata'])->name('requisition.getproductdata');
-        
+
         Route::get('/itemmaster', [ItemmasterController::class, 'index'])->name('item-master.index');
         Route::delete('/itemmasterdestroy/{id}', [ItemmasterController::class, 'destroy'])->name('item-master.destroy');
         Route::get('/itemmastercreate/{id}', [ItemmasterController::class, 'create'])->name('item-master.create');
@@ -178,6 +178,20 @@ Route::middleware('auth')->group(function () {
 
 });
 
+// =============================================================MAIL=================================================================
+Route::group(['prefix' => 'requisition/approval', 'as' => 'rs.'], function () {
+    // Route for "Approved (No Review)"
+    Route::get('approved-no-review/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'approvedNoReview'])
+         ->name('approved-no-review');
+
+    // Route for "Approve with Review"
+    Route::get('approved-with-review/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'approvedWithReview'])
+         ->name('approved-with-review');
+
+    // Route for "Not Approve"
+    Route::get('not-approved/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'notApproved'])
+         ->name('not-approved');
+});
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
 

@@ -29,5 +29,11 @@ class RSItem extends Model
         $this->hasMany(Itemmaster::class);
     }
 
+    protected $casts = [
+        'item_id' => 'array',
+        'qty_req' => 'array',
+        'qty_issued' => 'array'
+    ];
+
 
 }

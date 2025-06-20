@@ -7,42 +7,85 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\User; // Assuming you're passing a User model for $approver
+use App\Models\RS\RSMaster; // Assuming you're passing an RSMaster model
+use Illuminate\Support\Collection; // Assuming rsItems is a Collection
 
-class RsApprovalMail extends Mailable
+class RsApprovalMail extends Mailable // No longer implementing ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    // Declare all properties as public for Mailable to access them in the view
     public $rsItems;
     public $rsMaster;
     public $approver;
     public $approvalToken;
     public $rejectToken;
+    public $approvalNotReviewLink;
+    public $approvalWithReviewLink;
+    public $notApproveLink;
 
-    public function __construct($rsItems, $approver, $rsMaster, $approvalToken, $rejectToken)
-    {
+
+    /**
+     * Create a new message instance.
+     *
+     * @param Collection $rsItems
+     * @param User $approver
+     * @param RSMaster $rsMaster
+     * @param string $approvalToken
+     * @param string $rejectToken
+     * @param string $approvalNotReviewLink
+     * @param string $approvalWithReviewLink
+     * @param string $notApproveLink
+     */
+    public function __construct(
+        Collection $rsItems,
+        User $approver,
+        RSMaster $rsMaster,
+        string $approvalToken,
+        string $rejectToken,
+        string $approvalNotReviewLink,
+        string $approvalWithReviewLink,
+        string $notApproveLink
+    ) {
         $this->rsItems = $rsItems;
         $this->rsMaster = $rsMaster;
         $this->approver = $approver;
         $this->approvalToken = $approvalToken;
         $this->rejectToken = $rejectToken;
-        log::info('RsApprovalMail created with items: ' . json_encode($this->rsItems));
-        log::info('RsApprovalMail created for approver mail: ' . $approver->name);
-        log::info('Requisition Slip Master ID mail: ' . json_encode($rsMaster));
-        log::info('Approval Token mail: ' . $approvalToken);
-        log::info('Reject Token mail: ' . $rejectToken);
+        $this->approvalNotReviewLink = $approvalNotReviewLink;
+        $this->approvalWithReviewLink = $approvalWithReviewLink;
+        $this->notApproveLink = $notApproveLink;
+
+        // Ensure these log entries are useful for debugging
+        Log::info('RsApprovalMail created.', [
+            'rsItems_count' => $this->rsItems->count(), // Log count instead of full array
+            'approver_name' => $approver->name,
+            'rs_master_id' => $rsMaster->id,
+            'approvalNotReviewLink' => $approvalNotReviewLink,
+        ]);
     }
 
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
     public function build()
-    {return $this->subject('Approval Request for Requisition Slip')
-        ->view('mail.sendNotifAprroval')
-        ->with([
-            'rsItems' => $this->rsItems,
-            'rsMaster' => $this->rsMaster, 
-            'approver' => $this->approver,
-            'approvalUrl' => route('rs.approve', ['token' => $this->approvalToken]),
-            'rejectUrl' => route('rs.reject', ['token' => $this->rejectToken]),
-        ]);
-    
+    {
+        return $this->subject('Approval Request for Requisition Slip: ' . $this->rsMaster->rs_no)
+            ->view('mail.sendNotifAprroval')
+            ->with([
+                'rsItems' => $this->rsItems,
+                'rsMaster' => $this->rsMaster,
+                'approver' => $this->approver,
+                // These are the simple approve/reject links from before (keep if still used)
+                'approvalUrl' => route('rs.approve', ['token' => $this->approvalToken]),
+                'rejectUrl' => route('rs.reject', ['token' => $this->rejectToken]),
+                // Pass the specific action links to the view
+                'approvalNotReviewLink' => $this->approvalNotReviewLink,
+                'approvalWithReviewLink' => $this->approvalWithReviewLink,
+                'notApproveLink' => $this->notApproveLink,
+            ]);
     }
-                       
 }

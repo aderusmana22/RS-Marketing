@@ -2,6 +2,7 @@
 
 namespace App\Models\RS;
 
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\RS\RSItem;
@@ -29,4 +30,13 @@ class RSMaster extends Model
     {
         return $this->belongsTo(User::class, 'initiator_nik', 'nik');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    protected $casts = [
+        'date' => 'date',
+    ];
 }
