@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();;
             $table->string('rs_no', 255);
             $table->foreignId('revision_id')->constrained('revisions')->cascadeOnDelete();;
-            $table->string('rs_number', 255);
             $table->date('date');
             $table->string('reason', 255);
             $table->string('objectives', 255);

@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('nik');
             $table->integer('level');
             $table->string('status')->default('pending');
+            $table->string('comment')->nullable();
             $table->text('level')->nullable();
+
             $table->timestamps();
         });
     }
