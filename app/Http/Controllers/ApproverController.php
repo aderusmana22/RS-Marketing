@@ -27,7 +27,7 @@ class ApproverController extends Controller
 
         \confirmDelete();
         return view('page.rs.approver', compact('approvers', 'users', 'roles', 'levels'));
-       
+
     }
 
     /**
@@ -35,12 +35,12 @@ class ApproverController extends Controller
      */
     public function create()
     {
-        
+
         $users = User::all(); // ambil semua user untuk pilih NIK
         $roles = Role::pluck('name', 'name')->all(); // ambil semua role
 
         return view('page.rs.approvers.create', compact('users', 'roles'));
-        
+
     }
 
     /**
@@ -57,7 +57,7 @@ class ApproverController extends Controller
                 'role' => 'nullable|string|max:50',
                 'level' => 'required|integer|max:50'
             ]);
-             
+
             $approver = Approver::create([
                 'nik' => $request->input('nik'),
                 'role' => $request->input('role'),
@@ -68,7 +68,7 @@ class ApproverController extends Controller
             Alert::success('Success', 'Approver has been created successfully');
             return redirect()->route('rs.approver')->with('success', 'Approver has been created successfully');
 
-            
+
         } catch (\Exception $e) {
             DB::rollback();
             \dd($e);
@@ -80,7 +80,7 @@ class ApproverController extends Controller
         //     'role' => 'required|integer|max:50|unique:rs_approver,role',
         //     'level' => 'required|integer|max:50|unique:rs_approver,level'
         // ]);
-         
+
         // $approver = Approver::create([
         //     'nik' => $request->input('nik'),
         //     'role' => $request->input('role'),
@@ -94,17 +94,6 @@ class ApproverController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Approvers $approvers)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Approver $approvers)
     {
         $roles = Role::pluck('name','name')->all();
@@ -132,7 +121,7 @@ class ApproverController extends Controller
         $approvers->level = $request->input('level');
         $approvers->save();
         Alert::success('Success', 'Approver has been updated successfully');
-        return redirect()->route('rs.approver')->with('success', 'Approver has been updated successfully');          
+        return redirect()->route('rs.approver')->with('success', 'Approver has been updated successfully');
 
 
     }

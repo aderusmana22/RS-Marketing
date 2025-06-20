@@ -16,19 +16,7 @@ class ItemmasterController extends Controller
      */
     public function index()
     {
-        // $items = [
-           
-        
-        // foreach ($items as $item) {
-        //     DB::table('item_masters')->insert([
-        //         'parent_item_name' => $item['parent_item_name'],
-        //         'parent_item_code' => $item['parent_item_code'],
-        //         'created_at' => Carbon::now(),
-        //         'updated_at' => Carbon::now(),
-        //     ]);
 
-        // }
-        
         $items = Itemmaster::all();
         \confirmDelete();
         return view('page.masterdata.itemmaster.index', compact('items'));
@@ -43,8 +31,8 @@ class ItemmasterController extends Controller
         // Dialog Sweet Alert
         $items = Itemmaster::all();
         return view('page.masterdata.itemmaster.create', compact('items'));
-        
-      
+
+
     }
 
     /**
@@ -70,7 +58,7 @@ class ItemmasterController extends Controller
      */
     public function show(Itemmaster $itemmaster)
     {
-        
+
     }
 
     /**
@@ -78,7 +66,7 @@ class ItemmasterController extends Controller
      */
     public function edit(Itemmaster $itemmaster)
     {
-        
+
     }
 
     /**
@@ -92,7 +80,7 @@ class ItemmasterController extends Controller
                 'parent_item_code' => 'required|string|max:255',
                 'parent_item_name' => 'required|string|max:255',
             ]);
-        
+
 
             $itemmaster = Itemmaster::findOrFail($id);
             $itemmaster->update($request->all());
@@ -105,7 +93,7 @@ class ItemmasterController extends Controller
             Alert::error('Error! '. $e , 'Item not found');
             return redirect()->route('item-master.index');
         }
-        
+
     }
 
     /**

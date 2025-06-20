@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Master\Approvers;
+use App\Models\RS\RSMaster;
 use Illuminate\Http\Request;
 
 class ApproversController extends Controller
@@ -21,7 +22,7 @@ class ApproversController extends Controller
 
     public function rsMaster()
     {
-        return $this->belongsTo(\App\Models\RSMaster::class, 'rs_id');
+        return $this->belongsTo(RSMaster::class, 'rs_id');
     }
 
     public function showApprovalList($rs_id)
@@ -29,7 +30,7 @@ class ApproversController extends Controller
         $rsList = Approvers::where('rs_id', $rs_id)->get();
         return response()->json($rsList);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -37,7 +38,7 @@ class ApproversController extends Controller
     public function index()
     {
         //
-        
+
     }
 
     /**
