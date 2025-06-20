@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('table_rs_approvals', function (Blueprint $table) {
             $table->id();
+            $table->string('rs_no');
             $table->string('nik');
             $table->integer('level');
             $table->string('status')->default('pending');
