@@ -24,6 +24,7 @@ use App\Http\Controllers\ItemmasterController;
 use App\Http\Controllers\ItemdetailController;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\RevisionsController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
@@ -81,32 +82,6 @@ Route::middleware('auth')->group(function () {
     })->name('notifications.count');
     Route::delete('/notifications/clear', [PermissionController::class, 'clearAll'])->name('notifications.clear');
 
-
-    // // =============================================================PRE MPDR=================================================================
-    // Route::prefix('prempdr')->group(function () {
-    //     Route::get('/', [PreMpdrController::class, 'index'])->name('prempdr.index');
-    //     Route::get('/create', [PreMpdrController::class, 'create'])->name('prempdr.create');
-    //     Route::get('/edit/{id}', [PreMpdrController::class, 'edit'])->name('prempdr.edit');
-    //     Route::patch('/update/{id}', [PreMpdrController::class, 'update'])->name('prempdr.update');
-    //     Route::delete('/destroy/{id}', [PreMpdrController::class, 'destroy'])->name('prempdr.destroy');
-    //     Route::get('/report', [PreMpdrController::class, 'report'])->name('prempdr.report');
-    //     Route::get('/approval', [PreMpdrController::class, 'approval'])->name('prempdr.approval');
-    //     Route::get('/log', [PreMpdrController::class, 'log'])->name('prempdr.log');
-    // });
-
-
-
-    // // =============================================================MPDR=================================================================
-    // Route::prefix('mpdr')->group(function () {
-    //     Route::get('/', [MpdrController::class, 'index'])->name('mpdr.index');
-    //     Route::get('/create', [MpdrController::class, 'create'])->name('mpdr.create');
-    //     Route::get('/edit/{id}', [MpdrController::class, 'edit'])->name('mpdr.edit');
-    //     Route::patch('/update/{id}', [MpdrController::class, 'update'])->name('mpdr.update');
-    //     Route::delete('/destroy/{id}', [MpdrController::class, 'destroy'])->name('mpdr.destroy');
-    //     Route::get('/report', [MpdrController::class, 'report'])->name('mpdr.reports');
-    //     Route::get('/approval', [MpdrController::class, 'approval'])->name('mpdr.approval');
-    //     Route::get('/log', [MpdrController::class, 'log'])->name('mpdr.log');
-    // });
 
 
     // =============================================================RS=================================================================
@@ -174,26 +149,24 @@ Route::middleware('auth')->group(function () {
         Route::get('/revisionedit/update/{id}', [RevisionsController::class, 'edit'])->name('revisions.edit');
         Route::put('/revisionupdate/update/{id}', [RevisionsController::class, 'update'])->name('revisions.update');
     });
-
-
 });
 
 // =============================================================MAIL=================================================================
 Route::group(['prefix' => 'requisition/approval', 'as' => 'rs.'], function () {
     // Route for "Approved (No Review)"
     Route::get('approved-no-review/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'approvedNoReview'])
-         ->name('approved-no-review');
+        ->name('approved-no-review');
 
     // Route for "Approve with Review"
     Route::get('approved-with-review/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'approvedWithReview'])
-         ->name('approved-with-review');
+        ->name('approved-with-review');
 
     // Route for "Not Approve"
     Route::get('not-approved/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'notApproved'])
-         ->name('not-approved');
+        ->name('not-approved');
 });
 
-Route::group(['middleware' => ['role:super-admin|admin']], function() {
+Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', PermissionController::class);
     Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
@@ -205,9 +178,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
     Route::resource('users', UserController::class);
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
-
 });
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -224,7 +224,7 @@ class RequistionSlipController extends Controller
                     'nik' => $approver->nik,
                     'level' => $approverLevel, // The level of the current approver
                     'status' => 'pending', // Initial status for this approval step
-                    'token' => $approvalToken, // Using the approval token for this step
+                    'token' => $uniqueToken, // Using the approval token for this step
                 ]);
                 Log::info('RsApproval record created for first approver: ' . $approver->nik . ' Level: ' . $approverLevel);
                 // --- END NEW ---
