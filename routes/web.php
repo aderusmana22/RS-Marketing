@@ -24,6 +24,7 @@ use App\Http\Controllers\ItemmasterController;
 use App\Http\Controllers\ItemdetailController;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\RevisionsController;
+use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
@@ -60,6 +61,7 @@ Route::get('/create-symlink', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+    
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -120,7 +122,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('/update/{id}', [RequistionSlipController::class, 'update'])->name('rs.update');
         Route::delete('/destroy/{id}', [RequistionSlipController::class, 'destroy'])->name('rs.destroy');
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
-        
+        Route::get('/getLog', [LogController::class, 'log'])->name('rs.getLog');
+
         Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
         Route::get('/approver', [ApproverController::class, 'index'])->name('rs.approver');
         Route::get('/approvercreate/{id}', [ApproverController::class, 'create'])->name('rs.approver.create');

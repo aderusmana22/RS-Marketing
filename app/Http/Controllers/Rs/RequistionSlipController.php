@@ -174,7 +174,14 @@ class RequistionSlipController extends Controller
             dispatch(new SendRsApprovalEmail($approver, $rsMaster, $rsItems, $approvalToken, $rejectToken));
         }
 
-
+        $user = Auth::user();
+        activity()
+        ->performedOn($form)
+            ->inLog('RS')
+            ->event('Create')
+            ->causedBy($user)
+            ->withProperties(['no' => $rsMaster['rs_no'], 'action' => 'created'])
+            ->log('Create Requisition Form ' . $request->input('rs_no') . ' by ' . (Auth::user() ? Auth::user()->name : 'unknown') . ' at ' . now());
 
 
 
