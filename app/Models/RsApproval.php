@@ -13,7 +13,7 @@ class RsApproval extends Model
     protected $table = 'rs_approvals';
 
     protected $fillable = [
-        'rs_no', 'nik','level','status','token',
+        'rs_no', 'nik','level','status','comment','token',
     ];
 
     public function rsMaster()

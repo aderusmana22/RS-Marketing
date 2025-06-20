@@ -4,8 +4,7 @@
     @endsection
 
     @push('css')
-        <link rel="stylesheet" href="{{ asset('assets/libs/select2/dist/css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets') }}/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+
 
         <style>
             .select2-container {
@@ -355,10 +354,7 @@
     @endforeach
 
     @push('scripts')
-    <script src="{{ asset('assets/libs/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/select2/dist/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets') }}/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('assets') }}/js/datatable/datatable-basic.init.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             $('.select2').select2();
@@ -393,7 +389,7 @@
                 });
             }
 
-            
+
 
             // Initialize modal listeners on page load
             initializeModalListeners();

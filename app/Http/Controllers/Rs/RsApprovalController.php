@@ -70,7 +70,7 @@ class RsApprovalController extends Controller
             $this->processApprovalWorkflow($rsMaster, $approver_nik, 'approved_no_review', null, $currentRsApprovalRecord);
 
             $successMessage = 'Requisition Slip ' . $rsMaster->rs_no . ' has been approved without review.';
-            return redirect()->route('rs.success', [
+            return view('page.rs.success', [
                 'rs_no' => $rsMaster->rs_no,
                 'message' => $successMessage
             ]);
@@ -109,10 +109,10 @@ class RsApprovalController extends Controller
                 ->where('status', 'pending')
                 ->first();
 
-            if (!$currentRsApprovalRecord || $uniqueTokenFromToken !== $currentRsApprovalRecord->token) {
-                $message = 'Invalid or expired token. Please check another email.';
-                return view('page.rs.success', compact('message', 'rsMaster'));
-            }
+            // if (!$currentRsApprovalRecord || $uniqueTokenFromToken !== $currentRsApprovalRecord->token) {
+            //     $message = 'Invalid or expired token. Please check another email.';
+            //     return view('page.rs.success', compact('message', 'rsMaster'));
+            // }
 
             if ($actionFromToken !== 'approve') {
                 $message = 'Invalid link action. This link is for a different purpose.';
@@ -150,7 +150,7 @@ class RsApprovalController extends Controller
             $this->processApprovalWorkflow($rsMaster, $approver_nik, 'approved_with_review', $comment, $currentRsApprovalRecord);
 
             $successMessage = 'Requisition Slip ' . $rsMaster->rs_no . ' has been approved with review.';
-            return redirect()->route('rs.success', [
+            return view('page.rs.success', [
                 'rs_no' => $rsMaster->rs_no,
                 'message' => $successMessage
             ]);
@@ -230,7 +230,7 @@ class RsApprovalController extends Controller
             $this->processApprovalWorkflow($rsMaster, $approver_nik, 'not_approved', $comment, $currentRsApprovalRecord);
 
             $successMessage = 'Requisition Slip ' . $rsMaster->rs_no . ' has been Not Approved.';
-            return redirect()->route('rs.success', [
+            return view('page.rs.success', [
                 'rs_no' => $rsMaster->rs_no,
                 'message' => $successMessage
             ]);
@@ -282,13 +282,14 @@ class RsApprovalController extends Controller
             throw new \Exception("Pemberi persetujuan saat ini tidak ditemukan.");
         }
 
-        // Perbarui catatan RsApproval saat ini (atur tokennya menjadi null).
+        // Perbarui catatan RsApproval saat ini (set status, token ke null, dan simpan komentar)
         if ($currentRsApprovalRecord) {
             $currentRsApprovalRecord->update([
                 'status' => $newStatus, // Perbarui status langkah persetujuan spesifik ini
                 'token' => null,        // Nullkan token untuk langkah spesifik ini
+                'comment' => $comment,  // Simpan komentar di RsApproval
             ]);
-            Log::info('Catatan RsApproval diperbarui dan token dinullkan untuk ' . $rsMaster->rs_no . ' oleh ' . $currentApproverNik . ' ke status: ' . $newStatus);
+            Log::info('Catatan RsApproval diperbarui dan token dinullkan untuk ' . $rsMaster->rs_no . ' oleh ' . $currentApproverNik . ' ke status: ' . $newStatus . ' Komentar: ' . ($comment ?? 'N/A'));
         } else {
             Log::warning('Tidak ada catatan RsApproval yang diberikan ke processApprovalWorkflow untuk menullkan token untuk RS: ' . $rsMaster->rs_no . ' oleh NIK: ' . $currentApproverNik);
         }
@@ -297,11 +298,11 @@ class RsApprovalController extends Controller
         $rsMaster->update([
             'last_approved_by_nik' => $currentApproverNik,
             'last_approved_at' => now(),
-            'comment' => $comment,
-            'status' => $newStatus, // Status ini mencerminkan tindakan segera yang diambil (misalnya, 'approved_with_review')
+            // Status di RSMaster hanya diatur di akhir atau jika 'rejected' atau 'pending' untuk next approver.
         ]);
 
         if ($newStatus === 'not_approved') {
+            // Jika ditolak, set status final ke 'rejected' dan akhiri alur kerja.
             $rsMaster->update([
                 'status' => 'rejected', // Status alur kerja final.
                 'route_to' => null,     // Tidak ada lagi perutean yang diperlukan setelah penolakan.
@@ -316,7 +317,7 @@ class RsApprovalController extends Controller
                     $initiator,
                     $rsMaster,
                     'rejected',
-                    $comment,
+                    $comment, // Komentar yang dikirimkan untuk notifikasi final (dari RsApproval)
                     $currentApproverUser
                 ));
                 Log::info('Job notifikasi penolakan final dikirimkan ke inisiator: ' . $initiator->email . ' untuk RS: ' . $rsMaster->rs_no);
@@ -327,20 +328,21 @@ class RsApprovalController extends Controller
                     $adminUser,
                     $rsMaster,
                     'rejected',
-                    $comment,
+                    $comment, // Komentar yang dikirimkan untuk notifikasi final (dari RsApproval)
                     $currentApproverUser
                 ));
                 Log::info('Job notifikasi penolakan final dikirimkan ke admin-rs: ' . $adminUser->email . ' untuk RS: ' . $rsMaster->rs_no);
             }
-        } else { // 'approved_no_review' atau 'approved_with_review'
+        } else { // 'approved_no_review' atau 'approved_with_review' (proses persetujuan berlanjut)
 
             // Temukan level pemberi persetujuan saat ini dalam tabel setup 'Approver'.
-            $currentApprovalSetup = RsApproval::where('nik', $currentApproverNik)
-                ->first();
+            // Catatan: Tidak perlu lagi currentApproverRole.
+            $currentApprovalSetup = Approver::where('nik', $currentApproverNik)->first();
 
             $nextApprovalSetup = null;
             if ($currentApprovalSetup) {
                 $nextLevel = $currentApprovalSetup->level + 1;
+                // --- PERUBAHAN DI SINI: Hanya cari berdasarkan level ---
                 $nextApprovalSetup = Approver::where('level', $nextLevel)->first();
             }
 
@@ -348,12 +350,14 @@ class RsApprovalController extends Controller
                 $nextApproverUser = User::where('nik', $nextApprovalSetup->nik)->first();
 
                 if ($nextApproverUser) {
+                    // Masih ada pemberi persetujuan berikutnya
                     $rsMaster->update([
                         'route_to' => $nextApproverUser->nik,
-                        'status' => 'pending',
+                        'status' => 'pending', // Tetap 'pending' karena perlu persetujuan lagi.
                     ]);
                     Log::info('Requisition Slip ' . $rsMaster->rs_no . ' dirutekan ke pemberi persetujuan berikutnya: ' . $nextApproverUser->email);
 
+                    // Re-fetch data RSItem dan Customer untuk email ke pemberi persetujuan berikutnya
                     $rsItemRecord = RSItem::where('rs_id', $rsMaster->id)->first();
                     $rsItemsForEmail = collect();
                     if ($rsItemRecord && is_array($rsItemRecord->item_id) && count($rsItemRecord->item_id) > 0) {
@@ -374,6 +378,7 @@ class RsApprovalController extends Controller
                     }
                     $rsMaster->load('customer');
 
+                    // Generate token dan link baru untuk pemberi persetujuan berikutnya
                     $newUniqueToken = (string) Str::uuid();
                     $approvalToken = Crypt::encryptString($rsMaster->rs_no . '|' . $newUniqueToken . '|approve');
                     $rejectToken = Crypt::encryptString($rsMaster->rs_no . '|' . $newUniqueToken . '|reject');
@@ -411,8 +416,8 @@ class RsApprovalController extends Controller
                         'rs_no' => $rsMaster->rs_no,
                         'nik' => $nextApproverUser->nik,
                         'level' => $nextLevel,
-                        'status' => 'pending',
-                        'token' => $newUniqueToken,
+                        'status' => 'pending', // Status awal untuk langkah persetujuan ini
+                        'token' => $newUniqueToken, // Token untuk langkah persetujuan berikutnya
                     ]);
                     Log::info('Catatan RsApproval dibuat untuk pemberi persetujuan berikutnya: ' . $nextApproverUser->nik . ' Level: ' . $nextLevel);
 
@@ -428,20 +433,23 @@ class RsApprovalController extends Controller
                         Log::info('Job notifikasi persetujuan menengah dikirimkan ke inisiator ' . $initiator->email . ' untuk RS: ' . $rsMaster->rs_no);
                     }
                 } else {
+                    // Next approver user tidak ditemukan di tabel Pengguna
                     Log::error("Pemberi persetujuan berikutnya (NIK: {$nextApprovalSetup->nik}) tidak ditemukan dalam tabel Pengguna untuk RS: " . $rsMaster->rs_no . ". Mengakhiri alur kerja.");
+                    // Set status final ke 'approved' karena tidak ada pengguna berikutnya yang valid
                     $rsMaster->update([
-                        'status' => 'approved', // Tetapkan ke status disetujui final karena tidak ada pengguna berikutnya yang valid.
+                        'status' => 'approved',
                         'route_to' => null,
                     ]);
                 }
             } else {
-                // Tidak ada lagi level persetujuan yang ditentukan (menyiratkan persetujuan final).
+                // Tidak ada lagi level persetujuan yang ditentukan di tabel Approver (menyiratkan persetujuan final).
                 Log::info('Tidak ada lagi level persetujuan yang ditentukan untuk RS ' . $rsMaster->rs_no . '. Persetujuan final tercapai.');
                 $rsMaster->update([
-                    'status' => 'approved', // Tetapkan ke status disetujui final.
+                    'status' => 'approved', // Set status final ke 'approved'.
                     'route_to' => null,
                 ]);
 
+                // NOTIFIKASI: Persetujuan Final
                 $initiator = User::where('nik', $rsMaster->initiator_nik)->first();
                 $adminRsUsers = User::role('admin-rs')->get();
 
@@ -450,7 +458,7 @@ class RsApprovalController extends Controller
                         $initiator,
                         $rsMaster,
                         'approved',
-                        $comment,
+                        $comment, // Komentar yang dikirimkan untuk notifikasi final (dari RsApproval)
                         $currentApproverUser
                     ));
                     Log::info('Job notifikasi persetujuan final dikirimkan ke inisiator: ' . $initiator->email . ' untuk RS: ' . $rsMaster->rs_no);
@@ -461,7 +469,7 @@ class RsApprovalController extends Controller
                         $adminUser,
                         $rsMaster,
                         'approved',
-                        $comment,
+                        $comment, // Komentar yang dikirimkan untuk notifikasi final (dari RsApproval)
                         $currentApproverUser
                     ));
                     Log::info('Job notifikasi persetujuan final dikirimkan ke admin-rs: ' . $adminUser->email . ' untuk RS: ' . $rsMaster->rs_no);

@@ -384,7 +384,7 @@
                     style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <div class="email-description">
                         <p style="margin: 0; font-size: 16px; color: #050505; line-height: 1.5;">
-                            <strong>Dear All:</strong> Form Requisition has been submitted for your approval.<br>
+                            <strong>Dear Approver: {{ $approver->name }}</strong><br>
                         </p>
                     </div>
                     <div class="form-number">
@@ -401,7 +401,7 @@
                     </div>
                     <div class="info-item">
                         <div class="info-label">Address</div>
-                        <div class="info-value">{{ $rsMaster->address }}</div>
+                        <div class="info-value">{{ $rsMaster->customer->address ?? 'N/A' }}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Tanggal</div>

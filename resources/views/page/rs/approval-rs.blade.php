@@ -47,8 +47,6 @@
     </div>
 
     @push('scripts')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
 
         <script>
             $(document).ready(function() {
@@ -72,7 +70,7 @@
                                 const viewUrl = "{{ route('rs.status', ':id') }}".replace(':id', row.no);
                                 const approveUrl = "{{ route('rs.approve', ':id') }}".replace(':id', row.no);
                                 const rejectUrl = "{{ route('rs.reject', ':id') }}".replace(':id', row.no);
-                                
+
                                 return `
                                     <a href="${viewUrl}" class="btn btn-sm btn-info">View</a>
                                     <a href="${approveUrl}" class="btn btn-sm btn-success mx-1">Approve</a>
