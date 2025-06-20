@@ -69,7 +69,7 @@
                     <label class="form-label">Category:</label>
                     <select class="form-select form-select-sm" name="category" id='selectcat'>
                         <option selected disabled>Select</option>
-                        <option value="Packaging">Packaging</option>
+                        {{-- <option value="Packaging">Packaging</option> --}}
                         <option value="Sample Product">Sample Product</option>
                     </select>
                 </div>
