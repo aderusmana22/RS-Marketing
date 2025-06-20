@@ -21,6 +21,8 @@
 
     <!-- Scripts -->
     @stack('css')
+    <link rel="stylesheet" href="{{ asset('assets/libs/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets') }}/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
 
     <style>
         .turbolinks-progress-bar {
@@ -269,13 +271,12 @@
     <script src="{{ asset('assets') }}/js/theme/theme.js"></script>
     <script src="{{ asset('assets') }}/js/theme/app.min.js"></script>
     <script src="{{ asset('assets') }}/js/theme/sidebarmenu.js"></script>
+    <script src="{{ asset('assets/libs/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets') }}/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('assets') }}/js/datatable/datatable-basic.init.js"></script>
 
-    <!-- solar icons -->
-    {{-- <script src="{{ asset('assets') }}/npm/iconify-icon%401.0.8/dist/iconify-icon.min.js"></script> --}}
-    {{-- <script src="{{ asset('assets') }}/libs/owl.carousel/dist/owl.carousel.min.js"></script> --}}
-    <!-- {{-- <script src="{{ asset('assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script> --}} -->
-    <!-- <script src="{{ asset('assets') }}/js/dashboards/dashboard2.js"></script> -->
-
+    
     @stack('scripts')
 </body>
 
