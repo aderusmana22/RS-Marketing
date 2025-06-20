@@ -69,4 +69,16 @@ class SendRsApprovalEmail implements ShouldQueue
         Mail::to($this->approver->email)->send(new RsApprovalMail($this->rsItems, $this->approver, $this->rsMaster, $this->approvalToken, $this->rejectToken, 
             $approvalNotReviewLink, $approvalWithReviewLink, $notApproveLink));
     }
+
+    Public function getApprovalLink($status)
+    {
+        return route('rs.approval', [
+            'rs_master_id' => $this->rsMaster->id,
+            'approver_nik' => $this->approver->nik,
+            'status' => $status,
+            'token' => $this->approvalToken
+        ]);
+    }
+
+    
 }
