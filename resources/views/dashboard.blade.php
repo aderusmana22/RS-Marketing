@@ -4,12 +4,10 @@
     @endsection
 
     @push('css')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.css">
+        {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.css"> --}}
     @endpush
 
-    <!-- Breadcrumb -->
     <div class="row">
-        <!-- Welcome Card - Full Width -->
         <div class="col-12 d-flex align-items-stretch mb-4">
             <div class="card w-100 bg-primary-subtle overflow-hidden shadow-none">
                 <div class="card-body position-relative">
@@ -32,7 +30,7 @@
                                 </div>
                                 <div class="ps-4">
                                     <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">40<i class="ti ti-arrow-up-right fs-5 lh-base text-success"></i></h3>
-                                    <p class="mb-0 text-dark">Overall Requisition Slip</p>
+                                    <p class="mb-0 text-dark">Total Requisition Slip</p>
                                 </div>
                             </div>
                         </div>
@@ -46,8 +44,7 @@
             </div>
         </div>
 
-        <!-- Main Dashboard Cards Row -->
-        <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+        <div class="col-lg-6 d-flex align-items-stretch">
             <div class="card w-100">
                 <div class="card-body">
                     <h4 class="card-title fw-semibold">Requisition Slip Updates</h4>
@@ -66,39 +63,8 @@
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
-            <div class="card w-100">
-                <div class="card-body">
-                    <h4 class="card-title fw-semibold">Requesition Slip Overview</h4>
-                    <p class="card-subtitle mb-2">Monthly Requests</p>
-                    <div id="sales-overview" class="mb-4"></div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-primary-subtle text-primary rounded-2 me-8 p-8 d-flex align-items-center justify-content-center">
-                                <i class="ti ti-grid-dots fs-6"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-semibold text-dark fs-4 mb-0">Pending</h6>
-                                <p class="fs-3 mb-0 fw-normal">Requests</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="bg-secondary-subtle text-secondary rounded-2 me-8 p-8 d-flex align-items-center justify-content-center">
-                                <i class="ti ti-grid-dots fs-6"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-semibold text-dark fs-4 mb-0">Approved</h6>
-                                <p class="fs-3 mb-0 fw-normal">Requests</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Monthly Requisitions Card - Expanded -->
-        <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="col-lg-6 d-flex align-items-stretch">
             <div class="card w-100">
                 <div class="card-body">
                     <div class="row align-items-start">
@@ -127,8 +93,7 @@
             </div>
         </div>
 
-        <!-- Second Row -->
-        <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+        <div class="col-lg-4 d-flex align-items-stretch"> {{-- Changed from col-lg-6 to col-lg-4 --}}
             <div class="card w-100">
                 <div class="card-body">
                     <h4 class="card-title fw-semibold">Weekly Requisition Stats</h4>
@@ -182,72 +147,204 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+        <div class="col-lg-8 d-flex align-items-stretch"> {{-- Changed from col-lg-6 to col-lg-8 --}}
             <div class="card w-100">
                 <div class="card-body">
-                    <div>
-                        <h4 class="card-title fw-semibold">Yearly Requisitions</h4>
-                        <p class="card-subtitle">Every month</p>
-                        <div id="salary" class="mb-7 pb-8 mx-n4"></div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-primary-subtle text-primary rounded-2 me-8 p-8 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-grid-dots fs-6"></i>
-                                </div>
-                                <div>
-                                    <p class="fs-3 mb-0 fw-normal">Total Requests</p>
-                                    <h6 class="fw-semibold text-dark fs-4 mb-0">36,358</h6>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="bg-light-subtle text-muted rounded-2 me-8 p-8 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-grid-dots fs-6"></i>
-                                </div>
-                                <div>
-                                    <p class="fs-3 mb-0 fw-normal">Expenses</p>
-                                    <h6 class="fw-semibold text-dark fs-4 mb-0">5,296</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <h4 class="card-title fw-semibold">Requisition Slip Overview</h4>
+                    <p class="card-subtitle mb-2">Monthly Requests</p>
 
-        <!-- Request Summary Card -->
-        <div class="col-md-12 col-lg-4 d-flex align-items-stretch">
-            <div class="card w-100">
-                <div class="card-body">
-                    <h4 class="card-title fw-semibold">Request Summary</h4>
-                    <p class="card-subtitle mb-4">Overall Performance</p>
-                    <div id="expense" class="mb-4"></div>
-                    <div class="d-flex align-items-center justify-content-between">
+                    {{-- Combined Status indicators and Filter controls --}}
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        {{-- Left side: Pending & Approved indicators --}}
                         <div class="d-flex align-items-center">
-                            <div class="bg-warning-subtle text-warning rounded-2 me-8 p-8 d-flex align-items-center justify-content-center">
-                                <i class="ti ti-clock fs-6"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-semibold text-dark fs-4 mb-0">Processing</h6>
-                                <p class="fs-3 mb-0 fw-normal">In Progress</p>
-                            </div>
+                            <a href="#" id="pending-requests-link" class="d-flex align-items-center text-decoration-none me-4" onclick="handlePendingClick()">
+                                <div class="bg-primary-subtle text-primary rounded-2 me-2 p-2 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-grid-dots fs-6"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-semibold text-dark fs-4 mb-0" id="pending-requests-count">20</h6> {{-- Example count --}}
+                                    <p class="fs-3 mb-0 fw-normal">Pending</p>
+                                </div>
+                            </a>
+                            <a href="#" id="approved-requests-link" class="d-flex align-items-center text-decoration-none" onclick="handleApprovedClick()">
+                                <div class="bg-success-subtle text-success rounded-2 me-2 p-2 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-grid-dots fs-6"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-semibold text-dark fs-4 mb-0" id="approved-requests-count">35</h6> {{-- Example count --}}
+                                    <p class="fs-3 mb-0 fw-normal">Approved</p>
+                                </div>
+                            </a>
                         </div>
-                        <div class="d-flex align-items-center">
-                            <div class="bg-success-subtle text-success rounded-2 me-8 p-8 d-flex align-items-center justify-content-center">
-                                <i class="ti ti-check fs-6"></i>
+
+                        {{-- Right side: Month and Year filters --}}
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <label for="monthFilter" class="form-label visually-hidden">Select Month</label>
+                                <select class="form-select" id="monthFilter">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06" selected>June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
                             </div>
                             <div>
-                                <h6 class="fw-semibold text-dark fs-4 mb-0">Completed</h6>
-                                <p class="fs-3 mb-0 fw-normal">Finished</p>
+                                <label for="yearFilter" class="form-label visually-hidden">Select Year</label>
+                                <select class="form-select" id="yearFilter">
+                                    </select>
                             </div>
                         </div>
                     </div>
+
+                    <div id="requisition-overview-chart" style="width: 100%; height: 300px;"></div>
                 </div>
             </div>
         </div>
     </div>
 
     @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
 
+        <script>
+            // Handle clicks for Pending
+            function handlePendingClick() {
+                alert('Pending requests clicked!');
+                // You can add logic here to redirect, filter data, etc.
+                // window.location.href = '/requisitions/pending';
+            }
+
+            // Handle clicks for Approved
+            function handleApprovedClick() {
+                alert('Approved requests clicked!');
+                // You can add logic here to redirect, filter data, etc.
+                // window.location.href = '/requisitions/approved';
+            }
+
+            // ECharts for Requisition Slip Overview
+            document.addEventListener('DOMContentLoaded', function() {
+                var chartDom = document.getElementById('requisition-overview-chart');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                // Function to generate dummy data for the chart based on month and year
+                function getChartData(month, year) {
+                    // This is dummy data. In a real app, you'd fetch this from your backend
+                    // via an AJAX call (e.g., Axios.get('/api/requisition-data?month=' + month + '&year=' + year))
+                    // For demonstration, we'll just return some varied data.
+
+                    const basePending = 100 + (month * 5) + (year - 2025) * 10;
+                    const baseApproved = 200 + (month * 10) + (year - 2025) * 15;
+
+                    return {
+                        pending: Array.from({length: 12}, (_, i) => Math.floor(basePending + Math.random() * 50 - 25)),
+                        approved: Array.from({length: 12}, (_, i) => Math.floor(baseApproved + Math.random() * 70 - 35))
+                    };
+                }
+
+                // Initialize month and year filters
+                const monthFilter = document.getElementById('monthFilter');
+                const yearFilter = document.getElementById('yearFilter');
+                const currentYear = new Date().getFullYear();
+                const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0'); // month is 0-indexed
+
+                // Populate year filter
+                for (let i = currentYear - 5; i <= currentYear + 5; i++) { // From 5 years ago to 5 years in future
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    if (i === currentYear) {
+                        option.selected = true;
+                    }
+                    yearFilter.appendChild(option);
+                }
+
+                // Set current month as selected in the filter
+                monthFilter.value = currentMonth;
+
+
+                // Function to update the chart
+                function updateChart() {
+                    const selectedMonth = monthFilter.value;
+                    const selectedYear = yearFilter.value;
+                    const data = getChartData(parseInt(selectedMonth), parseInt(selectedYear));
+
+                    option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: ['Pending', 'Approved'],
+                            show: true,
+                            top: 'bottom'
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '10%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                name: 'Pending',
+                                type: 'bar',
+                                stack: 'total',
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: data.pending, // Use dynamic data
+                                itemStyle: {
+                                    color: '#5D87FF'
+                                }
+                            },
+                            {
+                                name: 'Approved',
+                                type: 'bar',
+                                stack: 'total',
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                data: data.approved, // Use dynamic data
+                                itemStyle: {
+                                    color: '#28a745' // Green color for Approved
+                                }
+                            }
+                        ]
+                    };
+
+                    myChart.setOption(option);
+                }
+
+                // Add event listeners to filters
+                monthFilter.addEventListener('change', updateChart);
+                yearFilter.addEventListener('change', updateChart);
+
+                // Initial chart render
+                updateChart();
+
+                // Optional: Resize chart with window
+                window.addEventListener('resize', function () {
+                    myChart.resize();
+                });
+            });
+        </script>
     @endpush
 
 </x-app-layout>
