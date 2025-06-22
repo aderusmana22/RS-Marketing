@@ -367,72 +367,66 @@
                 $('#print-form').attr('target', '_blank');
             }
 
-            $('#text-srh1').on('keyup', function() {
+            $('#text-srh1').on('input', function() {
                 var value = $(this).val().toLowerCase();
-                var filtered = forms.filter(function(form) {
-                    // Filter berdasarkan category, rs_no, atau new_created_at
-                    return (
+                var listForm = '';
+                forms.forEach((form, index) => {
+                    // Cek apakah form cocok dengan filter
+                    if (
                         (form.category && form.category.toLowerCase().includes(value)) ||
                         (form.rs_no && form.rs_no.toLowerCase().includes(value)) ||
                         (form.new_created_at && form.new_created_at.toLowerCase().includes(value))
-                    );
-                });
-
-                var listForm = '';
-                filtered.forEach((form, index) => {
-                    listForm +=
-                    `<a href="javascript:void(0)"
-                        class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
-                        onClick="changeForm(${index})">
-                        <div
-                            class="btn btn-primary round rounded-circle d-flex align-items-center justify-content-center px-2">
-                            <i class="ti ti-folder fs-6"></i>
-                        </div>
-                        <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-0 invoice-customer">${form.category}</h6>
-                            <span class="fs-3 invoice-id text-truncate text-body-color d-block w-85">
-                                ${form.rs_no}
-                            </span>
-                            <span class="fs-3 invoice-date text-nowrap text-body-color d-block">
-                                ${form.new_created_at}
-                            </span>
-                        </div>
-                    </a>`;
+                    ) {
+                        listForm +=
+                        `<a href="javascript:void(0)"
+                            class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
+                            onClick="changeForm(${index})">
+                            <div class="btn btn-primary round rounded-circle d-flex align-items-center justify-content-center px-2">
+                                <i class="ti ti-folder fs-6"></i>
+                            </div>
+                            <div class="ms-3 d-inline-block w-75">
+                                <h6 class="mb-0 invoice-customer">${form.category}</h6>
+                                <span class="fs-3 invoice-id text-truncate text-body-color d-block w-85">
+                                    ${form.rs_no}
+                                </span>
+                                <span class="fs-3 invoice-date text-nowrap text-body-color d-block">
+                                    ${form.new_created_at}
+                                </span>
+                            </div>
+                        </a>`;
+                    }
                 });
                 $('#list-form').html(listForm);
             });
 
-            $('#text-srh2').on('keyup', function() {
+            $('#text-srh2').on('input', function() {
                 var value = $(this).val().toLowerCase();
-                var filtered = forms.filter(function(form) {
-                    // Filter berdasarkan category, rs_no, atau new_created_at
-                    return (
+                var listForm = '';
+                forms.forEach((form, index) => {
+                    // Cek apakah form cocok dengan filter
+                    if (
                         (form.category && form.category.toLowerCase().includes(value)) ||
                         (form.rs_no && form.rs_no.toLowerCase().includes(value)) ||
                         (form.new_created_at && form.new_created_at.toLowerCase().includes(value))
-                    );
-                });
-
-                var listForm = '';
-                filtered.forEach((form, index) => {
-                    listForm +=
-                    `<a href="javascript:void(0)"
-                        class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
-                        onClick="changeForm(${index})">
-                        <div
-                            class="btn btn-primary round rounded-circle d-flex align-items-center justify-content-center px-2">
-                            <i class="ti ti-folder fs-6"></i>
-                        </div>
-                        <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-0 invoice-customer">${form.category}</h6>
-                            <span class="fs-3 invoice-id text-truncate text-body-color d-block w-85">
-                                ${form.rs_no}
-                            </span>
-                            <span class="fs-3 invoice-date text-nowrap text-body-color d-block">
-                                ${form.new_created_at}
-                            </span>
-                        </div>
-                    </a>`;
+                    ) {
+                        listForm +=
+                        `<a href="javascript:void(0)"
+                            class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
+                            onClick="changeForm(${index})">
+                            <div class="btn btn-primary round rounded-circle d-flex align-items-center justify-content-center px-2">
+                                <i class="ti ti-folder fs-6"></i>
+                            </div>
+                            <div class="ms-3 d-inline-block w-75">
+                                <h6 class="mb-0 invoice-customer">${form.category}</h6>
+                                <span class="fs-3 invoice-id text-truncate text-body-color d-block w-85">
+                                    ${form.rs_no}
+                                </span>
+                                <span class="fs-3 invoice-date text-nowrap text-body-color d-block">
+                                    ${form.new_created_at}
+                                </span>
+                            </div>
+                        </a>`;
+                    }
                 });
                 $('#list-form2').html(listForm);
             });

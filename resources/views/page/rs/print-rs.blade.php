@@ -58,14 +58,14 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th>ITEM CODE</th>
                             <th>NAMA BARANG</th>
                             <th>UNIT</th>
                             <th>QTY REQUIRED</th>
                             <th>QTY ISSUED</th>
-                            <th>{{$form->category == 'Sample Product' ? 'OBJECTIVES' : `REMARKS<br>(Batch Code)`}}</th>
-                            <th>{{$form->category == 'Sample Product' ? 'ESTIMATE POTENTIAL' : `REASON`}}</th>
+                            <th>{!! $form->category == 'Sample Product' ? 'OBJECTIVES' : 'REMARKS<br>(Batch Code)' !!}</th>
+                            <th>{{$form->category == 'Sample Product' ? 'ESTIMATE POTENTIAL' : 'REASON'}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,10 +103,10 @@
     
     <script>
         window.onload = function() {
-            window.print();
-            window.onafterprint = function() {
-                window.close();
-            };
+           window.print();
+           window.onafterprint = function() {
+               window.close();
+           };
         };
     </script>
 </body>
