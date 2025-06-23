@@ -4,8 +4,6 @@
     @endsection
 
     @push('css')
-        <link rel="stylesheet" href="{{ asset('assets/libs/select2/dist/css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets') }}/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
     @endpush
 
 
@@ -13,6 +11,7 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
+
                     <h4 class="fw-semibold mb-8">List Requisition Slip</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -73,7 +72,11 @@
                     }
                 },
                 columns: [
-                    { data: null, name: 'DT_RowIndex' },
+                    { data: null, name: 'DT_RowIndex',
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
                     { data: 'rs_no', name: 'rs_number' },
                     { data: 'category', name: 'category' },
                     { data: 'status', name: 'status',
@@ -86,18 +89,27 @@
                                 return '<span class="text-primary">' + data + '</span>';
                             } if (data == 'draft') {
                                 return '<span class="text-body-secondary">' + data + '</span>';
-                            } 
+                            }
                             return data;
                         }
                     },
-                    { data: 'initiator.name', name: 'route_to' },
+                    { data: 'route_to', name: 'route_to',
+                        render: function(data, type, row) {
+                            // Cek jika sudah ada row.route_to_name (dari backend), tampilkan nama
+                            if(row.route_to_name){
+                                return row.route_to_name + ' (' + data + ')';
+                            }
+                            // Jika tidak, tampilkan nik saja
+                            return data;
+                        }
+                    },
                     { data: null, name: 'action', orderable: false, searchable: false,
                         render: function(data, type, row) {
-                            const viewRoute = "{{ route('rs.list', ':id') }}".replace(':id', row.id);
+                            const viewRoute = "{{ route('rs.detail', ':id') }}".replace(':id', row.rs_no);
                             if (data.status === 'Draft') {
-                                const editRoute = "{{ route('rs.edit', ':id') }}".replace(':id', row.id);
-                                const deleteRoute = "{{ route('rs.destroy', ':id') }}".replace(':id', row.id);
-                            
+                                const editRoute = "{{ route('rs.edit', ':id') }}".replace(':id', row.rs_no);
+                                const deleteRoute = "{{ route('rs.destroy', ':id') }}".replace(':id', row.rs_no);
+
                                 return `
                                 <div class="d-flex gap-6">
                                     <a href="${editRoute}" class="btn btn-primary btn-sm">Edit</a>
@@ -112,7 +124,7 @@
                                     </form>
                                 </div>
                                 `;
-                            } 
+                            }
                             return `<a href="${viewRoute}" class="btn btn-danger btn-sm">View</a>`;
                         }
                     }
@@ -136,7 +148,7 @@
                     }
                 });
             }
-                
+
             // Function untuk konfirmasi send email to gm
             function confirmEmail(button){
                 var formNo = button.getAttribute('send-form-no');
@@ -156,5 +168,5 @@
             }
         </script>
     @endpush
-    
+
 </x-app-layout>

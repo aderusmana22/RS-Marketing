@@ -71,137 +71,191 @@ class RequistionSlipController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+     public function store(Request $request)
     {
-        $rsItems = RSItem::with('item_detail')
-            ->get();
-        dd($request->all(), $rsItems);
+        // dd($request->all());
 
-       try{
-        $request->validate([
-            'rs_no' => 'required|string|max:50',
-            'category' => 'required|string|max:255',
-            'customer_id' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'objectives' => 'nullable|string|max:255',
-            'reason' => 'nullable|string|max:255',
-            'account' => 'required|string|max:50',
-            'cost_center' => 'nullable|string|max:50',
-            'batch_code' => 'nullable|string|max:50',
-            'revision_id' => 'required|string|max:50',
-            'rs_number' => 'nullable|string|max:50|',
-            'est_potential' => 'nullable|string|max:50',
-            'date' => 'required|date',
-            'initiator_nik' => 'required|string|max:50',
-            'route_to' => 'nullable|string|max:50',
+        try {
+            $request->validate([
+                'rs_no' => 'required|string|max:50',
+                'category' => 'required|string|max:255',
+                'customer_id' => 'required|numeric',
+                'address' => 'required|string|max:255',
+                'objectives' => 'nullable|string|max:255',
+                'reason' => 'nullable|string|max:255',
+                'account' => 'required|string|max:50',
+                'cost_center' => 'nullable|string|max:50',
+                'batch_code' => 'nullable|string|max:50',
+                'revision_id' => 'required|string|max:50',
+                'rs_number' => 'nullable|string|max:50',
+                'est_potential' => 'nullable|string|max:50',
+                'date' => 'required|date',
+                'initiator_nik' => 'required|string|max:50',
+                'route_to' => 'nullable|string|max:50',
+                'item_detail_id' => 'required|array|min:1',
+                'item_detail_id.*' => 'numeric',
+                'qty_req' => 'required|array|min:1',
+                'qty_req.*' => 'numeric|min:0',
+                'qty_issued' => 'required|array|min:1',
+                'qty_issued.*' => 'numeric|min:0',
+            ]);
 
-
-        ]);
-
-        $initiator = $request->input('initiator_nik');
-        $initiator = User::where('nik', $initiator)->first();
-        if (!$initiator) {
-            return response()->json(['error' => 'Invalid approver'], 422);
-        }
-
-        $approver = null;
-        $userRole = $initiator->getRoleNames(); 
-        foreach ($userRole as $role) {
-            $approverRole = Approver::where('role', $role)->where('level', 1)->first();
-            if ($approverRole) {
-                $approver = User::where('nik', $approverRole->nik)->first();
-                if ($approver) break;
+            $initiator = $request->input('initiator_nik');
+            $initiator = User::where('nik', $initiator)->first();
+            if (!$initiator) {
+                Alert::error('Error', 'Invalid initiator selected.');
+                return redirect()->back()->withInput();
             }
-        }
-        Log::info('Approver found', [
-            'approver' => $approver ? $approver->name : 'none',
-            'initiator' => $initiator->nik
-        ]);
-        
-        
-        // Mulai transaction untuk memastikan integritas data
-        $rsMaster = RSMaster::create([
-            'rs_no' => $request->input('rs_no'),
-            'category' => $request->input('category'),
-            'customer_id' => $request->input('customer_id'),
-            'address' => $request->input('address'),
-            'objectives' => $request->input('objectives'),
-            'reason' => $request->input('reason'),
-            'account' => $request->input('account'),
-            'cost_center' => $request->input('cost_center'),
-            'batch_code' => $request->input('batch_code'),
-            'revision_id' => $request->input('revision_id'),
-            'rs_number' => $request->input('rs_number'),
-            'est_potential' => $request->input('est_potential'),
-            'date' => $request->input('date'),
-            'initiator_nik' => $initiator->nik,
-            'route_to' => $approver ? $approver->nik : null,
-            'status' => 'pending'
-        ]);
 
-        foreach ($request->input('item_detail_code') as $key => $itemDetailCode) {
-            $itemDetailId = $request->input('item_detail_id')[$key];
-            $qtyReq = $request->input('qty_req')[$key];
-            $qtyIssued = $request->input('qty_issued')[$key];
+            $approver = null;
+            $approverLevel = null; // Initialize approver level
+            $userRole = $initiator->getRoleNames();
+            foreach ($userRole as $role) {
+                $approverRoleSetup = Approver::where('role', $role)->where('level', 1)->first();
+                if ($approverRoleSetup) {
+                    $approver = User::where('nik', $approverRoleSetup->nik)->first();
+                    if ($approver) {
+                        $approverLevel = $approverRoleSetup->level; // Get the level of the first approver
+                        break;
+                    }
+                }
+            }
 
+            Log::info('Approver search result', [
+                'approver_name' => $approver ? $approver->name : 'None found',
+                'approver_nik' => $approver ? $approver->nik : 'N/A',
+                'initiator_nik' => $initiator->nik,
+            ]);
 
-            // Create RSItem for each item
+            $rsMaster = RSMaster::create([
+                'rs_no' => $request->input('rs_no'),
+                'category' => $request->input('category'),
+                'customer_id' => $request->input('customer_id'),
+                'address' => $request->input('address'),
+                'objectives' => $request->input('objectives'),
+                'reason' => $request->input('reason'),
+                'account' => $request->input('account'),
+                'cost_center' => $request->input('cost_center'),
+                'batch_code' => $request->input('batch_code'),
+                'revision_id' => $request->input('revision_id'),
+                'rs_number' => $request->input('rs_number'),
+                'est_potential' => $request->input('est_potential'),
+                'date' => $request->input('date'),
+                'initiator_nik' => $initiator->nik,
+                'route_to' => $approver ? $approver->nik : null,
+                'status' => 'pending'
+            ]);
+
             RSItem::create([
                 'rs_id' => $rsMaster->id,
-                'item_id' => $itemDetailId,
-                'qty_req' => $qtyReq,
-                'qty_issued' => $qtyIssued,   
-                
+                'item_id' => $request->input('item_detail_id'),
+                'qty_req' => $request->input('qty_req'),
+                'qty_issued' => $request->input('qty_issued'),
             ]);
-        }
-        $rsItems = RSItem::with('item_detail')
-            ->where('rs_id', $rsMaster->id)
-            ->get();
-        // Generate token
-        $uniqueToken = (string) Str::uuid();
-        $approvalToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|approve');
-        $rejectToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|reject');
-        
-        // Dispatch Job
-        if ($approver) {
-            Log::info('Dispatching SendRsApprovalEmail job', [
-                'approver' => $approver->id,
-                'rsMaster' => $rsMaster->id,
-                
-                'approvalToken' => $approvalToken,
-                'rejectToken' => $rejectToken
+
+            $rsMaster->load('customer');
+
+            $rsItemRecord = RSItem::where('rs_id', $rsMaster->id)->first();
+            $rsItemsForEmail = collect();
+            if ($rsItemRecord && $rsItemRecord->item_id && is_array($rsItemRecord->item_id)) {
+                foreach ($rsItemRecord->item_id as $key => $itemId) {
+                    $itemDetail = Itemdetail::find($itemId);
+                    if ($itemDetail) {
+                        $rsItemsForEmail->push((object)[
+                            'item_detail_code' => $itemDetail->item_detail_code,
+                            'item_detail_name' => $itemDetail->item_detail_name,
+                            'unit' => $itemDetail->unit,
+                            'qty_req' => $rsItemRecord->qty_req[$key] ?? 0,
+                            'qty_issued' => $rsItemRecord->qty_issued[$key] ?? 0,
+                        ]);
+                    }
+                }
+            }
+
+            $uniqueToken = (string) Str::uuid();
+            $approvalToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|approve');
+            $rejectToken = Crypt::encryptString($rsMaster->rs_no . '|' . $uniqueToken . '|reject');
+
+            $rsMasterId = $rsMaster->id;
+            $approverNik = $approver ? $approver->nik : 'N/A';
+
+            $approvalNotReviewLink = route('rs.approved-no-review', [
+                'rs_master_id' => $rsMasterId,
+                'approver_nik' => $approverNik,
+                'token' => $approvalToken
             ]);
-            dispatch(new SendRsApprovalEmail($approver, $rsMaster, $rsItems, $approvalToken, $rejectToken));
+
+            $approvalWithReviewLink = route('rs.approved-with-review', [
+                'rs_master_id' => $rsMasterId,
+                'approver_nik' => $approverNik,
+                'token' => $approvalToken
+            ]);
+
+            $notApproveLink = route('rs.not-approved', [
+                'rs_master_id' => $rsMasterId,
+                'approver_nik' => $approverNik,
+                'token' => $rejectToken
+            ]);
+
+            if ($approver && $approverLevel !== null) { // Ensure approver and level are found
+                Log::info('Dispatching SendRsApprovalEmail job', [
+                    'approver_id' => $approver->id,
+                    'rsMaster_id' => $rsMaster->id,
+                    'approvalToken' => $approvalToken,
+                    'rejectToken' => $rejectToken,
+                    'approvalNotReviewLink' => $approvalNotReviewLink,
+                    'approvalWithReviewLink' => $approvalWithReviewLink,
+                    'notApproveLink' => $notApproveLink
+                ]);
+                dispatch(new SendRsApprovalEmail(
+                    $approver,
+                    $rsMaster,
+                    $rsItemsForEmail,
+                    $approvalToken,
+                    $rejectToken,
+                    $approvalNotReviewLink,
+                    $approvalWithReviewLink,
+                    $notApproveLink
+                ));
+
+                // --- NEW: Create RsApproval record ---
+                RsApproval::create([
+                    'rs_no' => $rsMaster->rs_no,
+                    'nik' => $approver->nik,
+                    'level' => $approverLevel, // The level of the current approver
+                    'status' => 'pending', // Initial status for this approval step
+                    'token' => $uniqueToken, // Using the approval token for this step
+                ]);
+                Log::info('RsApproval record created for first approver: ' . $approver->nik . ' Level: ' . $approverLevel);
+                // --- END NEW ---
+
+            } else {
+                Log::warning('No initial approver found for requisition slip. Email approval will not be sent, and no RsApproval record created.', [
+                    'rs_no' => $rsMaster->rs_no,
+                    'initiator_nik' => $initiator->nik
+                ]);
+                // Optionally, handle what happens if no initial approver is found,
+                // e.g., set status to 'needs manual assignment'
+                $rsMaster->update(['status' => 'needs_assignment']);
+            }
+
+            Alert::success('Success', 'Requisition Slip has been created successfully');
+            return redirect()->route('rs.index');
+        } catch (\Exception $e) {
+            Log::error('Failed to create Requisition Slip: ' . $e->getMessage(), ['exception' => $e, 'request_data' => $request->all()]);
+            Alert::error('Error', 'Failed to create Requisition Slip: ' . $e->getMessage());
+            return redirect()->back()->withInput();
         }
-
-        $user = Auth::user();
-        activity()
-        ->performedOn($form)
-            ->inLog('RS')
-            ->event('Create')
-            ->causedBy($user)
-            ->withProperties(['no' => $rsMaster['rs_no'], 'action' => 'created'])
-            ->log('Create Requisition Form ' . $request->input('rs_no') . ' by ' . (Auth::user() ? Auth::user()->name : 'unknown') . ' at ' . now());
-
-
-
-         //sweet alert
-        Alert::success('Success', 'Requisition Slip has been created successfully');
-        return redirect()->route('rs.index')->with('success', 'Requisition Slip has been created successfully');
-         } catch (\Exception $e) {
-            \dd($e);
-                // Jika terjadi kesalahan, rollback transaction
-                return response()->json(['error' => 'Failed to create Requisition Slip: ' . $e->getMessage()], 500);
-          }
     }
 
     /**
      * Display the specified resource.
      */
-    public function showlist(string $id)
+    public function detail($id)
     {
-
-       return view('page.rs.form-list-rs');
+        $master = RSMaster::with('rs_items')->where('rs_no', $id)->firstOrFail();
+        // \dd($master);
+        return view('page.rs.form-list-rs', compact('master'));
     }
 
     /**
@@ -220,7 +274,7 @@ class RequistionSlipController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            
+
             'customer_name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'rs_number' => 'nullable|string|max:50|unique:rs_masters,rs_number,' . $id,
@@ -267,34 +321,40 @@ class RequistionSlipController extends Controller
     public function list($id)
     {
         $master = RSMaster::with('rs_items')->findOrFail($id);
-    
-    
+
+
         return view('page.rs.form-list-rs', compact('master'));
     }
 
-    
 
-    public function getFormList()
+
+    public function getFormList($nik = null)
     {
         $user = Auth::user();
         $formList = null;
-        $query = RSMaster::with('initiator','revisions', 'customer', 'rs_items.item_detail', 'customer');
-        /** @var User $user */
-        if ($user->hasRole('super-admin')) {
+        $query = RSMaster::with('initiator');
+        // Pastikan method hasRole ada pada user
+        $isSuperAdmin = method_exists($user, 'hasRole') ? $user->hasRole('super-admin') : false;
+        if ($isSuperAdmin) {
             $formList = $query->get();
-        } else{
-            $formList = $query->where('customer_id', $user->id)->get();
+        } else {
+            if ($nik) {
+                $nik = ucfirst(strtolower($nik));
+                $formList = $query->where('route_to', $nik)->get();
+            } else {
+                $formList = $query->where('route_to', $user->nik)->get();
+            }
         }
+        // Tambahkan nama user ke setiap data
         if($formList){
-            $formList = $formList->map(function($item) {
-                /** @var RSMaster $item */
-                $item->new_created_at = $item->created_at->format('j F Y');
+            $formList = $formList->map(function($item){
+                $user = \App\Models\User::where('nik', $item->route_to)->first();
+                $item->route_to_name = $user ? $user->name : $item->route_to;
                 return $item;
             });
-            return response()->json($formList);
+            return response()->json($formList->values());
         }
-
-        return response()->json("No data found");
+        return response()->json(["message" => "No data found"]);
     }
 
 
@@ -339,8 +399,8 @@ public function getproductdata($id, Request $request)
         if (!$form) {
             return redirect()->back()->with('error', 'Requisition Slip not found');
         }
-        
+
         return view('page.rs.print-rs', compact('form'));
     }
-    
+
 }

@@ -2,11 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Dashboard;
-use App\Http\Controllers\IdeaApprovalController;
-use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\ApproverController;
 use App\Http\Controllers\ApproversController;
-use App\Http\Controllers\RsApprovalController;
 use App\Http\Controllers\Master\CategoryController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\LevelController;
@@ -15,17 +12,13 @@ use App\Http\Controllers\Master\PositionController;
 use App\Http\Controllers\Master\RoleController;
 use App\Http\Controllers\Master\SectionController;
 use App\Http\Controllers\Master\UserController;
-use App\Http\Controllers\Master\IdeaCountsController;
-use App\Http\Controllers\Mpdr\MpdrController;
-use App\Http\Controllers\PreMpdr\PreMpdrController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Rs\RequistionSlipController;
 use App\Http\Controllers\ItemmasterController;
 use App\Http\Controllers\ItemdetailController;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\RevisionsController;
-use App\Http\Controllers\LogController;
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Rs\RsApprovalController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 
@@ -61,7 +54,7 @@ Route::get('/create-symlink', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
-    
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -84,32 +77,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/notifications/clear', [PermissionController::class, 'clearAll'])->name('notifications.clear');
 
 
-    // // =============================================================PRE MPDR=================================================================
-    // Route::prefix('prempdr')->group(function () {
-    //     Route::get('/', [PreMpdrController::class, 'index'])->name('prempdr.index');
-    //     Route::get('/create', [PreMpdrController::class, 'create'])->name('prempdr.create');
-    //     Route::get('/edit/{id}', [PreMpdrController::class, 'edit'])->name('prempdr.edit');
-    //     Route::patch('/update/{id}', [PreMpdrController::class, 'update'])->name('prempdr.update');
-    //     Route::delete('/destroy/{id}', [PreMpdrController::class, 'destroy'])->name('prempdr.destroy');
-    //     Route::get('/report', [PreMpdrController::class, 'report'])->name('prempdr.report');
-    //     Route::get('/approval', [PreMpdrController::class, 'approval'])->name('prempdr.approval');
-    //     Route::get('/log', [PreMpdrController::class, 'log'])->name('prempdr.log');
-    // });
-
-
-
-    // // =============================================================MPDR=================================================================
-    // Route::prefix('mpdr')->group(function () {
-    //     Route::get('/', [MpdrController::class, 'index'])->name('mpdr.index');
-    //     Route::get('/create', [MpdrController::class, 'create'])->name('mpdr.create');
-    //     Route::get('/edit/{id}', [MpdrController::class, 'edit'])->name('mpdr.edit');
-    //     Route::patch('/update/{id}', [MpdrController::class, 'update'])->name('mpdr.update');
-    //     Route::delete('/destroy/{id}', [MpdrController::class, 'destroy'])->name('mpdr.destroy');
-    //     Route::get('/report', [MpdrController::class, 'report'])->name('mpdr.reports');
-    //     Route::get('/approval', [MpdrController::class, 'approval'])->name('mpdr.approval');
-    //     Route::get('/log', [MpdrController::class, 'log'])->name('mpdr.log');
-    // });
-
 
     // =============================================================RS=================================================================
 
@@ -130,15 +97,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/approverupdate/update/{id}', [ApproverController::class, 'update'])->name('rs.approver.update');
         Route::delete('/approverdestroy/{id}', [ApproverController::class, 'destroy'])->name('rs.approver.destroy');
         Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
-        Route::get('/list/{id}', [RequistionSlipController::class, 'list'])->name('rs.list');
+        Route::get('/detail/{id}', [RequistionSlipController::class, 'detail'])->name('rs.detail');
         Route::get('/editlist/{id}', [RequistionSlipController::class, 'editlist'])->name('rs.list.edit');
         Route::get('/list/{id}/show', [RequistionSlipController::class, 'showlist'])->name('rs.list.show');
-        Route::get('/getFormList', [RequistionSlipController::class, 'getFormList'])->name('rs.getFormList');
-        // Route::get('/listrs/{id}', [RequisitionController::class, 'show']);
+        Route::get('/getFormList/{nik?}', [RequistionSlipController::class, 'getFormList'])->name('rs.getFormList');
+
         Route::get('/status', [RequistionSlipController::class, 'statusform'])->name('rs.status');
         Route::get('/submit', [RequistionSlipController::class, 'create'])->name('rs.submit');
         Route::post('/store', [RequistionSlipController::class, 'store'])->name('requisition.store');
-        
+
         //Approval Admin
         Route::get('/approval/form/{rs_id}', [ApproversController::class, 'showApprovalForm'])->name('approval.form');
         Route::get('/rs/approval-list', [ApproversController::class, 'approvalList'])->name('rs.approval-list');
@@ -148,7 +115,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/rs/reject/{token}', [RsApprovalController::class, 'reject'])->name('rs.reject');
 
         Route::get('/product/{id}', [RequistionSlipController::class, 'getproductdata'])->name('requisition.getproductdata');
-        
+
         Route::get('/itemmaster', [ItemmasterController::class, 'index'])->name('item-master.index');
         Route::delete('/itemmasterdestroy/{id}', [ItemmasterController::class, 'destroy'])->name('item-master.destroy');
         Route::get('/itemmastercreate/{id}', [ItemmasterController::class, 'create'])->name('item-master.create');
@@ -177,6 +144,21 @@ Route::middleware('auth')->group(function () {
     });
 
 
+});
+
+// =============================================================MAIL=================================================================
+Route::group(['prefix' => 'requisition/approval', 'as' => 'rs.'], function () {
+    // Route for "Approved (No Review)"
+    Route::get('approved-no-review/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'approvedNoReview'])
+        ->name('approved-no-review');
+
+    // Route for "Approve with Review"
+    Route::get('approved-with-review/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'approvedWithReview'])
+        ->name('approved-with-review');
+
+    // Route for "Not Approve"
+    Route::get('not-approved/{rs_master_id}/{approver_nik}/{token}', [RsApprovalController::class, 'notApproved'])
+        ->name('not-approved');
 });
 
 
