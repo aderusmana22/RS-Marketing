@@ -60,7 +60,6 @@
     </div>
 
     @push('scripts')
-        
         <script>
             $('#rsTable').dataTable({
                 processing: true,

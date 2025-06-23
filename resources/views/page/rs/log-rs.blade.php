@@ -4,6 +4,12 @@
     @endsection
 
     @push('css')
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.min.css">
+        <style>
+            .header-item {
+                background-color: #f8f9fa;
+            }
+        </style>
     @endpush
 
 
@@ -41,7 +47,6 @@
                 <thead class="header-item">
                     <th>No</th>
                     <th>Name</th>
-                    <th>Action</th>
                 </thead>
                 <tbody>
                     <!-- start row -->
@@ -51,4 +56,30 @@
            </div>
         </div>
     </div>
+
+    @push('scripts')
+
+
+        <script>
+            $(document).ready(function() {
+                $('#rsTable').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    ajax: {
+                        url: "{{ route('rs.getLog') }}",
+                        type: "GET",
+                        dataSrc: function(json) {
+                            console.log(json);
+                            return json; // Adjust based on your API response structure
+                        }
+                    },
+                    columns: [
+                        { data: null, name: 'DT_RowIndex', orderable: false, searchable: false,
+                            render: (data, type, row, meta) => meta.row + 1 },
+                        { data: 'log_name', name: 'name' }
+                    ]
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>
