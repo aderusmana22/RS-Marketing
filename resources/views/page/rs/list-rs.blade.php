@@ -4,6 +4,8 @@
     @endsection
 
     @push('css')
+        <link rel="stylesheet" href="{{ asset('assets/libs/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets') }}/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
     @endpush
 
 
@@ -58,7 +60,6 @@
     </div>
 
     @push('scripts')
-      
         <script>
             $('#rsTable').dataTable({
                 processing: true,

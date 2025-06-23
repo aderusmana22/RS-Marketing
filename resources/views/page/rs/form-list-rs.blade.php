@@ -66,10 +66,10 @@
                         <p class="mb-1"><strong>Tanggal:</strong> <span class="blue-text">{{ $master['date'] }}</span></p>
 
                             
-                            @if($master['category'] === 'SRS')
-                                    <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
-                                @else
+                            @if($master['category'] === 'Sample Product')
                                     <p><strong>Nomor RS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
+                                @else
+                                    <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>
                                 @endif
 
                         {{-- <p><strong>Nomor SRS:</strong> <span class="blue-text">{{ $master['rs_number'] }}</span></p>

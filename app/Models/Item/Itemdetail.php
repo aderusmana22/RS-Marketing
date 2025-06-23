@@ -13,6 +13,6 @@ class Itemdetail extends Model
 
     public function itemmaster()
     {
-        $this->belongsTo(Itemmaster::class,'item_master_id','id');
+        return $this->belongsTo(Itemmaster::class,'item_master_id','id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\RS;
 
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\RS\RSItem;
@@ -14,6 +15,10 @@ class RSMaster extends Model
     protected $table='rs_masters';
     protected $guarded=['id'];
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
 
     public function rs_items()
     {
@@ -22,7 +27,7 @@ class RSMaster extends Model
 
     public function revisions()
     {
-        return $this->belongsTo(Revisions::class);
+        return $this->belongsTo(Revisions::class, 'revision_id', 'id');
     }
 
     public function initiator()

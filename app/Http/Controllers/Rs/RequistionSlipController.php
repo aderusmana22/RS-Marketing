@@ -278,15 +278,22 @@ class RequistionSlipController extends Controller
     {
         $user = Auth::user();
         $formList = null;
-        $query = RSMaster::with('initiator');
+        $query = RSMaster::with('initiator','revisions', 'customer', 'rs_items.item_detail', 'customer');
+        /** @var User $user */
         if ($user->hasRole('super-admin')) {
             $formList = $query->get();
         } else{
             $formList = $query->where('customer_id', $user->id)->get();
         }
         if($formList){
+            $formList = $formList->map(function($item) {
+                /** @var RSMaster $item */
+                $item->new_created_at = $item->created_at->format('j F Y');
+                return $item;
+            });
             return response()->json($formList);
         }
+
         return response()->json("No data found");
     }
 
@@ -326,6 +333,14 @@ public function getproductdata($id, Request $request)
     }
 }
 
-   
+   public function print($no)
+    {
+        $form = RSMaster::with('initiator','revisions', 'customer', 'rs_items.item_detail', 'customer')->where('rs_no', $no)->first();
+        if (!$form) {
+            return redirect()->back()->with('error', 'Requisition Slip not found');
+        }
+        
+        return view('page.rs.print-rs', compact('form'));
+    }
     
 }
