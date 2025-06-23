@@ -23,16 +23,56 @@ use RealRashid\SweetAlert\Facades\Alert;
 class RsApprovalController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $currentUserNik = auth()->user()->nik ?? null;
-        $pendingApprovals = collect();
-        if ($currentUserNik) {
-            $pendingApprovals = RSMaster::where('route_to', $currentUserNik)
-                ->where('status', 'pending')
-                ->get();
+
+        // Jika request AJAX (dari DataTables)
+        if ($request->ajax()) {
+            $data = [];
+            if ($currentUserNik) {
+                $masters = RSMaster::with(['approvals', 'rs_items'])
+                    ->where('route_to', $currentUserNik)
+                    ->where('status', 'pending')
+                    ->get();
+
+                foreach ($masters as $master) {
+                    $progressBadges = [];
+                    foreach ($master->rs_items as $item) {
+                        $batchCode = $item->batch_code ?? '-';
+                        $approvedCount = $master->approvals
+                            ->where('batch_code', $batchCode)
+                            ->whereIn('status', ['approved', 'no_review', 'with review'])
+                            ->count();
+                        $maxApproval = 3;
+
+                        // Pilih warna badge sesuai progress
+                        if ($approvedCount == $maxApproval) {
+                            $badgeClass = 'bg-success';
+                        } elseif ($approvedCount > 0) {
+                            $badgeClass = 'bg-warning text-dark';
+                        } else {
+                            $badgeClass = 'bg-secondary';
+                        }
+
+                        $progressBadges[] = '<span class="badge ' . $badgeClass . '">' . $approvedCount . '/' . $maxApproval . '</span>';
+                    }
+                    $progressString = implode(' ', $progressBadges);
+
+                    $data[] = [
+                        'no' => $master->rs_no,
+                        'rs_no' => $master->rs_no,
+                        'category' => $master->category,
+                        'route_to' => $master->route_to,
+                        'progress' => $progressString,
+                    ];
+                }
+            }
+            return response()->json($data);
         }
-        return view('approval.index', compact('pendingApprovals'));
+
+        // Jika request biasa (bukan AJAX)
+        return view('page.rs.approval-rs');
     }
 
     public function approvedNoReview(Request $request, int $rs_master_id, string $approver_nik, string $token)

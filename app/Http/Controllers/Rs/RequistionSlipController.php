@@ -29,7 +29,7 @@ class RequistionSlipController extends Controller
     public function index()
     {
         $req = RSMaster::get();
-        return \view('page.rs.list-rs',compact('req'));
+        return \view('page.rs.list-rs', compact('req'));
     }
 
     /**
@@ -40,8 +40,7 @@ class RequistionSlipController extends Controller
         $items = Itemmaster::all();
         $customers = Customer::all();
         $initiators = User::all();
-        return \view('page.rs.submitform-rs',compact('items','customers','initiators'));
-
+        return \view('page.rs.submitform-rs', compact('items', 'customers', 'initiators'));
     }
 
     public function noReg()
@@ -71,7 +70,7 @@ class RequistionSlipController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-     public function store(Request $request)
+    public function store(Request $request)
     {
         // dd($request->all());
 
@@ -218,6 +217,11 @@ class RequistionSlipController extends Controller
                     $notApproveLink
                 ));
 
+                \activity('Requisition Slip')
+                    ->performedOn($rsMaster)
+                    ->causedBy(Auth::user())
+                    ->log('Send approval email to ' . $approver->name . ' (' . $approver->nik . ') for Requisition Slip ' . $rsMaster->rs_no);
+
                 // --- NEW: Create RsApproval record ---
                 RsApproval::create([
                     'rs_no' => $rsMaster->rs_no,
@@ -238,6 +242,11 @@ class RequistionSlipController extends Controller
                 // e.g., set status to 'needs manual assignment'
                 $rsMaster->update(['status' => 'needs_assignment']);
             }
+
+            \activity('Requisition Slip')
+                ->performedOn($rsMaster)
+                ->causedBy(Auth::user())
+                ->log('Create Requisition Form ' . $request->input('rs_no') . ' by ' . (Auth::user() ? Auth::user()->name : 'unknown') . ' at ' . now());
 
             Alert::success('Success', 'Requisition Slip has been created successfully');
             return redirect()->route('rs.index');
@@ -265,7 +274,6 @@ class RequistionSlipController extends Controller
     {
         confirmDelete();
         return \view('page.rs.edit-rs')->with('id', $id);
-
     }
 
     /**
@@ -331,9 +339,7 @@ class RequistionSlipController extends Controller
     public function getFormList($nik = null)
     {
         $user = Auth::user();
-        $formList = null;
-        $query = RSMaster::with('initiator');
-        // Pastikan method hasRole ada pada user
+        $query = RSMaster::with(['initiator', 'customer', 'revisions', 'rs_items']);
         $isSuperAdmin = method_exists($user, 'hasRole') ? $user->hasRole('super-admin') : false;
         if ($isSuperAdmin) {
             $formList = $query->get();
@@ -345,11 +351,29 @@ class RequistionSlipController extends Controller
                 $formList = $query->where('route_to', $user->nik)->get();
             }
         }
-        // Tambahkan nama user ke setiap data
-        if($formList){
-            $formList = $formList->map(function($item){
+        if ($formList) {
+            $formList = $formList->map(function ($item) {
                 $user = \App\Models\User::where('nik', $item->route_to)->first();
                 $item->route_to_name = $user ? $user->name : $item->route_to;
+                $item->new_created_at = $item->created_at ? $item->created_at->format('d-m-Y') : '';
+                $item->customer = $item->customer ?? (object)[];
+                $item->revisions = $item->revisions ?? (object)[];
+                $item->rs_items = collect($item->rs_items)->map(function ($rs_item) {
+                    // Cast ke array jika masih string JSON
+                    $rs_item->item_id = is_array($rs_item->item_id) ? $rs_item->item_id : (is_string($rs_item->item_id) ? json_decode($rs_item->item_id, true) : []);
+                    $rs_item->qty_req = is_array($rs_item->qty_req) ? $rs_item->qty_req : (is_string($rs_item->qty_req) ? json_decode($rs_item->qty_req, true) : []);
+                    $rs_item->qty_issued = is_array($rs_item->qty_issued) ? $rs_item->qty_issued : (is_string($rs_item->qty_issued) ? json_decode($rs_item->qty_issued, true) : []);
+                    // Ambil detail item, urut sesuai item_id
+                    $itemDetails = [];
+                    if (is_array($rs_item->item_id)) {
+                        foreach ($rs_item->item_id as $id) {
+                            $detail = \App\Models\Item\Itemdetail::find($id);
+                            $itemDetails[] = $detail ? $detail : (object)[];
+                        }
+                    }
+                    $rs_item->item_detail = $itemDetails;
+                    return $rs_item;
+                })->values()->toArray();
                 return $item;
             });
             return response()->json($formList->values());
@@ -364,43 +388,59 @@ class RequistionSlipController extends Controller
     }
 
     public function submitform()
-{
-    return view('page.rs.submitform-rs');
-}
-
-public function getproductdata($id, Request $request)
-{
-
-    $types = $request->input('types');
-
-    $item = Itemdetail::where('item_master_id', $id);
-
-
-    if ($types) {
-        $item->where('type', $types);
-    }
-    $item = $item->get();
-    if ($item) {
-        return response()->json([
-            'status' => 'success',
-            'data' => $item
-        ]);
-    } else {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Item not found'
-        ]);
-    }
-}
-
-   public function print($no)
     {
-        $form = RSMaster::with('initiator','revisions', 'customer', 'rs_items.item_detail', 'customer')->where('rs_no', $no)->first();
+        return view('page.rs.submitform-rs');
+    }
+
+    public function getproductdata($id, Request $request)
+    {
+
+        $types = $request->input('types');
+
+        $item = Itemdetail::where('item_master_id', $id);
+
+
+        if ($types) {
+            $item->where('type', $types);
+        }
+        $item = $item->get();
+        if ($item) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $item
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Item not found'
+            ]);
+        }
+    }
+
+    public function print($no)
+    {
+        $form = RSMaster::with('initiator', 'revisions', 'customer', 'rs_items')->where('rs_no', $no)->first();
         if (!$form) {
             return redirect()->back()->with('error', 'Requisition Slip not found');
         }
 
+        // Mapping agar rs_items dan item_detail urut dan tidak null
+        $form->rs_items = collect($form->rs_items)->map(function ($rs_item) {
+            $rs_item->item_id = is_array($rs_item->item_id) ? $rs_item->item_id : (is_string($rs_item->item_id) ? json_decode($rs_item->item_id, true) : []);
+            $rs_item->qty_req = is_array($rs_item->qty_req) ? $rs_item->qty_req : (is_string($rs_item->qty_req) ? json_decode($rs_item->qty_req, true) : []);
+            $rs_item->qty_issued = is_array($rs_item->qty_issued) ? $rs_item->qty_issued : (is_string($rs_item->qty_issued) ? json_decode($rs_item->qty_issued, true) : []);
+            // Ambil detail item, urut sesuai item_id
+            $itemDetails = [];
+            if (is_array($rs_item->item_id)) {
+                foreach ($rs_item->item_id as $id) {
+                    $detail = \App\Models\Item\Itemdetail::find($id);
+                    $itemDetails[] = $detail ? $detail : (object)[];
+                }
+            }
+            $rs_item->item_detail = $itemDetails;
+            return $rs_item;
+        })->values()->toArray();
+
         return view('page.rs.print-rs', compact('form'));
     }
-
 }

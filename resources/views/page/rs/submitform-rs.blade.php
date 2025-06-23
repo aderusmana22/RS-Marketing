@@ -1,4 +1,7 @@
 <x-app-layout>
+     @section('title')
+        Submit Requisition Slip
+     @endsection
     @push('css')
         <link href="{{ asset('assets/libs/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

@@ -17,6 +17,7 @@ use App\Http\Controllers\Rs\RequistionSlipController;
 use App\Http\Controllers\ItemmasterController;
 use App\Http\Controllers\ItemdetailController;
 use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\RevisionsController;
 use App\Http\Controllers\Rs\RsApprovalController;
 use Illuminate\Support\Facades\Route;
@@ -89,14 +90,13 @@ Route::middleware('auth')->group(function () {
         Route::patch('/update/{id}', [RequistionSlipController::class, 'update'])->name('rs.update');
         Route::delete('/destroy/{id}', [RequistionSlipController::class, 'destroy'])->name('rs.destroy');
         Route::get('/report', [RequistionSlipController::class, 'report'])->name('rs.report');
-        Route::get('/approval', [RequistionSlipController::class, 'approval'])->name('rs.approval');
+        Route::get('/approval', [RsApprovalController::class, 'index'])->name('rs.approval');
         Route::get('/approver', [ApproverController::class, 'index'])->name('rs.approver');
         Route::get('/approvercreate/{id}', [ApproverController::class, 'create'])->name('rs.approver.create');
         Route::post('/approverstore', [ApproverController::class, 'store'])->name('rs.approver.store');
         Route::get('/approveredit/update/{id}', [ApproverController::class, 'edit'])->name('rs.approver.edit');
         Route::put('/approverupdate/update/{id}', [ApproverController::class, 'update'])->name('rs.approver.update');
         Route::delete('/approverdestroy/{id}', [ApproverController::class, 'destroy'])->name('rs.approver.destroy');
-        Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
         Route::get('/detail/{id}', [RequistionSlipController::class, 'detail'])->name('rs.detail');
         Route::get('/editlist/{id}', [RequistionSlipController::class, 'editlist'])->name('rs.list.edit');
         Route::get('/list/{id}/show', [RequistionSlipController::class, 'showlist'])->name('rs.list.show');
@@ -141,9 +141,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/revisionstore', [RevisionsController::class, 'store'])->name('revisions.store');
         Route::get('/revisionedit/update/{id}', [RevisionsController::class, 'edit'])->name('revisions.edit');
         Route::put('/revisionupdate/update/{id}', [RevisionsController::class, 'update'])->name('revisions.update');
+
+        //Log
+                Route::get('/log', [RequistionSlipController::class, 'log'])->name('rs.log');
+
+        Route::get('/getLog', [LogController::class, 'log'])->name('rs.getLog');
+        Route::get('/print-{no}', [RequistionSlipController::class, 'print'])->name('rs.print');
     });
-
-
 });
 
 // =============================================================MAIL=================================================================
@@ -162,7 +166,7 @@ Route::group(['prefix' => 'requisition/approval', 'as' => 'rs.'], function () {
 });
 
 
-Route::group(['middleware' => ['role:super-admin|admin']], function() {
+Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', PermissionController::class);
     Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
@@ -174,9 +178,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
     Route::resource('users', UserController::class);
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
-
 });
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

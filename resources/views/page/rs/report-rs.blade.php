@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.0/css/responsive.bootstrap.min.css">
         <style>
-            
+
         </style>
     @endpush
 
@@ -46,8 +46,7 @@
                 <i class="ti ti-menu-2 fs-5"></i>
             </button>
             <form class="position-relative w-100">
-                <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh"
-                    placeholder="Search RS">
+                <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="Search RS">
                 <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
             </form>
         </div>
@@ -88,10 +87,11 @@
                                 <!-- Header Section -->
                                 <div class="row form-header pb-3 mb-3">
                                     <div class="col-6">
-                                        <img src="{{ asset('assets/images/logos/logoputih.png') }}" alt="" height="80">
+                                        <img src="{{ asset('assets/images/logos/logoputih.png') }}" alt=""
+                                            height="80">
                                     </div>
                                     <div class="col-6 text-end">
-                                        <h6 class="mb-1">FORM NO.: <span id="form-no"></span></h6>
+                                        <h6 class="mb-1">FORM NO.: <span id=""></span></h6>
                                         <h6 class="mb-1">REVISION: <span id="revision-no"></span></h6>
                                         <h6>DATE: <span id="revision-date"></span></h6>
                                     </div>
@@ -106,13 +106,18 @@
                                 <!-- Customer Info Section -->
                                 <div class="row mb-3">
                                     <div class="col-md-8">
-                                        <p class="mb-1"><strong>CUSTOMER NAME:</strong> <span id="customer-name" class="blue-text">PT AMA</span></p>
-                                        <p class="mb-1"><strong>ADDRESS:</strong> <span id="customer-address" class="blue-text">MEDAN</span></p>
+                                        <p class="mb-1"><strong>CUSTOMER NAME:</strong> <span id="customer-name"
+                                                class="blue-text">PT AMA</span></p>
+                                        <p class="mb-1"><strong>ADDRESS:</strong> <span id="customer-address"
+                                                class="blue-text">MEDAN</span></p>
                                     </div>
                                     <div class="col-md-4 text-md-end">
-                                        <p class="mb-1"><strong>Account:</strong> <span id="customer-account" class="blue-text">4914</span></p>
-                                        <p class="mb-1"><strong>Tanggal:</strong> <span id="form-date" class="blue-text"></span></p>
-                                        <p><strong>Nomor <span id="no_rs">RS</span>:</strong> <span id="srs" class="blue-text">P 24 10 542</span></p>
+                                        <p class="mb-1"><strong>Account:</strong> <span id="customer-account"
+                                                class="blue-text">4914</span></p>
+                                        <p class="mb-1"><strong>Tanggal:</strong> <span id="form-date"
+                                                class="blue-text"></span></p>
+                                        <p><strong>Nomor <span id="no_rs"></span>:</strong> <span id="form-no"
+                                                class="blue-text"></span></p>
                                     </div>
                                 </div>
 
@@ -122,78 +127,21 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>ITEM CODE</th>
-                                                <th>NAMA BARANG</th>
+                                                <th>PRODUCT CODE</th>
+                                                <th>PRODUCT NAME</th>
                                                 <th>UNIT</th>
                                                 <th>QTY REQUIRED</th>
                                                 <th>QTY ISSUED</th>
                                                 <th><span id="category1">Remarks<br>(Batch Code)</span></th>
                                                 <th><span id="category2">ALASAN PENGGANTIAN</span></th>
-                                                
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="blue-text">145-172</td>
-                                                <td>CTN MC BM 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>5</td>
-                                                <td></td>
-                                                <td rowspan="7" class="blue-text">Penggantian<br>Karton Basah</td>
-                                                <td class="blue-text">09 SEP 25 2437 M1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="blue-text">145-172</td>
-                                                <td>CTN MC BM 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>20</td>
-                                                <td></td>
-                                                <td class="blue-text">11 SEP 25 2437 M1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="blue-text">145-172</td>
-                                                <td>CTN MC BM 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>68</td>
-                                                <td></td>
-                                                <td class="blue-text">16 SEP 25 2438 M1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="blue-text">145-172</td>
-                                                <td>CTN MC BM 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>36</td>
-                                                <td></td>
-                                                <td class="blue-text">20 SEP 25 2438 M1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="blue-text">145-167</td>
-                                                <td>CTN GB BOS 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>10</td>
-                                                <td></td>
-                                                <td class="blue-text">15 SEP 25 2437 M1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="blue-text">145-048</td>
-                                                <td>CTN GB Flake PS 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>3</td>
-                                                <td></td>
-                                                <td class="blue-text">18 JUL 25 2429 M1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="blue-text">136-024</td>
-                                                <td>Plastic bag 15kg</td>
-                                                <td>15 kg</td>
-                                                <td>142</td>
-                                                <td></td>
-                                                <td>-</td>
-                                            </tr>
+
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>    
+                            </div>
                             <hr>
                             <div class="text-end">
                                 <a id="print-form" class="btn btn-primary btn-default print-page ms-6"
@@ -245,16 +193,16 @@
             document.addEventListener('DOMContentLoaded', function() {
                 function makeAllReadonly() {
                     // Menjadikan semua elemen input dan textarea readonly
-                    var inputs = document.querySelectorAll('#rs-form input, #rs-form textarea');  // Pilih semua input
+                    var inputs = document.querySelectorAll('#rs-form input, #rs-form textarea'); // Pilih semua input
                     inputs.forEach(function(input) {
                         if (input.type === 'radio') {
                             if (!input.checked) {
-                                input.disabled = true;  // Menonaktifkan radio button jika belum disabled
+                                input.disabled = true; // Menonaktifkan radio button jika belum disabled
                             }
                         } else {
                             input.readOnly = true; // Setiap input dan textarea menjadi readonly
                         }
-                    
+
                     });
                 }
                 makeAllReadonly();
@@ -268,7 +216,7 @@
                         var listForm = '';
                         response.forEach((form, index) => {
                             listForm +=
-                            `<a href="javascript:void(0)"
+                                `<a href="javascript:void(0)"
                                 class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
                                 onClick="changeForm(${index})">
                                 <div
@@ -298,32 +246,31 @@
             });
 
             // Fungsi untuk menghapus data dari tampilan form
-            function clearForm(){
+            function clearForm() {
                 $('#rs-form input[type="radio"]').prop('checked', false).prop('disabled', true);
                 $('#rs-form textarea').text('');
                 $('#rs-form text').val('');
             }
 
             // Fungsi untuk mengganti data pada tampilan form
-            function changeForm(index){
+            function changeForm(index) {
                 clearForm();
                 var form = forms[index];
-                console.log(form);
+                if (!form) return;
 
                 $('#title-report').text(form.category ?? 'No Title');
                 $('#id-report').text(form.rs_no ?? '---');
-
                 $('#form-no').text(form.rs_no ?? '---');
                 $('#category').text((form.category ?? 'No Category').toUpperCase());
-                
+
                 // Revision
-                $('#revision-no').text(form.revisions.id ?? 'No Revision');
-                $('#revision-date').text(form.revisions.date ?? 'No Revision Date');
-                
+                $('#revision-no').text(form.revisions?.id ?? 'No Revision');
+                $('#revision-date').text(form.revisions?.date ?? 'No Revision Date');
+
                 // Customer Info
-                $('#customer-name').text(form.customer.name ?? 'No Customer');  
-                $('#customer-address').text(form.customer.address ?? 'No Address');
-                $('#customer-account').text(form.customer.account ?? 'No Account');
+                $('#customer-name').text(form.customer?.name ?? 'No Customer');
+                $('#customer-address').text(form.customer?.address ?? 'No Address');
+                $('#customer-account').text(form?.account ?? 'No Account');
                 $('#form-date').text(form.new_created_at ?? 'No Date');
                 $('#no_rs').text(form.category === 'Sample Product' ? 'RS' : 'SRS');
                 $('#srs').text(form.rs_number ?? '-');
@@ -331,31 +278,49 @@
                 $('#category2').text(form.category === 'Sample Product' ? 'ESTIMATE POTENTIAL' : 'REASON');
 
                 let table = $('#rs-form table tbody');
-                table.empty(); // Clear existing rows
-                // item details
+                table.empty();
+
+                // Hitung total baris untuk rowspan
+                let totalRows = 0;
                 if (form.rs_items && form.rs_items.length > 0) {
-                    form.rs_items.forEach(function(items, index) {
-                        items.item_detail.forEach(function(detail, index) {
-                            let row = `
-                                <tr>
-                                    <td class="blue-text">${detail.type}</td>
-                                    <td>${detail.item_detail_code}</td>
-                                    <td>${detail.net_weight} ${detail.unit}</td>
-                                    <td>${items.qty_req}</td>
-                                    <td>${items.qty_issued}</td>
-                                    ${index === 0 ?
-                                        form.category === 'Sample Product'
-                                            ? `<td rowspan="${form.rs_items.length}" class="blue-text">${form.objectives ?? ''}</td>
-                                               <td rowspan="${form.rs_items.length}" class="blue-text">${form.est_potential ?? ''}</td>`
-                                            :
-                                            `<td rowspan="${form.rs_items.length}" class="blue-text">${form.batch_code ?? ''}</td>
-                                             <td rowspan="${form.rs_items.length}" class="blue-text">${form.reason ?? ''}</td>`
-                                    : 
-                                        ''
-                                    }
-                                </tr>`;
+                    form.rs_items.forEach(function(items) {
+                        if (Array.isArray(items.item_id)) {
+                            totalRows += items.item_id.length;
+                        }
+                    });
+                }
+
+                let currentRow = 0;
+                if (form.rs_items && form.rs_items.length > 0) {
+                    form.rs_items.forEach(function(items) {
+                        let itemIds = Array.isArray(items.item_id) ? items.item_id : [];
+                        let qtyReqs = Array.isArray(items.qty_req) ? items.qty_req : [];
+                        let qtyIssued = Array.isArray(items.qty_issued) ? items.qty_issued : [];
+                        let itemDetails = Array.isArray(items.item_detail) ? items.item_detail : [];
+
+                        itemIds.forEach(function(itemId, i) {
+                            let detail = itemDetails[i] || {};
+                            let row = `<tr>
+                    <td class="blue-text">${detail?.item_detail_code ?? '-'}</td>
+                    <td>${detail?.item_detail_name ?? '-'}</td>
+                    <td>${detail?.unit ?? '-'}</td>
+                    <td>${qtyReqs[i] ?? '-'}</td>
+                    <td>${qtyIssued[i] ?? '-'}</td>`;
+
+                            // OBJECTIVES/ESTIMASI POTENSI/REASON/BATCH CODE hanya sekali di baris pertama
+                            if (currentRow === 0) {
+                                if (form.category === 'Sample Product') {
+                                    row += `<td rowspan="${totalRows}">${form.objectives ?? '-'}</td>
+                                <td rowspan="${totalRows}">${form.est_potential ?? '-'}</td>`;
+                                } else if (form.category === 'Packaging') {
+                                    row += `<td rowspan="${totalRows}">${form.reason ?? '-'}</td>
+                                <td rowspan="${totalRows}">${form.batch_code ?? '-'}</td>`;
+                                }
+                            }
+                            row += `</tr>`;
                             table.append(row);
-                        })
+                            currentRow++;
+                        });
                     });
                 } else {
                     let row = `<tr><td colspan="7" class="text-center">Tidak ada item detail</td></tr>`;
@@ -378,7 +343,7 @@
                         (form.new_created_at && form.new_created_at.toLowerCase().includes(value))
                     ) {
                         listForm +=
-                        `<a href="javascript:void(0)"
+                            `<a href="javascript:void(0)"
                             class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
                             onClick="changeForm(${index})">
                             <div class="btn btn-primary round rounded-circle d-flex align-items-center justify-content-center px-2">
@@ -410,7 +375,7 @@
                         (form.new_created_at && form.new_created_at.toLowerCase().includes(value))
                     ) {
                         listForm +=
-                        `<a href="javascript:void(0)"
+                            `<a href="javascript:void(0)"
                             class="p-3 bg-hover-light-black border-bottom d-flex align-items-start invoice-user listing-user"
                             onClick="changeForm(${index})">
                             <div class="btn btn-primary round rounded-circle d-flex align-items-center justify-content-center px-2">

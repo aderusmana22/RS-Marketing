@@ -30,59 +30,75 @@
 
     <div class="card">
         <div class="card-body">
-           <div class="table-responsive">
-            <table class="table table-bordered" id="approvalTable">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>RS Number</th>
-                        <th>Category</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-           </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="approvalTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>RS Number</th>
+                            <th>Category</th>
+                            <th>Route To</th>
+                            <th>Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     @push('scripts')
-        
-
         <script>
             $(document).ready(function() {
                 $('#approvalTable').DataTable({
                     processing: true,
                     serverSide: false,
                     ajax: {
-                        url: "{{ route('rs.get-approval-list') }}",
+                        url: "{{ route('rs.approval') }}",
                         type: "GET",
                         dataSrc: function(json) {
                             console.log(json);
                             return json;
                         }
                     },
-                    columns: [
-                        { data: null, render: (data, type, row, meta) => meta.row + 1 },
-                        { data: 'rs_no' },
-                        { data: 'category' },
-                        { data: null,
+                    columns: [{
+                            data: null,
+                            render: (data, type, row, meta) => meta.row + 1
+                        },
+                        {
+                            data: 'rs_no'
+                        },
+                        {
+                            data: 'category'
+                        },
+                        {
+                            data: 'route_to'
+                        },
+                        {
+                            data: 'progress'
+                        },
+                        {
+                            data: null,
                             render: function(data, type, row) {
-                                const viewUrl = "{{ route('rs.status', ':id') }}".replace(':id', row.no);
-                                const approveUrl = "{{ route('rs.approve', ':id') }}".replace(':id', row.no);
-                                const rejectUrl = "{{ route('rs.reject', ':id') }}".replace(':id', row.no);
-                                
+                                const viewUrl = "{{ route('rs.status', ':id') }}".replace(':id', row
+                                .no);
+                                const approveUrl = "{{ route('rs.approve', ':id') }}".replace(':id', row
+                                    .no);
+                                const rejectUrl = "{{ route('rs.reject', ':id') }}".replace(':id', row
+                                    .no);
+
                                 return `
-                                    <a href="${viewUrl}" class="btn btn-sm btn-info">View</a>
-                                    <a href="${approveUrl}" class="btn btn-sm btn-success mx-1">Approve</a>
-                                    <a href="${rejectUrl}" class="btn btn-sm btn-danger">Reject</a>
-                                `;
+                                            <a href="${viewUrl}" class="btn btn-sm btn-info">View</a>
+                                            <a href="${approveUrl}" class="btn btn-sm btn-success mx-1">Approve</a>
+                                            <a href="${rejectUrl}" class="btn btn-sm btn-danger">Reject</a>
+                                        `;
                             }
                         }
                     ]
+
                 });
             });
         </script>
     @endpush
 </x-app-layout>
-
